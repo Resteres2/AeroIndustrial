@@ -10,6 +10,7 @@ import org.joml.Vector3d;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 public final class MovingStructureBridge {
     private MovingStructureBridge() {}
@@ -23,7 +24,8 @@ public final class MovingStructureBridge {
             double strength,
             Direction direction
     ) {
-        if (!IntegrationStatus.sableLoaded() && !IntegrationStatus.aeronauticsLoaded()) return 0;
+        if ((!IntegrationStatus.sableLoaded() && !IntegrationStatus.aeronauticsLoaded())
+                || radius <= 0.0D || strength <= 0.0D) return 0;
 
         if (level instanceof ServerLevel serverLevel
                 && (IntegrationStatus.sableLoaded() || IntegrationStatus.aeronauticsLoaded())) {
@@ -37,7 +39,7 @@ public final class MovingStructureBridge {
                 x + radius, y + radius, z + radius);
 
         for (Entity entity : level.getEntities((Entity) null, bounds, e -> {
-            String name = e.getClass().getName().toLowerCase();
+            String name = e.getClass().getName().toLowerCase(Locale.ROOT);
             return name.contains("contraption")
                     || name.contains("airship")
                     || name.contains("aeronaut");
