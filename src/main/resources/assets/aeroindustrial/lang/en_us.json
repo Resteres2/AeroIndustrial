@@ -54,5 +54,12 @@
   "jei.aeroindustrial.machine": "AeroFlux Machines",
   "jei.aeroindustrial.machine.tier": "Machine tier: %s",
   "jei.aeroindustrial.time": "Time: %s t",
-  "jei.aeroindustrial.energy": "Cost: %s AF"
+  "jei.aeroindustrial.energy": "Cost: %s AF",
+  "message.aeroindustrial.charge": "AeroFlux +%s | %s/%s",
+  "message.aeroindustrial.full": "AeroFlux reservoir is full",
+  "status.aeroindustrial.machine": "AeroFlux %s/%s | overload %s%%",
+  "status.aeroindustrial.create": " | Create input %s AF/10t",
+  "status.aeroindustrial.thruster": " | thruster coupling: %s",
+  "status.aeroindustrial.processing": " | processing %s/%s",
+  "status.aeroindustrial.resonance": " | resonance %s/20"
 }
