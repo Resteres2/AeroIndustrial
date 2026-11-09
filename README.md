@@ -75,3 +75,15 @@ Run `./gradlew build` with Java 21. GitHub Actions builds the project automatica
 ## Honest status
 
 Version 1.1.0 is a **functional development release**, not a claim of full compatibility with every external mod build. The repository is continuously checked by GitHub Actions. Core AeroIndustrial systems are implemented directly; Create, Sable, Create Aeronautics and GTCEu integrations are intentionally isolated so that the base mod remains usable without them.
+
+
+## AeroFlux API
+
+AeroIndustrial exposes a dedicated NeoForge block capability for its internal energy system:
+
+- capability: `aeroindustrial:aeroflux`
+- interface: `IAeroFluxStorage`
+- supports receive/extract operations and capacity queries
+- the ordinary NeoForge energy capability remains available as a compatibility adapter
+
+This separation is intentional: **AeroFlux is not declared to be EU or FE**. Compatibility layers may convert external energy into AeroFlux, but the native API remains independent.
