@@ -341,14 +341,12 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 if (energy >= 10) {
                     energy -= 10;
                     overload = Math.max(0, overload - 2);
-                    int stabilized = 0;
                     for (Direction direction : Direction.values()) {
                         BlockPos pos = worldPosition.relative(direction);
                         if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
                                 && other.getTier() != 15) {
                             other.overload = Math.max(0, other.overload - 1);
                             other.setChanged();
-                            stabilized++;
                         }
                     }
                     setChanged();
