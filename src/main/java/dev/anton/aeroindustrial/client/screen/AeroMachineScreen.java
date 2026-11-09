@@ -10,9 +10,9 @@ public final class AeroMachineScreen extends AbstractContainerScreen<AeroMachine
     public AeroMachineScreen(AeroMachineMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 176;
-        this.imageHeight = 166;
+        this.imageHeight = 176;
         this.inventoryLabelX = 8;
-        this.inventoryLabelY = 72;
+        this.inventoryLabelY = 86;
     }
 
     @Override
