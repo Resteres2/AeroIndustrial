@@ -259,6 +259,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         }
     }
 
+    private static int clampTransfer(int transferred, int requested) {
+        return Mth.clamp(transferred, 0, Math.max(0, requested));
+    }
+
     private void runSpecialRole(ServerLevel serverLevel) {
         if (tickCounter % 20 != 0) return;
 
@@ -295,13 +299,17 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         BlockPos pos = worldPosition.relative(direction);
                         IAeroFluxStorage storage = serverLevel.getCapability(
                                 AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
-                        if (storage == null
-                                || storage.getAeroFluxStored() <= storage.getMaxAeroFluxStored() * 0.8) {
+                        if (storage == null) {
+                            continue;
+                        }
+                        int sourceCapacity = storage.getMaxAeroFluxStored();
+                        int sourceStored = storage.getAeroFluxStored();
+                        if (sourceCapacity <= 0 || sourceStored <= sourceCapacity * 0.8D) {
                             continue;
                         }
                         int room = getMaxEnergy() - energy;
                         int packet = Math.min(AeroConfig.CONFIG.accumulatorPullPerPulse.get(), room);
-                        int extracted = storage.extractAeroFlux(packet, false);
+                        int extracted = clampTransfer(storage.extractAeroFlux(packet, false), packet);
                         if (extracted > 0) {
                             energy += extracted;
                             setChanged();
@@ -346,10 +354,14 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         BlockPos pos = worldPosition.relative(direction);
                         IAeroFluxStorage storage = serverLevel.getCapability(
                                 AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
-                        if (storage == null || storage.getAeroFluxStored() <= 50) continue;
+                        if (storage == null) continue;
+                        int sourceCapacity = storage.getMaxAeroFluxStored();
+                        if (sourceCapacity <= 0) continue;
+                        int available = Mth.clamp(storage.getAeroFluxStored(), 0, sourceCapacity);
+                        if (available <= 50) continue;
                         int moved = Math.min(AeroConfig.CONFIG.mobileDockTransferPerPulse.get(),
-                                Math.min(storage.getAeroFluxStored(), getMaxEnergy() - energy));
-                        int extracted = storage.extractAeroFlux(moved, false);
+                                Math.min(available, getMaxEnergy() - energy));
+                        int extracted = clampTransfer(storage.extractAeroFlux(moved, false), moved);
                         if (extracted > 0) { energy += extracted; lastDockTransfer = extracted; setChanged(); break; }
                     }
                 } else if (energy > getMaxEnergy() * 0.75) {
@@ -357,9 +369,14 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         BlockPos pos = worldPosition.relative(direction);
                         IAeroFluxStorage storage = serverLevel.getCapability(
                                 AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
-                        if (storage == null || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored() * 0.75) continue;
-                        int accepted = storage.receiveAeroFlux(
-                                Math.min(AeroConfig.CONFIG.mobileDockTransferPerPulse.get(), energy), false);
+                        if (storage == null) continue;
+                        int targetCapacity = storage.getMaxAeroFluxStored();
+                        if (targetCapacity <= 0
+                                || Mth.clamp(storage.getAeroFluxStored(), 0, targetCapacity) >= targetCapacity * 0.75D) {
+                            continue;
+                        }
+                        int requested = Math.min(AeroConfig.CONFIG.mobileDockTransferPerPulse.get(), energy);
+                        int accepted = clampTransfer(storage.receiveAeroFlux(requested, false), requested);
                         if (accepted > 0) { energy -= accepted; lastDockTransfer = accepted; setChanged(); break; }
                     }
                 }
@@ -375,18 +392,22 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         BlockPos pos = worldPosition.relative(direction);
                         IAeroFluxStorage storage = serverLevel.getCapability(
                                 AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
-                        if (storage == null || storage.getMaxAeroFluxStored() <= 0
-                                || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored() / 2) {
+                        if (storage == null) {
+                            continue;
+                        }
+                        int targetCapacity = storage.getMaxAeroFluxStored();
+                        if (targetCapacity <= 0
+                                || Mth.clamp(storage.getAeroFluxStored(), 0, targetCapacity) >= targetCapacity / 2) {
                             continue;
                         }
 
                         int packet = Math.min(transferLimit, energy - reserve);
-                        int simulated = storage.receiveAeroFlux(packet, true);
+                        int simulated = clampTransfer(storage.receiveAeroFlux(packet, true), packet);
                         if (simulated <= 0) {
                             continue;
                         }
 
-                        int transferred = storage.receiveAeroFlux(simulated, false);
+                        int transferred = clampTransfer(storage.receiveAeroFlux(simulated, false), simulated);
                         if (transferred > 0) {
                             energy -= transferred;
                             lastBufferTransfer = transferred;
@@ -415,8 +436,13 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                     BlockPos pos = worldPosition.relative(outputDirection);
                     IAeroFluxStorage storage = serverLevel.getCapability(
                             AeroCapabilities.AEROFLUX, pos, outputDirection.getOpposite());
-                    if (storage != null && storage.getAeroFluxStored() < storage.getMaxAeroFluxStored()) {
-                        int accepted = storage.receiveAeroFlux(packet, false);
+                    if (storage != null) {
+                        int targetCapacity = storage.getMaxAeroFluxStored();
+                        if (targetCapacity <= 0
+                                || Mth.clamp(storage.getAeroFluxStored(), 0, targetCapacity) >= targetCapacity) {
+                            break;
+                        }
+                        int accepted = clampTransfer(storage.receiveAeroFlux(packet, false), packet);
                         if (accepted > 0) {
                             energy -= accepted;
                             lastConduitTransfer = accepted;
@@ -493,7 +519,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             return;
         }
 
-        progress = Math.min(recipe.processingTime(), progress + progressGain);
+        progress = (int) Math.min(
+                (long) recipe.processingTime(),
+                (long) Math.max(0, progress) + progressGain
+        );
         if (progress < recipe.processingTime()) {
             if (tickCounter % 10 == 0) {
                 setChanged();
@@ -644,7 +673,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         energy = Mth.clamp(tag.getInt("AeroFlux"), 0, getMaxEnergy());
-        progress = Math.max(0, tag.getInt("Progress"));
+        progress = Mth.clamp(tag.getInt("Progress"), 0, 1_000_000);
         overload = Mth.clamp(tag.getInt("Overload"), 0, 100);
         tickCounter = Math.max(0, tag.getInt("TickCounter"));
         lastKineticInput = 0;

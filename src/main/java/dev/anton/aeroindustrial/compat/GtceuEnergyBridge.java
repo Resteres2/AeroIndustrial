@@ -38,7 +38,7 @@ public final class GtceuEnergyBridge {
                 );
                 if (storage == null || !storage.canExtract()) continue;
 
-                int extracted = storage.extractEnergy(request, false);
+                int extracted = Math.max(0, Math.min(request, storage.extractEnergy(request, false)));
                 if (extracted > 0) {
                     total += extracted;
                     break;
