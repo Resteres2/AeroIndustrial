@@ -328,6 +328,12 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
         var recipe = holder.value();
         ItemStack recipeResult = recipe.getResultItem(serverLevel.registryAccess());
+        if (recipeResult.isEmpty() || recipeResult.getCount() <= 0
+                || recipeResult.getCount() > recipeResult.getMaxStackSize()) {
+            // Invalid external data must never create an oversized or empty output stack.
+            progress = 0;
+            return;
+        }
         if (!output.isEmpty() && (!ItemStack.isSameItemSameComponents(output, recipeResult)
                 || output.getCount() + recipeResult.getCount() > output.getMaxStackSize())) {
             return;
