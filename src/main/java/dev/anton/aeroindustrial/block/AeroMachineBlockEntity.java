@@ -156,13 +156,13 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             lastGtInput = 0;
             if (IntegrationStatus.createLoaded()) {
                 int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2, AeroConfig.CONFIG.createInputPerPulse.get());
-                lastKineticInput = Math.min(harvested, 120);
+                lastKineticInput = harvested;
                 if (lastKineticInput > 0) {
                     receiveEnergy(lastKineticInput, false);
                 }
             }
             if (IntegrationStatus.gtceuLoaded()) {
-                lastGtInput = Math.min(GtceuEnergyBridge.harvest(serverLevel, worldPosition, 1, AeroConfig.CONFIG.gtceuInputPerPulse.get()), AeroConfig.CONFIG.gtceuInputPerPulse.get());
+                lastGtInput = GtceuEnergyBridge.harvest(serverLevel, worldPosition, 1, AeroConfig.CONFIG.gtceuInputPerPulse.get());
                 if (lastGtInput > 0) {
                     receiveEnergy(lastGtInput, false);
                 }
