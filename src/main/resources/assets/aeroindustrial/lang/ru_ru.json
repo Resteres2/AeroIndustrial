@@ -46,5 +46,9 @@
   "tooltip.aeroindustrial.item.sky_lattice": "Компонент воздушной инфраструктуры.",
   "tooltip.aeroindustrial.item.resonance_cell": "Ячейка для резонансных систем.",
   "tooltip.aeroindustrial.item.pressure_gel": "Компонент систем давления.",
-  "tooltip.aeroindustrial.item.flux_conductor": "Проводник AeroFlux."
+  "tooltip.aeroindustrial.item.flux_conductor": "Проводник AeroFlux.",
+  "container.aeroindustrial.machine": "Машина AeroFlux",
+  "gui.aeroindustrial.input": "Вход",
+  "gui.aeroindustrial.output": "Выход",
+  "gui.aeroindustrial.processing": "Система обработки"
 }
