@@ -129,3 +129,5 @@ public final class AeroCapabilities {
             return slot == AeroMachineBlockEntity.INPUT_SLOT && be.canAcceptInput(stack);
         }
     }
+
+}
