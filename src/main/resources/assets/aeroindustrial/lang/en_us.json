@@ -6,5 +6,6 @@
   "item.aeroindustrial.sky_lattice": "Sky Lattice",
   "item.aeroindustrial.resonance_cell": "Resonance Cell",
   "item.aeroindustrial.pressure_gel": "Pressure Gel",
-  "item.aeroindustrial.flux_conductor": "Flux Conductor"
+  "item.aeroindustrial.flux_conductor": "Flux Conductor",
+  "itemGroup.aeroindustrial.aeroflux": "AeroFlux Engineering"
 }
