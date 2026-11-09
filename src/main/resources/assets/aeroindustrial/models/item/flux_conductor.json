@@ -1,3 +1,6 @@
 {
-  "parent": "minecraft:item/redstone"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "aeroindustrial:item/flux_conductor"
+  }
 }
