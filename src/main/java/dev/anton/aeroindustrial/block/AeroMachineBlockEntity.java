@@ -1,6 +1,6 @@
 package dev.anton.aeroindustrial.block;
 
-import dev.anton.aeroindustrial.registry.AeroBlockEntities;
+import dev.anton.aeroindustrial.registry.AeroBlockEntities;\nimport dev.anton.aeroindustrial.compat.CreateKineticBridge;\nimport dev.anton.aeroindustrial.compat.MovingStructureBridge;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
