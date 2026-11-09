@@ -1,7 +1,9 @@
 package dev.anton.aeroindustrial.item;
 
 import dev.anton.aeroindustrial.block.AeroMachineBlock;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -9,6 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.List;
 import net.minecraft.world.level.block.Rotation;
 
 public final class AeroWrenchItem extends Item {
@@ -43,6 +47,11 @@ public final class AeroWrenchItem extends Item {
         }
 
         return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.aeroindustrial.wrench").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
