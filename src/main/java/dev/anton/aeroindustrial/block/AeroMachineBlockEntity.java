@@ -448,7 +448,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                             : "status.aeroindustrial.thruster.offline"
             ));
         }
-        if (getTier() == 12 && lastBufferTransfer > 0) {
+        if (getTier() == 12 && lastDockTransfer > 0) {
             status = status.copy().append(Component.translatable("status.aeroindustrial.dock", lastDockTransfer));
         }
         if (isProcessingMachine()) {
