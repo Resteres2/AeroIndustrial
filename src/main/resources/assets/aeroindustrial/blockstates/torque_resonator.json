@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "aeroindustrial:block/torque_resonator"
+    },
+    "facing=east": {
+      "model": "aeroindustrial:block/torque_resonator",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeroindustrial:block/torque_resonator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeroindustrial:block/torque_resonator",
+      "y": 270
     }
   }
 }
