@@ -1,19 +1,19 @@
 package dev.anton.aeroindustrial.block;
 
-import dev.anton.aeroindustrial.registry.AeroBlockEntities;
 import dev.anton.aeroindustrial.compat.CreateKineticBridge;
 import dev.anton.aeroindustrial.compat.MovingStructureBridge;
+import dev.anton.aeroindustrial.registry.AeroBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.server.level.ServerLevel;
 
 public final class AeroMachineBlockEntity extends BlockEntity {
     private int energy;
     private int progress;
     private int overload;
+    private int tickCounter;
 
     public AeroMachineBlockEntity(BlockPos pos, BlockState state) {
         super(AeroBlockEntities.AERO_MACHINE.get(), pos, state);
@@ -48,10 +48,37 @@ public final class AeroMachineBlockEntity extends BlockEntity {
     }
 
     public void serverTick() {
-        if (!(level instanceof ServerLevel)) return;
+        if (!(level instanceof ServerLevel serverLevel)) return;
 
         AeroMachineBlock machine = (AeroMachineBlock) getBlockState().getBlock();
         int tier = machine.tier();
+        tickCounter++;
+
+        // Poll Create kinetic sources periodically rather than scanning the
+        // surrounding block entities every tick.
+        if (tickCounter % 10 == 0) {
+            int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2);
+            if (harvested > 0) {
+                receiveEnergy(Math.min(harvested, 120), false);
+            }
+        }
+
+        // The Vector Thruster is the only machine that actively couples
+        // AeroFlux to moving contraptions.
+        if (tier == 10 && tickCounter % 10 == 0 && energy >= 25) {
+            int affected = MovingStructureBridge.applyThruster(
+                    serverLevel,
+                    worldPosition.getX() + 0.5,
+                    worldPosition.getY() + 0.5,
+                    worldPosition.getZ() + 0.5,
+                    8.0,
+                    0.03
+            );
+            if (affected > 0) {
+                energy -= 25;
+                setChanged();
+            }
+        }
 
         // AeroFlux is intentionally its own resource. Machines slowly resonate
         // when supplied, and overload decays instead of being a simple FE clone.
@@ -75,6 +102,7 @@ public final class AeroMachineBlockEntity extends BlockEntity {
         if (overload >= 100) {
             energy = Math.max(0, energy - getMaxEnergy() / 20);
             overload = 40;
+            setChanged();
         }
     }
 
@@ -90,6 +118,7 @@ public final class AeroMachineBlockEntity extends BlockEntity {
         tag.putInt("AeroFlux", energy);
         tag.putInt("Progress", progress);
         tag.putInt("Overload", overload);
+        tag.putInt("TickCounter", tickCounter);
     }
 
     @Override
@@ -98,5 +127,6 @@ public final class AeroMachineBlockEntity extends BlockEntity {
         energy = tag.getInt("AeroFlux");
         progress = tag.getInt("Progress");
         overload = tag.getInt("Overload");
+        tickCounter = tag.getInt("TickCounter");
     }
 }
