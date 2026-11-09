@@ -205,6 +205,9 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             energy = Math.max(0, energy - Math.max(1, getMaxEnergy() / 20));
             overload = 40;
             setChanged();
+        } else if (tickCounter % 20 == 0) {
+            // Persist long-running machines without forcing an NBT write every tick.
+            setChanged();
         }
     }
 
@@ -325,6 +328,9 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
         progress++;
         if (progress < recipe.processingTime()) {
+            if (tickCounter % 10 == 0) {
+                setChanged();
+            }
             return;
         }
 
