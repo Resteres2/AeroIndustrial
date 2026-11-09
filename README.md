@@ -24,6 +24,7 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 - NeoForge energy capability exposure.
 - Runtime detection of Create, Sable, Create Aeronautics and GTCEu.
 - Optional GTCEu energy intake through NeoForge's energy capability when GTCEu exposes an FE-compatible storage.
+- Vector Thruster can use Sable's physics pipeline when an AeroIndustrial machine is mounted inside a Sable sub-level, with a conservative entity fallback outside it.
 - Optional Create kinetic harvesting through a reflection bridge.
 - Optional moving-structure coupling for the Vector Thruster through a conservative reflection/class-name bridge.
 - Localized machine status reporting in the action bar.
