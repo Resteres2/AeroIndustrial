@@ -19,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 
 public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
@@ -174,7 +175,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
             }
             case 12 -> {
                 // Mobile Dock is a local buffer: it pulls a small amount from an adjacent charged machine.
-                for (BlockPos pos : BlockPos.neighboringPositions(worldPosition)) {
+                for (Direction direction : Direction.values()) {
+                    BlockPos pos = worldPosition.relative(direction);
                     if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
                             && other.energy > 50 && energy < getMaxEnergy() - 50) {
                         int moved = Math.min(50, Math.min(other.energy, getMaxEnergy() - energy));
