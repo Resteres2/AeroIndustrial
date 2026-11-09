@@ -58,6 +58,7 @@
   "message.aeroindustrial.charge": "AeroFlux +%s | %s/%s",
   "message.aeroindustrial.full": "AeroFlux reservoir is full",
   "status.aeroindustrial.machine": "AeroFlux %s/%s | overload %s%%",
+  "status.aeroindustrial.capacitor": " | capacitor transfer %s AF/20t",
   "status.aeroindustrial.create": " | Create input %s AF/10t",
   "status.aeroindustrial.thruster": " | thruster coupling: %s",
   "status.aeroindustrial.processing": " | processing %s/%s",
