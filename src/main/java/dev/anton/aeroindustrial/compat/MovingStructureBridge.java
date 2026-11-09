@@ -13,6 +13,9 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 public final class MovingStructureBridge {
+    private static volatile SableAccess sableAccess;
+    private static volatile boolean sableLookupComplete;
+
     private MovingStructureBridge() {}
 
     public static int applyThruster(
