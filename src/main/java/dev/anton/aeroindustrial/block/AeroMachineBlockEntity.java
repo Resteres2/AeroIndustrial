@@ -131,11 +131,14 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     private net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe> findRecipe(
             ItemStack stack) {
         if (level == null || stack.isEmpty()) return null;
+
+        var input = new net.minecraft.world.item.crafting.SingleRecipeInput(stack);
         return level.getRecipeManager()
-                .getRecipeFor(AeroRecipes.AERO_MACHINE_TYPE.get(),
-                        new net.minecraft.world.item.crafting.SingleRecipeInput(stack),
-                        level)
+                .getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
+                .stream()
                 .filter(holder -> holder.value().machineTier() == getTier())
+                .filter(holder -> holder.value().matches(input, level))
+                .findFirst()
                 .orElse(null);
     }
 
