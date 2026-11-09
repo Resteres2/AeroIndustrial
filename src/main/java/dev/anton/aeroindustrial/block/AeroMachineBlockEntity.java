@@ -148,7 +148,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
                     worldPosition.getY() + 0.5,
                     worldPosition.getZ() + 0.5,
                     8.0,
-                    0.03
+                    0.03,
+                    getBlockState().getValue(AeroMachineBlock.FACING)
             );
             if (affected > 0) {
                 energy -= 25;
