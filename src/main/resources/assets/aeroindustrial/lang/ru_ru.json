@@ -97,6 +97,8 @@
   "config.aeroindustrial.gtceu_input_per_pulse": "Максимальный вход GTCEu за 10 тиков",
   "config.aeroindustrial.thruster_energy_cost": "Стоимость импульса Vector Thruster",
   "config.aeroindustrial.thruster_strength": "Сила импульса Vector Thruster",
+  "config.aeroindustrial.sky_relay_upkeep": "Расход Sky Relay на стабилизацию за 20 тиков",
+  "config.aeroindustrial.atmospheric_condenser_gain": "Сбор Atmospheric Condenser за 20 тиков",
   "manual.aeroindustrial.tiers.1": "T1 Flux Lattice — базовая решётка: на заряде расходует 1 AF/20т и снижает собственную перегрузку на 3 процентных пункта.",
   "manual.aeroindustrial.tiers.2": "T2 Torque Resonator — каждые 10т принимает кинетический ввод Create и совместимый ввод GTCEu.",
   "manual.aeroindustrial.tiers.3": "T3 Phase Refiner — процессор; при перегрузке до 20% получает ускорение обработки до 3 единиц прогресса/т.",
