@@ -15,7 +15,8 @@
 
 ### Verification
 - Source diffs and localization JSON were checked after each change.
-- Runtime compatibility and a successful Gradle build are still unverified; use the integration test matrix before treating this revision as release-ready.
+- GitHub Actions run 42684953561 completed successfully for commit c07c005; the Java 21 Gradle build and JAR upload both passed.
+- In-game behavior and compatibility with the optional Create, Sable, Aeronautics, and GTCEu versions still require the manual matrix below.
 
 ## 1.1.0 — Engineering hardening
 
