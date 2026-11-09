@@ -17,6 +17,11 @@ public final class AeroComponentItem extends Item {
     }
 
     @Override
+    public boolean isFoil(ItemStack stack) {
+        return "aeroflux_crystal".equals(id) || "resonance_cell".equals(id);
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.translatable("tooltip.aeroindustrial.item." + id)
