@@ -148,8 +148,6 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
 
         if (isProcessingMachine()) {
             process(serverLevel);
-        } else {
-            runResonanceCore();
         }
 
         runSpecialRole(serverLevel);
@@ -252,20 +250,6 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         }
     }
 
-    private void runResonanceCore() {
-        if (energy >= getTier() * 20) {
-            energy -= getTier() * 2;
-            progress++;
-            if (progress >= 20) {
-                progress = 0;
-                overload = Math.max(0, overload - 1);
-            }
-            setChanged();
-        } else {
-            progress = 0;
-        }
-    }
-
     private void process(ServerLevel serverLevel) {
         ItemStack input = getItem(INPUT_SLOT);
         ItemStack output = getItem(OUTPUT_SLOT);
@@ -332,10 +316,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
                     getProcessTime()
             ));
         } else {
-            status = status.copy().append(Component.translatable(
-                    "status.aeroindustrial.resonance",
-                    progress
-            ));
+            status = status.copy().append(Component.translatable("status.aeroindustrial.idle"));
         }
         return status;
     }
