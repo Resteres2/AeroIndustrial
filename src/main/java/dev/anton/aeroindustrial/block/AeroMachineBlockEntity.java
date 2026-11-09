@@ -114,7 +114,6 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         // Only the Torque Resonator is the Create -> AeroFlux interface.
         if (getTier() == 2 && tickCounter % 10 == 0) {
             lastKineticInput = 0;
-        lastGtInput = 0;
             lastGtInput = 0;
             if (IntegrationStatus.createLoaded()) {
                 int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2);
@@ -390,5 +389,6 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         overload = tag.getInt("Overload");
         tickCounter = tag.getInt("TickCounter");
         lastKineticInput = 0;
+        lastGtInput = 0;
     }
 }
