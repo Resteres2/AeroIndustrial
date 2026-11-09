@@ -302,8 +302,9 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         }
         if (getTier() == 10) {
             status = status.copy().append(Component.translatable(
-                    "status.aeroindustrial.thruster",
-                    IntegrationStatus.sableLoaded() || IntegrationStatus.aeronauticsLoaded()
+                    (IntegrationStatus.sableLoaded() || IntegrationStatus.aeronauticsLoaded())
+                            ? "status.aeroindustrial.thruster.ready"
+                            : "status.aeroindustrial.thruster.offline"
             ));
         }
         if (isProcessingMachine()) {
