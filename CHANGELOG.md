@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased — Propulsion and network pass
+
+### Compatibility and propulsion
+- Resolved Sable's public API methods by exact signatures and cached the reflection bindings instead of searching method overloads on every thruster pulse.
+- Limited the non-Sable Vector Thruster fallback to the nearest compatible moving-structure entity within a configurable radius.
+- Cached Create speed-method lookups per block-entity class and ignored non-finite speed values.
+- Limited Torque Resonator extraction to the actual free AeroFlux capacity to prevent energy loss at a full reservoir.
+
+### AeroFlux network
+- Made the AeroFlux Capacitor use the public AeroFlux block capability, allowing it to feed compatible third-party storage implementations instead of only native AeroIndustrial machines.
+- Added server settings for accumulator intake, capacitor packet size and reserve, Mobile Dock transfer, and Aeronautical Conduit throughput.
+- Updated RU/EN configuration labels, manual descriptions, and README configuration documentation.
+
+### Verification
+- Source diffs and localization JSON were checked after each change.
+- Runtime compatibility and a successful Gradle build are still unverified; use the integration test matrix before treating this revision as release-ready.
+
 ## 1.1.0 — Engineering hardening
 
 ### Runtime and compatibility

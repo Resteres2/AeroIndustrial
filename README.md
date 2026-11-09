@@ -30,6 +30,7 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 - Localized machine status reporting in the action bar.
 - A native optional JEI category for AeroFlux machine processing recipes.
 - GitHub Actions build pipeline.
+- A manual compatibility and regression test matrix in docs/INTEGRATION_TEST_MATRIX.md.
 - Short-lived per-tier recipe caching to reduce repeated RecipeManager scans in machine arrays.
 - Cached per-class reflection lookups for optional Create and Sable bridges.
 - Defensive recipe-output validation so malformed external data cannot create empty or oversized machine outputs.
