@@ -175,8 +175,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         lastConduitTransfer = 0;
 
         // A redstone signal is a universal maintenance/stop command.
+        // Pausing preserves resonance progress so automation can safely gate a line
+        // without forcing the machine to restart its current cycle.
         if (serverLevel.hasNeighborSignal(worldPosition)) {
-            progress = 0;
+            if (tickCounter % 20 == 0) setChanged();
             return;
         }
 
