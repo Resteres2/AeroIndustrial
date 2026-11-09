@@ -1,5 +1,6 @@
 package dev.anton.aeroindustrial.block;
 
+import dev.anton.aeroindustrial.api.IAeroFluxStorage;
 import dev.anton.aeroindustrial.compat.CreateKineticBridge;
 import dev.anton.aeroindustrial.compat.IntegrationStatus;
 import dev.anton.aeroindustrial.compat.GtceuEnergyBridge;
@@ -23,7 +24,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 
-public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
+public final class AeroMachineBlockEntity extends BaseContainerBlockEntity implements IAeroFluxStorage {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
 
@@ -59,6 +60,26 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
 
     public int getMaxEnergy() {
         return 10000 + getTier() * 5000 + (getTier() == 11 ? 30000 : 0);
+    }
+
+    @Override
+    public int receiveAeroFlux(int amount, boolean simulate) {
+        return receiveEnergy(amount, simulate);
+    }
+
+    @Override
+    public int extractAeroFlux(int amount, boolean simulate) {
+        return extractEnergy(amount, simulate);
+    }
+
+    @Override
+    public int getAeroFluxStored() {
+        return getEnergy();
+    }
+
+    @Override
+    public int getMaxAeroFluxStored() {
+        return getMaxEnergy();
     }
 
     public int receiveEnergy(int amount, boolean simulate) {
