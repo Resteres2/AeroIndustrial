@@ -1,12 +1,10 @@
 package dev.anton.aeroindustrial.client.screen;
 
-import dev.anton.aeroindustrial.block.AeroMachineBlockEntity;
 import dev.anton.aeroindustrial.menu.AeroMachineMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 
 public final class AeroMachineScreen extends AbstractContainerScreen<AeroMachineMenu> {
     public AeroMachineScreen(AeroMachineMenu menu, Inventory playerInventory, Component title) {
@@ -31,13 +29,7 @@ public final class AeroMachineScreen extends AbstractContainerScreen<AeroMachine
 
         graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.input"), left + 32, top + 19, 0xFFD6DCE2, false);
         graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.output"), left + 104, top + 19, 0xFFD6DCE2, false);
-
-        if (this.menu.getMachineContainer() instanceof AeroMachineBlockEntity machine) {
-            int tier = machine.getTier();
-            graphics.drawString(this.font,
-                    Component.translatable("gui.aeroindustrial.tier", tier),
-                    left + 8, top + 58, 0xFF8FC7FF, false);
-        }
+        graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.processing"), left + 8, top + 58, 0xFF8FC7FF, false);
     }
 
     private void drawSlotFrame(GuiGraphics graphics, int x, int y) {
