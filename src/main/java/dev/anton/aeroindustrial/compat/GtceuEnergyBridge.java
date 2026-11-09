@@ -11,7 +11,7 @@ public final class GtceuEnergyBridge {
     private GtceuEnergyBridge() {}
 
     public static int harvest(ServerLevel level, BlockPos center, int radius, int maxInput) {
-        if (!IntegrationStatus.gtceuLoaded()) return 0;
+        if (!IntegrationStatus.gtceuLoaded() || maxInput <= 0) return 0;
 
         int total = 0;
         for (BlockPos pos : BlockPos.betweenClosed(
@@ -24,6 +24,10 @@ public final class GtceuEnergyBridge {
             String name = be.getClass().getName().toLowerCase(java.util.Locale.ROOT);
             if (!name.contains("gtceu") && !name.contains("gregtech")) continue;
 
+            // Treat one GTCEu machine as one source per pulse. Some block entities
+            // expose the same energy storage through multiple sides; iterating all
+            // sides would otherwise multiply the configured input unexpectedly.
+            int request = Math.min(40, maxInput - total);
             for (Direction side : Direction.values()) {
                 IEnergyStorage storage = level.getCapability(
                         Capabilities.EnergyStorage.BLOCK,
@@ -34,12 +38,13 @@ public final class GtceuEnergyBridge {
                 );
                 if (storage == null || !storage.canExtract()) continue;
 
-                int extracted = storage.extractEnergy(Math.min(40, maxInput - total), false);
+                int extracted = storage.extractEnergy(request, false);
                 if (extracted > 0) {
                     total += extracted;
-                    if (total >= maxInput) return total;
                 }
+                break;
             }
+            if (total >= maxInput) return total;
         }
         return total;
     }
