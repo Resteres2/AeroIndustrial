@@ -23,7 +23,7 @@
   "item.aeroindustrial.pressure_gel": "Барометрический гель",
   "item.aeroindustrial.flux_conductor": "Проводник АэроФлюкса",
   "itemGroup.aeroindustrial.aeroflux": "Инженерия AeroFlux",
-  "tooltip.aeroindustrial.machine.common": "ПКМ без предмета: показать AeroFlux, резонанс и интеграции. ПКМ с кристаллом: зарядить 2500 AeroFlux.",
+  "tooltip.aeroindustrial.machine.common": "ПКМ: открыть интерфейс машины. Shift+ПКМ: показать AeroFlux и состояние. Кристалл AeroFlux: зарядить 2500 AeroFlux.",
   "tooltip.aeroindustrial.machine.1": "Flux Lattice — базовый буфер AeroFlux.",
   "tooltip.aeroindustrial.machine.2": "Torque Resonator — принимает кинетическую энергию Create.",
   "tooltip.aeroindustrial.machine.3": "Phase Refiner — резонансный технологический узел.",
