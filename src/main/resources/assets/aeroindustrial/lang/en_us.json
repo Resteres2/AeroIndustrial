@@ -61,7 +61,6 @@
   "status.aeroindustrial.create": " | Create input %s AF/10t",
   "status.aeroindustrial.thruster": " | thruster coupling: %s",
   "status.aeroindustrial.processing": " | processing %s/%s",
-  "status.aeroindustrial.resonance": " | resonance %s/20",
   "status.aeroindustrial.thruster.ready": " | thruster coupling: READY",
   "status.aeroindustrial.thruster.offline": " | thruster coupling: OFF",
   "item.aeroindustrial.aero_manual": "AeroIndustrial Engineering Manual",
@@ -75,5 +74,6 @@
   "manual.aeroindustrial.close": "Esc — close",
   "status.aeroindustrial.gtceu": " | GTCEu input %s AF/10t",
   "tooltip.aeroindustrial.machine.tier": "Tier: %s",
-  "tooltip.aeroindustrial.machine.capacity": "Capacity: %s AF"
+  "tooltip.aeroindustrial.machine.capacity": "Capacity: %s AF",
+  "status.aeroindustrial.idle": " | mode: idle"
 }
