@@ -37,6 +37,13 @@ public final class AeroMachineScreen extends AbstractContainerScreen<AeroMachine
         String energyText = this.menu.getEnergy() + " / " + maxEnergy + " AF";
         graphics.drawString(this.font, energyText, left + 8, top + 58, 0xFF8FC7FF, false);
 
+        int overload = Math.max(0, Math.min(100, this.menu.getOverload()));
+        int overloadWidth = (int) (152.0 * overload / 100.0);
+        graphics.fill(left + 8, top + 69, left + 160, top + 73, 0xFF0B0E11);
+        graphics.fill(left + 8, top + 69, left + 8 + overloadWidth, top + 73, 0xFFFF6B5C);
+        graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.overload", overload),
+                left + 8, top + 75, 0xFFFFA49B, false);
+
         if (this.menu.getProcessTime() > 0) {
             int time = this.menu.getProcessTime();
             int progressWidth = Math.min(152, (int) (152.0 * this.menu.getProgress() / Math.max(1, time)));
