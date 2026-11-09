@@ -5,12 +5,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 public final class CreateKineticBridge {
     private CreateKineticBridge() {}
 
     public static int harvest(Level level, BlockPos center, int radius, int maxInput) {
-        if (!IntegrationStatus.createLoaded()) return 0;
+        if (!IntegrationStatus.createLoaded() || maxInput <= 0 || radius < 0) return 0;
 
         int total = 0;
         for (BlockPos pos : BlockPos.betweenClosed(center.offset(-radius, -radius, -radius),
@@ -18,8 +19,11 @@ public final class CreateKineticBridge {
             BlockEntity be = level.getBlockEntity(pos);
             if (be == null) continue;
 
-            String name = be.getClass().getName().toLowerCase();
-            if (!name.contains("create.") && !name.contains("kinetic")) continue;
+            String name = be.getClass().getName().toLowerCase(Locale.ROOT);
+            // This bridge is specifically for Create. Do not accidentally harvest
+            // unrelated kinetic machines from other mods merely because their class
+            // name contains "kinetic".
+            if (!name.startsWith("com.simibubi.create.")) continue;
 
             Number speed = invokeNumber(be, "getSpeed");
             if (speed == null) speed = invokeNumber(be, "getTheoreticalSpeed");
