@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "aeroindustrial:block/aero_forge"
+    },
+    "facing=east": {
+      "model": "aeroindustrial:block/aero_forge",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeroindustrial:block/aero_forge",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeroindustrial:block/aero_forge",
+      "y": 270
     }
   }
 }
