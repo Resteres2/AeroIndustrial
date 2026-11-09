@@ -59,6 +59,7 @@
   "message.aeroindustrial.full": "AeroFlux reservoir is full",
   "status.aeroindustrial.machine": "AeroFlux %s/%s | overload %s%%",
   "status.aeroindustrial.dock": " | dock transfer %s AF/20t",
+  "status.aeroindustrial.conduit": " | conduit transfer %s AF/20t",
   "status.aeroindustrial.capacitor": " | capacitor transfer %s AF/20t",
   "status.aeroindustrial.create": " | Create input %s AF/10t",
   "status.aeroindustrial.thruster": " | thruster coupling: %s",
