@@ -1,12 +1,13 @@
 modLoader="javafml"
 loaderVersion="[4,)"
 license="MIT"
+
 [[mods]]
 modId="aeroindustrial"
 version="1.0.0"
 displayName="AeroIndustrial"
 authors="Anton Chebotarev"
-description='''AeroIndustrial adds an original AeroFlux technology layer linking industrial processing, mechanical infrastructure and aeronautical structures.'''
+description='''AeroIndustrial adds an original AeroFlux engineering layer linking industrial infrastructure, mechanical systems and aeronautical structures.'''
 
 [[dependencies.aeroindustrial]]
 modId="neoforge"
@@ -22,10 +23,25 @@ versionRange="[1.21.1]"
 ordering="NONE"
 side="BOTH"
 
+# Optional integrations. AeroIndustrial remains loadable without them.
 [[dependencies.aeroindustrial]]
 modId="create"
 type="optional"
-versionRange="[6.0.0,)"
+versionRange="[6.0.10,6.1.0)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.aeroindustrial]]
+modId="sable"
+type="optional"
+versionRange="[2.0.0,3.0.0)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.aeroindustrial]]
+modId="aeronautics"
+type="optional"
+versionRange="[1.3.0,)"
 ordering="AFTER"
 side="BOTH"
 
@@ -33,11 +49,5 @@ side="BOTH"
 modId="gtceu"
 type="optional"
 versionRange="[7.0.0,)"
-ordering="AFTER"
-side="BOTH"
-
-[[dependencies.aeroindustrial]]
-modId="aeronautics"
-type="optional"
 ordering="AFTER"
 side="BOTH"
