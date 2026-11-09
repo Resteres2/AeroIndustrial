@@ -87,3 +87,15 @@ AeroIndustrial exposes a dedicated NeoForge block capability for its internal en
 - the ordinary NeoForge energy capability remains available as a compatibility adapter
 
 This separation is intentional: **AeroFlux is not declared to be EU or FE**. Compatibility layers may convert external energy into AeroFlux, but the native API remains independent.
+
+
+## Configuration
+
+A server configuration is registered automatically under the NeoForge server config system. It can tune:
+
+- Create kinetic input rate
+- GTCEu-compatible energy input rate
+- Vector Thruster AeroFlux cost
+- Vector Thruster impulse strength
+
+The defaults are intentionally conservative so the external integrations do not dominate the native AeroIndustrial progression.
