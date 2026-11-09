@@ -51,3 +51,10 @@ type="optional"
 versionRange="[7.0.0,)"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.aeroindustrial]]
+modId="jei"
+type="optional"
+versionRange="[19.69.0,)"
+ordering="AFTER"
+side="CLIENT"
