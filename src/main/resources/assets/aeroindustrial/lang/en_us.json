@@ -72,5 +72,6 @@
   "manual.aeroindustrial.machine": "Right-click opens a machine interface. Shift+right-click shows status. Processing recipes are available in JEI.",
   "manual.aeroindustrial.integration": "Torque Resonator accepts Create kinetic input. Vector Thruster couples to compatible moving structures.",
   "manual.aeroindustrial.controls": "Exit the manual with Esc.",
-  "manual.aeroindustrial.close": "Esc — close"
+  "manual.aeroindustrial.close": "Esc — close",
+  "status.aeroindustrial.gtceu": " | GTCEu input %s AF/10t"
 }
