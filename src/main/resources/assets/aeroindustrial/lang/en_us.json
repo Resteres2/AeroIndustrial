@@ -97,6 +97,8 @@
   "config.aeroindustrial.gtceu_input_per_pulse": "Maximum GTCEu input per 10 ticks",
   "config.aeroindustrial.thruster_energy_cost": "Vector Thruster pulse cost",
   "config.aeroindustrial.thruster_strength": "Vector Thruster impulse strength",
+  "config.aeroindustrial.sky_relay_upkeep": "Sky Relay stabilization upkeep per 20 ticks",
+  "config.aeroindustrial.atmospheric_condenser_gain": "Atmospheric Condenser gain per 20 ticks",
   "manual.aeroindustrial.tiers.1": "T1 Flux Lattice — base lattice: while charged, consumes 1 AF/20t and reduces its own overload by 3 percentage points.",
   "manual.aeroindustrial.tiers.2": "T2 Torque Resonator — every 10t it accepts Create kinetic input and compatible GTCEu energy input.",
   "manual.aeroindustrial.tiers.3": "T3 Phase Refiner — processor; at up to 20% overload it gains processing acceleration up to 3 progress units/t.",
