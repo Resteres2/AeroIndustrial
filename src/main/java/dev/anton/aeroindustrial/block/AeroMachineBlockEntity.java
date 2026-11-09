@@ -301,8 +301,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         if (accepted > 0) {
                             energy -= accepted;
                             setChanged();
+                            break;
                         }
-                        break;
                     }
                 }
             }
