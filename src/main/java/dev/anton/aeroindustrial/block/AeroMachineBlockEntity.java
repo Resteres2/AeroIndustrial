@@ -199,7 +199,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
             case 14 -> {
                 // Aeronautical Conduit transfers a controlled packet to one adjacent machine.
                 if (energy >= 100) {
-                    for (BlockPos pos : BlockPos.neighboringPositions(worldPosition)) {
+                    for (Direction direction : Direction.values()) {
+                        BlockPos pos = worldPosition.relative(direction);
                         if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
                                 && other.energy < other.getMaxEnergy()) {
                             int moved = Math.min(100, other.getMaxEnergy() - other.energy);
