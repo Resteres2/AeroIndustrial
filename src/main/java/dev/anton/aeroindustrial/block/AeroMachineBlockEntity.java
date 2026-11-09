@@ -335,9 +335,22 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 15 -> {
-                // Vector Frame is a structural stabilizer rather than a processor.
-                if (energy > 0) {
+                // Vector Frame is a local resonance anchor. It protects itself and
+                // directly connected machines, making compact aeronautical assemblies
+                // more stable than isolated machines.
+                if (energy >= 10) {
+                    energy -= 10;
                     overload = Math.max(0, overload - 2);
+                    int stabilized = 0;
+                    for (Direction direction : Direction.values()) {
+                        BlockPos pos = worldPosition.relative(direction);
+                        if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
+                                && other.getTier() != 15) {
+                            other.overload = Math.max(0, other.overload - 1);
+                            other.setChanged();
+                            stabilized++;
+                        }
+                    }
                     setChanged();
                 }
             }
