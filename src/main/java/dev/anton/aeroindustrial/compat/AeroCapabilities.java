@@ -101,8 +101,13 @@ public final class AeroCapabilities {
                 return stack;
             }
 
+            ItemStack existing = be.getItem(slot);
+            if (!existing.isEmpty() && !ItemStack.isSameItemSameComponents(existing, stack)) {
+                return stack;
+            }
+
             int limit = Math.min(stack.getMaxStackSize(), getSlotLimit(slot));
-            int accepted = Math.min(stack.getCount(), limit - be.getItem(slot).getCount());
+            int accepted = Math.min(stack.getCount(), limit - existing.getCount());
             if (accepted <= 0) return stack;
 
             if (!simulate) {
