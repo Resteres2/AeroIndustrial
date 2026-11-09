@@ -1,18 +1,34 @@
 package dev.anton.aeroindustrial.compat;
 
+import dev.anton.aeroindustrial.AeroIndustrial;
+import dev.anton.aeroindustrial.api.IAeroFluxStorage;
 import dev.anton.aeroindustrial.block.AeroMachineBlockEntity;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 public final class AeroCapabilities {
+    public static final BlockCapability<IAeroFluxStorage, @Nullable Direction> AEROFLUX =
+            BlockCapability.createSided(
+                    ResourceLocation.fromNamespaceAndPath(AeroIndustrial.MOD_ID, "aeroflux"),
+                    IAeroFluxStorage.class
+            );
+
     private AeroCapabilities() {}
 
     public static void register(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                AEROFLUX,
+                AeroBlockEntities.AERO_MACHINE.get(),
+                (be, side) -> be
+        );
         event.registerBlockEntity(
                 Capabilities.EnergyStorage.BLOCK,
                 AeroBlockEntities.AERO_MACHINE.get(),
