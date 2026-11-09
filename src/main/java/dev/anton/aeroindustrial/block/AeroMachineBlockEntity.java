@@ -53,6 +53,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         return progress;
     }
 
+    public int getOverload() {
+        return overload;
+    }
+
     public int getMaxEnergy() {
         return 10000 + getTier() * 5000 + (getTier() == 11 ? 30000 : 0);
     }
