@@ -353,12 +353,15 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             return;
         }
 
+        // Assemble from the actual pre-consumption input. This keeps recipe semantics
+        // correct if a future recipe implementation derives its result from the input.
+        ItemStack recipeInput = input.copy();
         energy -= recipe.energyCost();
         input.shrink(1);
 
         if (output.isEmpty()) {
             setItem(OUTPUT_SLOT, recipe.assemble(
-                    new net.minecraft.world.item.crafting.SingleRecipeInput(input),
+                    new net.minecraft.world.item.crafting.SingleRecipeInput(recipeInput),
                     serverLevel.registryAccess()));
         } else {
             output.grow(recipeResult.getCount());
