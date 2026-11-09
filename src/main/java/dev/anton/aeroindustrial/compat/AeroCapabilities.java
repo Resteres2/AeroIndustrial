@@ -2,6 +2,8 @@ package dev.anton.aeroindustrial.compat;
 
 import dev.anton.aeroindustrial.block.AeroMachineBlockEntity;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -30,43 +32,36 @@ public final class AeroCapabilities {
             this.be = be;
         }
 
-        @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {
+        @Override public int receiveEnergy(int maxReceive, boolean simulate) {
             return be.receiveEnergy(maxReceive, simulate);
         }
 
-        @Override
-        public int extractEnergy(int maxExtract, boolean simulate) {
+        @Override public int extractEnergy(int maxExtract, boolean simulate) {
             return be.extractEnergy(maxExtract, simulate);
         }
 
-        @Override
-        public int getEnergyStored() {
+        @Override public int getEnergyStored() {
             return be.getEnergy();
         }
 
-        @Override
-        public int getMaxEnergyStored() {
+        @Override public int getMaxEnergyStored() {
             return be.getMaxEnergy();
         }
 
-        @Override
-        public boolean canExtract() {
+        @Override public boolean canExtract() {
             return true;
         }
 
-        @Override
-        public boolean canReceive() {
+        @Override public boolean canReceive() {
             return true;
         }
     }
-}
 
     private static final class InventoryHandler implements IItemHandler {
         private final AeroMachineBlockEntity be;
-        private final net.minecraft.core.Direction side;
+        private final Direction side;
 
-        private InventoryHandler(AeroMachineBlockEntity be, net.minecraft.core.Direction side) {
+        private InventoryHandler(AeroMachineBlockEntity be, Direction side) {
             this.be = be;
             this.side = side;
         }
@@ -77,12 +72,12 @@ public final class AeroCapabilities {
         }
 
         @Override
-        public net.minecraft.world.item.ItemStack getStackInSlot(int slot) {
+        public ItemStack getStackInSlot(int slot) {
             return be.getItem(slot);
         }
 
         @Override
-        public net.minecraft.world.item.ItemStack insertItem(int slot, net.minecraft.world.item.ItemStack stack, boolean simulate) {
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             if (slot != AeroMachineBlockEntity.INPUT_SLOT || !be.canAcceptInput(stack) || stack.isEmpty()) {
                 return stack;
             }
@@ -92,26 +87,28 @@ public final class AeroCapabilities {
             if (accepted <= 0) return stack;
 
             if (!simulate) {
-                net.minecraft.world.item.ItemStack remainder = stack.copy();
-                net.minecraft.world.item.ItemStack target = be.getItem(slot);
+                ItemStack target = be.getItem(slot);
                 if (target.isEmpty()) {
                     be.setItem(slot, stack.copyWithCount(accepted));
                 } else {
                     target.grow(accepted);
                     be.setChanged();
                 }
-                return remainder.copyWithCount(stack.getCount() - accepted);
             }
+
             return stack.copyWithCount(stack.getCount() - accepted);
         }
 
         @Override
-        public net.minecraft.world.item.ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (amount <= 0 || slot != AeroMachineBlockEntity.OUTPUT_SLOT) return net.minecraft.world.item.ItemStack.EMPTY;
-            net.minecraft.world.item.ItemStack existing = be.getItem(slot);
-            if (existing.isEmpty()) return net.minecraft.world.item.ItemStack.EMPTY;
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (amount <= 0 || slot != AeroMachineBlockEntity.OUTPUT_SLOT) {
+                return ItemStack.EMPTY;
+            }
 
-            net.minecraft.world.item.ItemStack extracted = existing.copyWithCount(Math.min(amount, existing.getCount()));
+            ItemStack existing = be.getItem(slot);
+            if (existing.isEmpty()) return ItemStack.EMPTY;
+
+            ItemStack extracted = existing.copyWithCount(Math.min(amount, existing.getCount()));
             if (!simulate) {
                 be.removeItem(slot, extracted.getCount());
                 be.setChanged();
@@ -125,9 +122,8 @@ public final class AeroCapabilities {
         }
 
         @Override
-        public boolean isItemValid(int slot, net.minecraft.world.item.ItemStack stack) {
+        public boolean isItemValid(int slot, ItemStack stack) {
             return slot == AeroMachineBlockEntity.INPUT_SLOT && be.canAcceptInput(stack);
         }
     }
-
 }
