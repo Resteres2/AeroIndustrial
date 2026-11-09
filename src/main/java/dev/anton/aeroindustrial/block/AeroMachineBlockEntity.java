@@ -39,6 +39,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     private int lastKineticInput;
     private int lastGtInput;
     private Boolean processingMachineCache;
+    private java.util.List<net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe>> tierRecipesCache;
+    private int tierRecipesCacheTick = -1;
 
     public AeroMachineBlockEntity(BlockPos pos, BlockState state) {
         super(AeroBlockEntities.AERO_MACHINE.get(), pos, state);
@@ -132,11 +134,20 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             ItemStack stack) {
         if (level == null || stack.isEmpty()) return null;
 
+        // RecipeManager lookups are comparatively expensive and this block entity
+        // can perform them every server tick while processing. Keep a short-lived
+        // per-tier cache so large machine arrays do not repeatedly scan every recipe.
+        if (tierRecipesCache == null || tierRecipesCacheTick < 0 || tickCounter - tierRecipesCacheTick >= 20) {
+            tierRecipesCache = level.getRecipeManager()
+                    .getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
+                    .stream()
+                    .filter(holder -> holder.value().machineTier() == getTier())
+                    .toList();
+            tierRecipesCacheTick = tickCounter;
+        }
+
         var input = new net.minecraft.world.item.crafting.SingleRecipeInput(stack);
-        return level.getRecipeManager()
-                .getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
-                .stream()
-                .filter(holder -> holder.value().machineTier() == getTier())
+        return tierRecipesCache.stream()
                 .filter(holder -> holder.value().matches(input, level))
                 .findFirst()
                 .orElse(null);
@@ -439,5 +450,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         tickCounter = tag.getInt("TickCounter");
         lastKineticInput = 0;
         lastGtInput = 0;
+        processingMachineCache = null;
+        tierRecipesCache = null;
+        tierRecipesCacheTick = -1;
     }
 }
