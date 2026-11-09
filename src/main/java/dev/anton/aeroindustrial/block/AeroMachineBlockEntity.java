@@ -272,8 +272,9 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         }
 
         var recipe = holder.value();
-        if (!output.isEmpty() && (!ItemStack.isSameItemSameComponents(output, recipe.getResultItem(serverLevel.registryAccess()))
-                || output.getCount() >= output.getMaxStackSize())) {
+        ItemStack recipeResult = recipe.getResultItem(serverLevel.registryAccess());
+        if (!output.isEmpty() && (!ItemStack.isSameItemSameComponents(output, recipeResult)
+                || output.getCount() + recipeResult.getCount() > output.getMaxStackSize())) {
             return;
         }
 
@@ -294,7 +295,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
                     new net.minecraft.world.item.crafting.SingleRecipeInput(input),
                     serverLevel.registryAccess()));
         } else {
-            output.grow(recipe.getResultItem(serverLevel.registryAccess()).getCount());
+            output.grow(recipeResult.getCount());
             setChanged();
         }
 
