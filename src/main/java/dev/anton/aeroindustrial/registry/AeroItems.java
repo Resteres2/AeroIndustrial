@@ -2,6 +2,7 @@ package dev.anton.aeroindustrial.registry;
 
 import dev.anton.aeroindustrial.AeroIndustrial;
 import dev.anton.aeroindustrial.item.AeroComponentItem;
+import dev.anton.aeroindustrial.item.AeroManualItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -22,6 +23,7 @@ public final class AeroItems {
     public static final DeferredItem<Item> RESONANCE_CELL = component("resonance_cell");
     public static final DeferredItem<Item> PRESSURE_GEL = component("pressure_gel");
     public static final DeferredItem<Item> FLUX_CONDUCTOR = component("flux_conductor");
+    public static final DeferredItem<Item> AERO_MANUAL = ITEMS.registerItem("aero_manual", p -> new AeroManualItem(p), new Item.Properties());
 
     public static final DeferredItem<BlockItem> FLUX_LATTICE = ITEMS.registerSimpleBlockItem("flux_lattice", AeroBlocks.FLUX_LATTICE);
     public static final DeferredItem<BlockItem> TORQUE_RESONATOR = ITEMS.registerSimpleBlockItem("torque_resonator", AeroBlocks.TORQUE_RESONATOR);
