@@ -213,7 +213,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
                 ? " | processing " + progress + "/" + getProcessTime()
                 : "";
         return "AeroFlux " + energy + "/" + getMaxEnergy()
-                + " | resonance " + progress + "/20"
+                + (isProcessingMachine() ? "" : " | resonance " + progress + "/20")
                 + " | overload " + overload + "%"
                 + createStatus
                 + motionStatus
