@@ -1,6 +1,7 @@
 package dev.anton.aeroindustrial.block;
 
 import dev.anton.aeroindustrial.api.IAeroFluxStorage;
+import dev.anton.aeroindustrial.compat.AeroCapabilities;
 import dev.anton.aeroindustrial.compat.CreateKineticBridge;
 import dev.anton.aeroindustrial.compat.IntegrationStatus;
 import dev.anton.aeroindustrial.compat.GtceuEnergyBridge;
