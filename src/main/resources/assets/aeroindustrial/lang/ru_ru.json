@@ -79,5 +79,9 @@
   "gui.aeroindustrial.overload": "Перегрузка: %s%%",
   "item.aeroindustrial.aero_wrench": "Инженерный ключ AeroIndustrial",
   "tooltip.aeroindustrial.wrench": "ПКМ по машине: повернуть. Shift+ПКМ: повернуть обратно.",
-  "tooltip.aeroindustrial.machine.redstone": "Сигнал редстоуна: приостановить работу машины."
+  "tooltip.aeroindustrial.machine.redstone": "Сигнал редстоуна: приостановить работу машины.",
+  "config.aeroindustrial.create_input_per_pulse": "Максимальный вход Create за 10 тиков",
+  "config.aeroindustrial.gtceu_input_per_pulse": "Максимальный вход GTCEu за 10 тиков",
+  "config.aeroindustrial.thruster_energy_cost": "Стоимость импульса Vector Thruster",
+  "config.aeroindustrial.thruster_strength": "Сила импульса Vector Thruster"
 }
