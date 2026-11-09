@@ -1,23 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ICI",
-    "CXC",
-    "ICI"
-  ],
+  "pattern": ["PCI","CXC","ICI"],
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "C": {
-      "item": "aeroindustrial:inertial_core"
-    },
-    "X": {
-      "item": "minecraft:iron_block"
-    }
+    "I": {"item": "minecraft:iron_ingot"},
+    "C": {"item": "aeroindustrial:inertial_core"},
+    "P": {"item": "aeroindustrial:aeroflux_capacitor"},
+    "X": {"item": "minecraft:iron_block"}
   },
-  "result": {
-    "id": "aeroindustrial:mobile_dock",
-    "count": 1
-  }
+  "result": {"id": "aeroindustrial:mobile_dock", "count": 1}
 }
