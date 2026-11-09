@@ -157,6 +157,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         if (!(level instanceof ServerLevel serverLevel)) return;
 
         tickCounter++;
+        lastKineticInput = 0;
+        lastGtInput = 0;
 
         // A redstone signal is a universal maintenance/stop command.
         if (serverLevel.hasNeighborSignal(worldPosition)) {
@@ -166,8 +168,6 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
         // Only the Torque Resonator is the Create -> AeroFlux interface.
         if (getTier() == 2 && tickCounter % 10 == 0) {
-            lastKineticInput = 0;
-            lastGtInput = 0;
             if (IntegrationStatus.createLoaded()) {
                 int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2, AeroConfig.CONFIG.createInputPerPulse.get());
                 lastKineticInput = harvested;
