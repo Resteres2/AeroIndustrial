@@ -54,8 +54,4 @@ public final class AeroWrenchItem extends Item {
         tooltip.add(Component.translatable("tooltip.aeroindustrial.wrench").withStyle(ChatFormatting.GRAY));
     }
 
-    @Override
-    public Component getName(ItemStack stack) {
-        return Component.translatable("item.aeroindustrial.aero_wrench");
-    }
 }
