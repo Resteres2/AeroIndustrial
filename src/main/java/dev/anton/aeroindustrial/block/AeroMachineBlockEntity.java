@@ -459,13 +459,29 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         if (getTier() == 12 && lastDockTransfer > 0) {
             status = status.copy().append(Component.translatable("status.aeroindustrial.dock", lastDockTransfer));
         }
+
+        Component roleStatus = switch (getTier()) {
+            case 1 -> Component.translatable("status.aeroindustrial.role.lattice");
+            case 5 -> Component.translatable("status.aeroindustrial.role.relay");
+            case 6 -> Component.translatable("status.aeroindustrial.role.accumulator");
+            case 11 -> Component.translatable("status.aeroindustrial.role.capacitor");
+            case 12 -> Component.translatable("status.aeroindustrial.role.dock");
+            case 13 -> Component.translatable("status.aeroindustrial.role.pressure");
+            case 14 -> Component.translatable("status.aeroindustrial.role.conduit");
+            case 15 -> Component.translatable("status.aeroindustrial.role.frame");
+            default -> null;
+        };
+        if (roleStatus != null) {
+            status = status.copy().append(roleStatus);
+        }
+
         if (isProcessingMachine()) {
             status = status.copy().append(Component.translatable(
                     "status.aeroindustrial.processing",
                     progress,
                     getProcessTime()
             ));
-        } else {
+        } else if (roleStatus == null && getTier() != 10) {
             status = status.copy().append(Component.translatable("status.aeroindustrial.idle"));
         }
         return status;
