@@ -147,7 +147,17 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
     public int getProcessEnergy() {
         var recipe = findRecipe(getItem(INPUT_SLOT));
-        return recipe == null ? 0 : recipe.value().energyCost();
+        return recipe == null ? 0 : getEffectiveProcessEnergy(recipe.value());
+    }
+
+    private int getEffectiveProcessEnergy(dev.anton.aeroindustrial.recipe.AeroMachineRecipe recipe) {
+        int cost = recipe.energyCost();
+        // Vector Compressor has a dedicated compression-efficiency window: a calm
+        // resonance field lets it compress the same input with less AeroFlux.
+        if (getTier() == 4 && overload <= 20) {
+            return Math.max(1, (cost * 3) / 4);
+        }
+        return cost;
     }
 
     private net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe> findRecipe(
@@ -427,7 +437,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             return;
         }
 
-        if (energy < recipe.energyCost()) {
+        int processEnergy = getEffectiveProcessEnergy(recipe);
+        if (energy < processEnergy) {
             return;
         }
 
@@ -472,7 +483,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             return;
         }
 
-        energy -= recipe.energyCost();
+        energy -= processEnergy;
         input.shrink(1);
 
         if (output.isEmpty()) {
