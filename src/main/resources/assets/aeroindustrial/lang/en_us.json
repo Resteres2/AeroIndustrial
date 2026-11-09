@@ -79,5 +79,9 @@
   "gui.aeroindustrial.overload": "Overload: %s%%",
   "item.aeroindustrial.aero_wrench": "AeroIndustrial Engineering Wrench",
   "tooltip.aeroindustrial.wrench": "Right-click a machine to rotate it. Shift+right-click rotates it back.",
-  "tooltip.aeroindustrial.machine.redstone": "Redstone signal: pause machine operation."
+  "tooltip.aeroindustrial.machine.redstone": "Redstone signal: pause machine operation.",
+  "config.aeroindustrial.create_input_per_pulse": "Maximum Create input per 10 ticks",
+  "config.aeroindustrial.gtceu_input_per_pulse": "Maximum GTCEu input per 10 ticks",
+  "config.aeroindustrial.thruster_energy_cost": "Vector Thruster pulse cost",
+  "config.aeroindustrial.thruster_strength": "Vector Thruster impulse strength"
 }
