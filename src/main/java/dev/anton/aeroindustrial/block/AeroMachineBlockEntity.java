@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 
 public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
     public static final int INPUT_SLOT = 0;
@@ -292,6 +294,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         }
 
         progress = 0;
+        level.playSound(null, worldPosition, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 0.45f, 1.5f);
         setChanged();
     }
 
