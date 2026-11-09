@@ -1,7 +1,13 @@
 {
   "type": "aeroindustrial:aero_machine",
-  "ingredient": { "item": "minecraft:gold_ingot" },
-  "result": { "id": "aeroindustrial:phase_foil", "count": 1 },
+  "ingredient": {
+    "item": "minecraft:gold_ingot"
+  },
+  "result": {
+    "id": "aeroindustrial:phase_foil",
+    "count": 1
+  },
   "processing_time": 140,
-  "energy_cost": 6000
+  "energy_cost": 6000,
+  "machine_tier": 9
 }
