@@ -251,12 +251,15 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 5 -> {
-                // Sky Relay coordinates nearby AeroFlux machines.
-                for (BlockPos pos : BlockPos.betweenClosed(
-                        worldPosition.offset(-4, -2, -4),
-                        worldPosition.offset(4, 2, 4))) {
-                    if (pos.equals(worldPosition)) continue;
-                    if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
+                // Sky Relay coordinates nearby AeroFlux machines. Check block entities
+                // rather than every block position: the relay may run in large factories
+                // without scanning hundreds of empty positions every pulse.
+                int radius = 4;
+                for (BlockEntity candidate : serverLevel.getBlockEntitiesInRegion(
+                        worldPosition.getX() - radius, worldPosition.getY() - 2, worldPosition.getZ() - radius,
+                        worldPosition.getX() + radius, worldPosition.getY() + 2, worldPosition.getZ() + radius)) {
+                    if (candidate instanceof AeroMachineBlockEntity other
+                            && !candidate.getBlockPos().equals(worldPosition)
                             && other.getTier() != 5) {
                         other.overload = Math.max(0, other.overload - 1);
                         other.setChanged();
