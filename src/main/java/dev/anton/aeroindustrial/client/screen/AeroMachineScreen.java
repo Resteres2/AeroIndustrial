@@ -29,7 +29,20 @@ public final class AeroMachineScreen extends AbstractContainerScreen<AeroMachine
 
         graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.input"), left + 32, top + 19, 0xFFD6DCE2, false);
         graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.output"), left + 104, top + 19, 0xFFD6DCE2, false);
-        graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.processing"), left + 8, top + 58, 0xFF8FC7FF, false);
+        int maxEnergy = Math.max(1, this.menu.getMaxEnergy());
+        int energyWidth = Math.min(152, (int) (152.0 * this.menu.getEnergy() / maxEnergy));
+        graphics.fill(left + 8, top + 48, left + 160, top + 55, 0xFF0B0E11);
+        graphics.fill(left + 8, top + 48, left + 8 + energyWidth, top + 55, 0xFF4BC7FF);
+
+        String energyText = this.menu.getEnergy() + " / " + maxEnergy + " AF";
+        graphics.drawString(this.font, energyText, left + 8, top + 58, 0xFF8FC7FF, false);
+
+        if (this.menu.getProcessTime() > 0) {
+            int time = this.menu.getProcessTime();
+            int progressWidth = Math.min(152, (int) (152.0 * this.menu.getProgress() / Math.max(1, time)));
+            graphics.fill(left + 8, top + 66, left + 160, top + 72, 0xFF0B0E11);
+            graphics.fill(left + 8, top + 66, left + 8 + progressWidth, top + 72, 0xFF7BFF8A);
+        }
     }
 
     private void drawSlotFrame(GuiGraphics graphics, int x, int y) {
