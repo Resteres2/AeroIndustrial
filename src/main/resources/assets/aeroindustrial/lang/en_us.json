@@ -68,7 +68,7 @@
   "screen.aeroindustrial.manual": "AeroIndustrial Engineering Manual",
   "manual.aeroindustrial.core": "AeroFlux is the internal engineering energy of AeroIndustrial modules.",
   "manual.aeroindustrial.energy": "Charge machines with AeroFlux Crystals or compatible energy systems.",
-  "manual.aeroindustrial.overload": "Overload rises near high storage. Stabilizers and special nodes reduce it.",
+  "manual.aeroindustrial.overload": "Overload rises near high storage. Up to 20% overload processing is accelerated; from 80% the machine stabilizes. Stabilizers, capacitors, and frames help build resilient networks.",
   "manual.aeroindustrial.machine": "Right-click opens a machine interface. Shift+right-click shows status. Processing recipes are available in JEI.",
   "manual.aeroindustrial.integration": "Torque Resonator accepts Create kinetic input. Vector Thruster couples to compatible moving structures.",
   "manual.aeroindustrial.controls": "Exit the manual with Esc.",
