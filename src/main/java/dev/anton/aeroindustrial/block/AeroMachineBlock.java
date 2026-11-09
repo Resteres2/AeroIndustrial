@@ -76,8 +76,7 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
                                                BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof AeroMachineBlockEntity machine) {
             if (player.isShiftKeyDown()) {
-                player.displayClientMessage(Component.literal(machine.statusLine())
-                        .withStyle(ChatFormatting.AQUA), true);
+                player.displayClientMessage(machine.statusLine().copy().withStyle(ChatFormatting.AQUA), true);
             } else if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.openMenu(machine, buffer -> buffer.writeBlockPos(pos));
             }
@@ -95,11 +94,11 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
                     int accepted = machine.receiveEnergy(2500, false);
                     if (accepted > 0) {
                         if (!player.isCreative()) stack.shrink(1);
-                        player.displayClientMessage(Component.literal(
-                                "AeroFlux +" + accepted + " | " + machine.getEnergy() + "/" + machine.getMaxEnergy())
+                        player.displayClientMessage(Component.translatable(
+                                "message.aeroindustrial.charge", accepted, machine.getEnergy(), machine.getMaxEnergy())
                                 .withStyle(ChatFormatting.GREEN), true);
                     } else {
-                        player.displayClientMessage(Component.literal("AeroFlux reservoir is full")
+                        player.displayClientMessage(Component.translatable("message.aeroindustrial.full")
                                 .withStyle(ChatFormatting.RED), true);
                     }
                 }
