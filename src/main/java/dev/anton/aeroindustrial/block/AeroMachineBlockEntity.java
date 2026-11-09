@@ -5,7 +5,7 @@ import dev.anton.aeroindustrial.compat.IntegrationStatus;
 import dev.anton.aeroindustrial.compat.MovingStructureBridge;
 import dev.anton.aeroindustrial.menu.AeroMachineMenu;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
-import dev.anton.aeroindustrial.registry.AeroItems;
+import dev.anton.aeroindustrial.registry.AeroRecipes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,9 +13,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
@@ -75,22 +73,37 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
     }
 
     public boolean canAcceptInput(ItemStack stack) {
-        ProcessingSpec spec = processingSpec();
-        return spec != null && stack.is(spec.input());
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return !stack.isEmpty();
+        }
+        return findRecipe(serverLevel, stack) != null;
     }
 
     public boolean isProcessingMachine() {
-        return processingSpec() != null;
+        return getTier() == 3 || getTier() == 4 || getTier() == 7
+                || getTier() == 8 || getTier() == 9;
     }
 
     public int getProcessTime() {
-        ProcessingSpec spec = processingSpec();
-        return spec == null ? 0 : spec.time();
+        if (!(level instanceof ServerLevel serverLevel)) return 0;
+        var recipe = findRecipe(serverLevel, getItem(INPUT_SLOT));
+        return recipe == null ? 0 : recipe.value().processingTime();
     }
 
     public int getProcessEnergy() {
-        ProcessingSpec spec = processingSpec();
-        return spec == null ? 0 : spec.energy();
+        if (!(level instanceof ServerLevel serverLevel)) return 0;
+        var recipe = findRecipe(serverLevel, getItem(INPUT_SLOT));
+        return recipe == null ? 0 : recipe.value().energyCost();
+    }
+
+    private net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe> findRecipe(
+            ServerLevel serverLevel, ItemStack stack) {
+        if (!isProcessingMachine() || stack.isEmpty()) return null;
+        return serverLevel.getRecipeManager()
+                .getRecipeFor(AeroRecipes.AERO_MACHINE_TYPE.get(),
+                        new net.minecraft.world.item.crafting.SingleRecipeInput(stack),
+                        serverLevel)
+                .orElse(null);
     }
 
     public void serverTick() {
@@ -126,9 +139,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
             }
         }
 
-        ProcessingSpec spec = processingSpec();
-        if (spec != null) {
-            process(spec);
+        if (isProcessingMachine()) {
+            process(serverLevel);
         } else {
             runResonanceCore();
         }
@@ -239,51 +251,45 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         }
     }
 
-    private void process(ProcessingSpec spec) {
+    private void process(ServerLevel serverLevel) {
         ItemStack input = getItem(INPUT_SLOT);
         ItemStack output = getItem(OUTPUT_SLOT);
+        var holder = findRecipe(serverLevel, input);
 
-        if (!canAcceptInput(input)) {
+        if (holder == null) {
             progress = 0;
             return;
         }
 
-        if (!output.isEmpty() && (!output.is(spec.output()) || output.getCount() >= output.getMaxStackSize())) {
+        var recipe = holder.value();
+        if (!output.isEmpty() && (!ItemStack.isSameItemSameComponents(output, recipe.getResultItem(serverLevel.registryAccess()))
+                || output.getCount() >= output.getMaxStackSize())) {
             return;
         }
 
-        if (energy < spec.energy()) {
+        if (energy < recipe.energyCost()) {
             return;
         }
 
         progress++;
-        if (progress < spec.time()) {
+        if (progress < recipe.processingTime()) {
             return;
         }
 
-        energy -= spec.energy();
+        energy -= recipe.energyCost();
         input.shrink(1);
 
         if (output.isEmpty()) {
-            setItem(OUTPUT_SLOT, new ItemStack(spec.output()));
+            setItem(OUTPUT_SLOT, recipe.assemble(
+                    new net.minecraft.world.item.crafting.SingleRecipeInput(input),
+                    serverLevel.registryAccess()));
         } else {
-            output.grow(1);
+            output.grow(recipe.getResultItem(serverLevel.registryAccess()).getCount());
             setChanged();
         }
 
         progress = 0;
         setChanged();
-    }
-
-    private ProcessingSpec processingSpec() {
-        return switch (getTier()) {
-            case 3 -> new ProcessingSpec(AeroItems.PHASE_FOIL.get(), AeroItems.RESONANCE_CELL.get(), 80, 3000);
-            case 4 -> new ProcessingSpec(Items.COPPER_INGOT, AeroItems.VECTOR_COIL.get(), 100, 4000);
-            case 7 -> new ProcessingSpec(Items.REDSTONE, AeroItems.FLUX_CONDUCTOR.get(), 120, 5000);
-            case 8 -> new ProcessingSpec(Items.SNOWBALL, AeroItems.PRESSURE_GEL.get(), 90, 4500);
-            case 9 -> new ProcessingSpec(Items.GOLD_INGOT, AeroItems.PHASE_FOIL.get(), 140, 6000);
-            default -> null;
-        };
     }
 
     public String statusLine() {
@@ -362,6 +368,4 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         tickCounter = tag.getInt("TickCounter");
         lastKineticInput = 0;
     }
-
-    private record ProcessingSpec(Item input, Item output, int time, int energy) {}
 }
