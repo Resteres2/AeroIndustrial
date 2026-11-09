@@ -327,25 +327,22 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 14 -> {
-                // Aeronautical Conduit routes packets toward the least-charged adjacent buffer.
+                // Aeronautical Conduit is directional: it sends a packet only through
+                // its front face. Directionality prevents two conduits from endlessly
+                // bouncing energy back and forth and makes the block useful for building
+                // predictable AeroFlux highways.
                 if (energy >= 100) {
-                    IAeroFluxStorage best = null;
-                    int bestStored = Integer.MAX_VALUE;
-                    int bestCapacity = 1;
-                    for (Direction direction : Direction.values()) {
-                        BlockPos pos = worldPosition.relative(direction);
-                        IAeroFluxStorage storage = serverLevel.getCapability(
-                                AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
-                        if (storage == null || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored()) continue;
-                        if ((long) storage.getAeroFluxStored() * bestCapacity
-                                < (long) bestStored * storage.getMaxAeroFluxStored()) {
-                            best = storage; bestStored = storage.getAeroFluxStored();
-                            bestCapacity = storage.getMaxAeroFluxStored();
+                    Direction outputDirection = getBlockState().getValue(AeroMachineBlock.FACING);
+                    BlockPos pos = worldPosition.relative(outputDirection);
+                    IAeroFluxStorage storage = serverLevel.getCapability(
+                            AeroCapabilities.AEROFLUX, pos, outputDirection.getOpposite());
+                    if (storage != null && storage.getAeroFluxStored() < storage.getMaxAeroFluxStored()) {
+                        int accepted = storage.receiveAeroFlux(100, false);
+                        if (accepted > 0) {
+                            energy -= accepted;
+                            lastConduitTransfer = accepted;
+                            setChanged();
                         }
-                    }
-                    if (best != null) {
-                        int accepted = best.receiveAeroFlux(100, false);
-                        if (accepted > 0) { energy -= accepted; lastConduitTransfer = accepted; setChanged(); }
                     }
                 }
             }
