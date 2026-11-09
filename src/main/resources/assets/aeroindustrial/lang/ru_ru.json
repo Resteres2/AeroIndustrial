@@ -78,5 +78,6 @@
   "status.aeroindustrial.idle": " | режим: ожидание",
   "gui.aeroindustrial.overload": "Перегрузка: %s%%",
   "item.aeroindustrial.aero_wrench": "Инженерный ключ AeroIndustrial",
-  "tooltip.aeroindustrial.wrench": "ПКМ по машине: повернуть. Shift+ПКМ: повернуть обратно."
+  "tooltip.aeroindustrial.wrench": "ПКМ по машине: повернуть. Shift+ПКМ: повернуть обратно.",
+  "tooltip.aeroindustrial.machine.redstone": "Сигнал редстоуна: приостановить работу машины."
 }
