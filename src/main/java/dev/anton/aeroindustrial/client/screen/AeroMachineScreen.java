@@ -31,24 +31,24 @@ public final class AeroMachineScreen extends AbstractContainerScreen<AeroMachine
         graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.output"), left + 104, top + 19, 0xFFD6DCE2, false);
         int maxEnergy = Math.max(1, this.menu.getMaxEnergy());
         int energyWidth = Math.min(152, (int) (152.0 * this.menu.getEnergy() / maxEnergy));
-        graphics.fill(left + 8, top + 48, left + 160, top + 55, 0xFF0B0E11);
-        graphics.fill(left + 8, top + 48, left + 8 + energyWidth, top + 55, 0xFF4BC7FF);
+        graphics.fill(left + 8, top + 48, left + 160, top + 54, 0xFF0B0E11);
+        graphics.fill(left + 8, top + 48, left + 8 + energyWidth, top + 54, 0xFF4BC7FF);
 
         String energyText = this.menu.getEnergy() + " / " + maxEnergy + " AF";
-        graphics.drawString(this.font, energyText, left + 8, top + 58, 0xFF8FC7FF, false);
+        graphics.drawString(this.font, energyText, left + 8, top + 56, 0xFF8FC7FF, false);
 
         int overload = Math.max(0, Math.min(100, this.menu.getOverload()));
         int overloadWidth = (int) (152.0 * overload / 100.0);
-        graphics.fill(left + 8, top + 64, left + 160, top + 68, 0xFF0B0E11);
-        graphics.fill(left + 8, top + 64, left + 8 + overloadWidth, top + 68, 0xFFFF6B5C);
+        graphics.fill(left + 8, top + 65, left + 160, top + 70, 0xFF0B0E11);
+        graphics.fill(left + 8, top + 65, left + 8 + overloadWidth, top + 70, 0xFFFF6B5C);
         graphics.drawString(this.font, Component.translatable("gui.aeroindustrial.overload", overload),
-                left + 8, top + 69, 0xFFFFA49B, false);
+                left + 8, top + 72, 0xFFFFA49B, false);
 
         if (this.menu.getProcessTime() > 0) {
             int time = this.menu.getProcessTime();
             int progressWidth = Math.min(152, (int) (152.0 * this.menu.getProgress() / Math.max(1, time)));
-            graphics.fill(left + 8, top + 66, left + 160, top + 72, 0xFF0B0E11);
-            graphics.fill(left + 8, top + 66, left + 8 + progressWidth, top + 72, 0xFF7BFF8A);
+            graphics.fill(left + 8, top + 79, left + 160, top + 84, 0xFF0B0E11);
+            graphics.fill(left + 8, top + 79, left + 8 + progressWidth, top + 84, 0xFF7BFF8A);
         }
     }
 
