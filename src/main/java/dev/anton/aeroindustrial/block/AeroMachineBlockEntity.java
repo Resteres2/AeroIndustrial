@@ -238,15 +238,21 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 12 -> {
-                // Mobile Dock is a local buffer: it pulls a small amount from an adjacent charged machine.
+                // Mobile Dock is a local buffer: it pulls a small amount from an adjacent AeroFlux storage.
                 for (Direction direction : Direction.values()) {
                     BlockPos pos = worldPosition.relative(direction);
-                    if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
-                            && other.energy > 50 && energy < getMaxEnergy() - 50) {
-                        int moved = Math.min(50, Math.min(other.energy, getMaxEnergy() - energy));
-                        other.energy -= moved;
-                        energy += moved;
-                        other.setChanged();
+                    IAeroFluxStorage storage = serverLevel.getCapability(
+                            AeroCapabilities.AEROFLUX,
+                            pos,
+                            direction.getOpposite()
+                    );
+                    if (storage == null || storage.getAeroFluxStored() <= 50
+                            || energy >= getMaxEnergy() - 50) continue;
+
+                    int moved = Math.min(50, Math.min(storage.getAeroFluxStored(), getMaxEnergy() - energy));
+                    int extracted = storage.extractAeroFlux(moved, false);
+                    if (extracted > 0) {
+                        energy += extracted;
                         setChanged();
                         break;
                     }
@@ -261,19 +267,22 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 14 -> {
-                // Aeronautical Conduit transfers a controlled packet to one adjacent machine.
+                // Aeronautical Conduit transfers a controlled packet to one adjacent AeroFlux storage.
                 if (energy >= 100) {
                     for (Direction direction : Direction.values()) {
                         BlockPos pos = worldPosition.relative(direction);
-                        if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
-                                && other.energy < other.getMaxEnergy()) {
-                            int moved = Math.min(100, other.getMaxEnergy() - other.energy);
-                            energy -= moved;
-                            other.energy += moved;
-                            other.setChanged();
+                        IAeroFluxStorage storage = serverLevel.getCapability(
+                                AeroCapabilities.AEROFLUX,
+                                pos,
+                                direction.getOpposite()
+                        );
+                        if (storage == null) continue;
+                        int accepted = storage.receiveAeroFlux(100, false);
+                        if (accepted > 0) {
+                            energy -= accepted;
                             setChanged();
-                            break;
                         }
+                        break;
                     }
                 }
             }
