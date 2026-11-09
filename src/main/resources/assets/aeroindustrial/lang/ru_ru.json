@@ -50,5 +50,9 @@
   "container.aeroindustrial.machine": "Машина AeroFlux",
   "gui.aeroindustrial.input": "Вход",
   "gui.aeroindustrial.output": "Выход",
-  "gui.aeroindustrial.processing": "Система обработки"
+  "gui.aeroindustrial.processing": "Система обработки",
+  "jei.aeroindustrial.machine": "Машины AeroFlux",
+  "jei.aeroindustrial.machine.tier": "Уровень машины: %s",
+  "jei.aeroindustrial.time": "Время: %s т",
+  "jei.aeroindustrial.energy": "Стоимость: %s AF"
 }
