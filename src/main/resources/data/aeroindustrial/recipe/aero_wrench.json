@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ICI",
+    " S ",
+    " I "
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "C": { "item": "aeroindustrial:aeroflux_crystal" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "id": "aeroindustrial:aero_wrench",
+    "count": 1
+  }
+}
