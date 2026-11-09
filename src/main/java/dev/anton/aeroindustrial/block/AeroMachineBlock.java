@@ -5,6 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -53,11 +54,11 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
                         .withStyle(ChatFormatting.AQUA), true);
             }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return level.isClientSide ? ItemInteractionResult.CONSUME : ItemInteractionResult.SUCCESS;
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                          Player player, net.minecraft.world.InteractionHand hand,
                                          net.minecraft.world.phys.BlockHitResult hit) {
         if (stack.is(AeroItems.AEROFLUX_CRYSTAL.get())) {
