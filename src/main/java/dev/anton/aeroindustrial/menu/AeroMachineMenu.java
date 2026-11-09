@@ -43,6 +43,7 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
         this.data = data;
 
         checkContainerSize(container, 2);
+        container.startOpen(playerInventory.player);
 
         this.addSlot(new Slot(container, 0, 44, 35) {
             @Override
