@@ -73,36 +73,34 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
     }
 
     public boolean canAcceptInput(ItemStack stack) {
-        if (!(level instanceof ServerLevel serverLevel)) {
-            return !stack.isEmpty();
-        }
-        return findRecipe(serverLevel, stack) != null;
+        return findRecipe(stack) != null;
     }
 
     public boolean isProcessingMachine() {
-        return getTier() == 3 || getTier() == 4 || getTier() == 7
-                || getTier() == 8 || getTier() == 9;
+        if (level == null) return false;
+        return level.getRecipeManager().getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
+                .stream()
+                .anyMatch(holder -> holder.value().machineTier() == getTier());
     }
 
     public int getProcessTime() {
-        if (!(level instanceof ServerLevel serverLevel)) return 0;
-        var recipe = findRecipe(serverLevel, getItem(INPUT_SLOT));
+        var recipe = findRecipe(getItem(INPUT_SLOT));
         return recipe == null ? 0 : recipe.value().processingTime();
     }
 
     public int getProcessEnergy() {
-        if (!(level instanceof ServerLevel serverLevel)) return 0;
-        var recipe = findRecipe(serverLevel, getItem(INPUT_SLOT));
+        var recipe = findRecipe(getItem(INPUT_SLOT));
         return recipe == null ? 0 : recipe.value().energyCost();
     }
 
     private net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe> findRecipe(
-            ServerLevel serverLevel, ItemStack stack) {
-        if (!isProcessingMachine() || stack.isEmpty()) return null;
-        return serverLevel.getRecipeManager()
+            ItemStack stack) {
+        if (level == null || stack.isEmpty()) return null;
+        return level.getRecipeManager()
                 .getRecipeFor(AeroRecipes.AERO_MACHINE_TYPE.get(),
                         new net.minecraft.world.item.crafting.SingleRecipeInput(stack),
-                        serverLevel)
+                        level)
+                .filter(holder -> holder.value().machineTier() == getTier())
                 .orElse(null);
     }
 
@@ -254,7 +252,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
     private void process(ServerLevel serverLevel) {
         ItemStack input = getItem(INPUT_SLOT);
         ItemStack output = getItem(OUTPUT_SLOT);
-        var holder = findRecipe(serverLevel, input);
+        var holder = findRecipe(input);
 
         if (holder == null) {
             progress = 0;
