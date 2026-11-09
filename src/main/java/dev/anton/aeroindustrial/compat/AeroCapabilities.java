@@ -78,7 +78,10 @@ public final class AeroCapabilities {
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            if (slot != AeroMachineBlockEntity.INPUT_SLOT || !be.canAcceptInput(stack) || stack.isEmpty()) {
+            if (side == Direction.DOWN
+                    || slot != AeroMachineBlockEntity.INPUT_SLOT
+                    || !be.canAcceptInput(stack)
+                    || stack.isEmpty()) {
                 return stack;
             }
 
@@ -101,7 +104,7 @@ public final class AeroCapabilities {
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (amount <= 0 || slot != AeroMachineBlockEntity.OUTPUT_SLOT) {
+            if (side != Direction.DOWN || amount <= 0 || slot != AeroMachineBlockEntity.OUTPUT_SLOT) {
                 return ItemStack.EMPTY;
             }
 
