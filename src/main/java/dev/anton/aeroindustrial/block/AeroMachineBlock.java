@@ -93,6 +93,8 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
         ).withStyle(ChatFormatting.DARK_GRAY));
         tooltip.add(Component.translatable("tooltip.aeroindustrial.machine.common")
                 .withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(Component.translatable("tooltip.aeroindustrial.machine.redstone")
+                .withStyle(ChatFormatting.DARK_GRAY));
     }
 
     @Override
