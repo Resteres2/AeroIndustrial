@@ -33,6 +33,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
     private int tickCounter;
     private int lastKineticInput;
     private int lastGtInput;
+    private Boolean processingMachineCache;
 
     public AeroMachineBlockEntity(BlockPos pos, BlockState state) {
         super(AeroBlockEntities.AERO_MACHINE.get(), pos, state);
@@ -80,9 +81,12 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
 
     public boolean isProcessingMachine() {
         if (level == null) return false;
-        return level.getRecipeManager().getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
-                .stream()
-                .anyMatch(holder -> holder.value().machineTier() == getTier());
+        if (processingMachineCache == null || (!level.isClientSide && tickCounter % 200 == 0)) {
+            processingMachineCache = level.getRecipeManager().getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
+                    .stream()
+                    .anyMatch(holder -> holder.value().machineTier() == getTier());
+        }
+        return processingMachineCache;
     }
 
     public int getProcessTime() {
