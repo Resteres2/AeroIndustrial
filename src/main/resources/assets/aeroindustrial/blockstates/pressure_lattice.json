@@ -1,1 +1,19 @@
-{"variants":{"":{"model":"aeroindustrial:block/pressure_lattice"}}}
+{
+  "variants": {
+    "facing=north": {
+      "model": "aeroindustrial:block/pressure_lattice"
+    },
+    "facing=east": {
+      "model": "aeroindustrial:block/pressure_lattice",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeroindustrial:block/pressure_lattice",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeroindustrial:block/pressure_lattice",
+      "y": 270
+    }
+  }
+}
