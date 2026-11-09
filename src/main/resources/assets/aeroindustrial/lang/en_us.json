@@ -46,5 +46,9 @@
   "tooltip.aeroindustrial.item.sky_lattice": "Aerial infrastructure component.",
   "tooltip.aeroindustrial.item.resonance_cell": "Resonance-system cell.",
   "tooltip.aeroindustrial.item.pressure_gel": "Pressure-system component.",
-  "tooltip.aeroindustrial.item.flux_conductor": "AeroFlux conductor."
+  "tooltip.aeroindustrial.item.flux_conductor": "AeroFlux conductor.",
+  "container.aeroindustrial.machine": "AeroFlux Machine",
+  "gui.aeroindustrial.input": "Input",
+  "gui.aeroindustrial.output": "Output",
+  "gui.aeroindustrial.processing": "Processing system"
 }
