@@ -1,10 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["IGI", "GFI", "IGI"],
+  "pattern": ["IGI","GFC","ICI"],
   "key": {
     "I": {"item": "minecraft:iron_ingot"},
     "G": {"item": "aeroindustrial:flux_conductor"},
-    "F": {"item": "aeroindustrial:phase_foil"}
+    "F": {"item": "aeroindustrial:phase_foil"},
+    "C": {"item": "aeroindustrial:atmospheric_condenser"}
   },
   "result": {"id": "aeroindustrial:mobile_refinery", "count": 1}
 }
