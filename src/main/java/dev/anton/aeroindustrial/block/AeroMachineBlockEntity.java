@@ -38,6 +38,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     private int tickCounter;
     private int lastKineticInput;
     private int lastGtInput;
+    private int lastBufferTransfer;
     private Boolean processingMachineCache;
     private java.util.List<net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe>> tierRecipesCache;
     private int tierRecipesCacheTick = -1;
@@ -161,6 +162,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         tickCounter++;
         lastKineticInput = 0;
         lastGtInput = 0;
+        lastBufferTransfer = 0;
 
         // A redstone signal is a universal maintenance/stop command.
         if (serverLevel.hasNeighborSignal(worldPosition)) {
@@ -297,6 +299,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         if (accepted > 0) {
                             target.receiveAeroFlux(accepted, false);
                             energy -= accepted;
+                            lastBufferTransfer = accepted;
                             setChanged();
                             break;
                         }
@@ -413,6 +416,9 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 getMaxEnergy(),
                 overload
         );
+        if (getTier() == 11 && lastBufferTransfer > 0) {
+            status = status.copy().append(Component.translatable("status.aeroindustrial.capacitor", lastBufferTransfer));
+        }
         if (getTier() == 2) {
             status = status.copy().append(Component.translatable("status.aeroindustrial.create", lastKineticInput));
             status = status.copy().append(Component.translatable("status.aeroindustrial.gtceu", lastGtInput));
@@ -494,6 +500,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         tickCounter = tag.getInt("TickCounter");
         lastKineticInput = 0;
         lastGtInput = 0;
+        lastBufferTransfer = 0;
         processingMachineCache = null;
         tierRecipesCache = null;
         tierRecipesCacheTick = -1;
