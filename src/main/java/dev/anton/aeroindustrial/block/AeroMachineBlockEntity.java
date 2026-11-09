@@ -207,7 +207,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                     worldPosition.getY() + 0.5,
                     worldPosition.getZ() + 0.5,
                     8.0,
-                    AeroConfig.CONFIG.thrusterStrength.get(),
+                    AeroConfig.CONFIG.thrusterStrength.get() * Math.max(0.5, 1.0 - overload * 0.005),
                     getBlockState().getValue(AeroMachineBlock.FACING)
             );
             if (affected > 0) {
@@ -259,16 +259,26 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 5 -> {
-                // Sky Relay coordinates nearby AeroFlux machines.
+                // Sky Relay is an active stabilisation field rather than a free aura:
+                // one pulse costs a small amount of AeroFlux, giving the network a
+                // meaningful upkeep cost while preventing idle relays from being free.
+                if (energy < 25) break;
+                int stabilized = 0;
                 for (BlockPos pos : BlockPos.betweenClosed(
                         worldPosition.offset(-4, -2, -4),
                         worldPosition.offset(4, 2, 4))) {
                     if (pos.equals(worldPosition)) continue;
                     if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
                             && other.getTier() != 5) {
+                        int before = other.overload;
                         other.overload = Math.max(0, other.overload - 1);
+                        if (other.overload < before) stabilized++;
                         other.setChanged();
                     }
+                }
+                if (stabilized > 0) {
+                    energy -= 25;
+                    setChanged();
                 }
             }
             case 12 -> {
