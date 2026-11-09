@@ -1,0 +1,7 @@
+{
+  "type": "aeroindustrial:aero_machine",
+  "ingredient": { "item": "aeroindustrial:phase_foil" },
+  "result": { "id": "aeroindustrial:resonance_cell", "count": 1 },
+  "processing_time": 80,
+  "energy_cost": 3000
+}
