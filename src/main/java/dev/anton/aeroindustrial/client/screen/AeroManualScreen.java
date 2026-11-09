@@ -2,12 +2,13 @@ package dev.anton.aeroindustrial.client.screen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import dev.anton.aeroindustrial.menu.AeroManualMenu;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-public final class AeroManualScreen extends Screen {
+public final class AeroManualScreen extends AbstractContainerScreen<AeroManualMenu> {
     private final List<Component> lines = List.of(
             Component.translatable("manual.aeroindustrial.core"),
             Component.translatable("manual.aeroindustrial.energy"),
@@ -17,17 +18,14 @@ public final class AeroManualScreen extends Screen {
             Component.translatable("manual.aeroindustrial.controls")
     );
 
-    public AeroManualScreen() {
-        super(Component.translatable("screen.aeroindustrial.manual"));
+    public AeroManualScreen(AeroManualMenu menu, net.minecraft.world.entity.player.Inventory inventory, Component title) {
+        super(menu, inventory, title);
+        this.imageWidth = 236;
+        this.imageHeight = 172;
     }
 
     @Override
-    protected void init() {
-        super.init();
-    }
-
-    @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         int width = 236;
         int height = 172;
         int left = (this.width - width) / 2;
@@ -60,7 +58,13 @@ public final class AeroManualScreen extends Screen {
                 0xFF7EA7BF
         );
 
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(graphics, mouseX, mouseY, partialTick);
         super.render(graphics, mouseX, mouseY, partialTick);
+        this.renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
