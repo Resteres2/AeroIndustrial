@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["SSS", "SWS", "SSS"],
+  "key": {
+    "S": {"item": "minecraft:slime_ball"},
+    "W": {"item": "minecraft:snowball"}
+  },
+  "result": {"id": "aeroindustrial:pressure_gel", "count": 2}
+}
