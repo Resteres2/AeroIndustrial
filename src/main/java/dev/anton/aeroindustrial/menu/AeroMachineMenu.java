@@ -23,7 +23,7 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public AeroMachineMenu(int containerId, Inventory playerInventory, RegistryFriendlyByteBuf data) {
-        this(containerId, playerInventory, new SimpleContainer(2), ContainerLevelAccess.NULL, data.readBlockPos(), new SimpleContainerData(4));
+        this(containerId, playerInventory, new SimpleContainer(2), ContainerLevelAccess.NULL, data.readBlockPos(), new SimpleContainerData(5));
     }
 
     public AeroMachineMenu(int containerId, Inventory playerInventory, AeroMachineBlockEntity machine) {
@@ -89,6 +89,10 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
         return data.get(3);
     }
 
+    public int getOverload() {
+        return data.get(4);
+    }
+
     public Container getMachineContainer() {
         return container;
     }
@@ -151,6 +155,7 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
                 case 1 -> machine.getProgress();
                 case 2 -> machine.getMaxEnergy();
                 case 3 -> machine.getProcessTime();
+                case 4 -> machine.getOverload();
                 default -> 0;
             };
         }
@@ -161,7 +166,7 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
     }
 
