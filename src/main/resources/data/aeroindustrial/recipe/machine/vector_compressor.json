@@ -1,12 +1,7 @@
 {
   "type": "aeroindustrial:aero_machine",
-  "ingredient": {
-    "item": "minecraft:copper_ingot"
-  },
-  "result": {
-    "id": "aeroindustrial:vector_coil",
-    "count": 1
-  },
+  "ingredient": {"item": "minecraft:copper_ingot"},
+  "result": {"id": "aeroindustrial:vector_coil", "count": 1},
   "processing_time": 100,
   "energy_cost": 4000,
   "machine_tier": 4
