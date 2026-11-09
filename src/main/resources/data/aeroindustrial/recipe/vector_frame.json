@@ -1,23 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ICI",
-    "CXC",
-    "ICI"
-  ],
+  "pattern": ["PCI","CXC","ICI"],
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "C": {
-      "item": "aeroindustrial:aeroflux_crystal"
-    },
-    "X": {
-      "item": "minecraft:iron_block"
-    }
+    "I": {"item": "minecraft:iron_ingot"},
+    "C": {"item": "aeroindustrial:aeroflux_crystal"},
+    "P": {"item": "aeroindustrial:aeronautical_conduit"},
+    "X": {"item": "minecraft:iron_block"}
   },
-  "result": {
-    "id": "aeroindustrial:vector_frame",
-    "count": 1
-  }
+  "result": {"id": "aeroindustrial:vector_frame", "count": 1}
 }
