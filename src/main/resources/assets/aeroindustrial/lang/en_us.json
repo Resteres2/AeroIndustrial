@@ -61,5 +61,7 @@
   "status.aeroindustrial.create": " | Create input %s AF/10t",
   "status.aeroindustrial.thruster": " | thruster coupling: %s",
   "status.aeroindustrial.processing": " | processing %s/%s",
-  "status.aeroindustrial.resonance": " | resonance %s/20"
+  "status.aeroindustrial.resonance": " | resonance %s/20",
+  "status.aeroindustrial.thruster.ready": " | thruster coupling: READY",
+  "status.aeroindustrial.thruster.offline": " | thruster coupling: OFF"
 }
