@@ -11,7 +11,7 @@ public final class GtceuEnergyBridge {
     private GtceuEnergyBridge() {}
 
     public static int harvest(ServerLevel level, BlockPos center, int radius, int maxInput) {
-        if (!IntegrationStatus.gtceuLoaded() || maxInput <= 0) return 0;
+        if (!IntegrationStatus.gtceuLoaded() || maxInput <= 0 || radius < 0) return 0;
 
         int total = 0;
         for (BlockPos pos : BlockPos.betweenClosed(
@@ -41,8 +41,8 @@ public final class GtceuEnergyBridge {
                 int extracted = storage.extractEnergy(request, false);
                 if (extracted > 0) {
                     total += extracted;
+                    break;
                 }
-                break;
             }
             if (total >= maxInput) return total;
         }
