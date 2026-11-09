@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "aeroindustrial:flux_lattice",
+    "aeroindustrial:torque_resonator",
+    "aeroindustrial:phase_refiner",
+    "aeroindustrial:vector_compressor",
+    "aeroindustrial:sky_relay",
+    "aeroindustrial:inertial_accumulator",
+    "aeroindustrial:aero_forge",
+    "aeroindustrial:atmospheric_condenser",
+    "aeroindustrial:mobile_refinery",
+    "aeroindustrial:vector_thruster",
+    "aeroindustrial:aeroflux_capacitor",
+    "aeroindustrial:mobile_dock",
+    "aeroindustrial:pressure_lattice",
+    "aeroindustrial:aeronautical_conduit",
+    "aeroindustrial:vector_frame"
+  ]
+}
