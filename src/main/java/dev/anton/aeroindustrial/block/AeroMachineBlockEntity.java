@@ -300,7 +300,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                             continue;
                         }
                         int room = getMaxEnergy() - energy;
-                        int packet = Math.min(200, room);
+                        int packet = Math.min(AeroConfig.CONFIG.accumulatorPullPerPulse.get(), room);
                         int extracted = storage.extractAeroFlux(packet, false);
                         if (extracted > 0) {
                             energy += extracted;
@@ -347,7 +347,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         IAeroFluxStorage storage = serverLevel.getCapability(
                                 AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
                         if (storage == null || storage.getAeroFluxStored() <= 50) continue;
-                        int moved = Math.min(100, Math.min(storage.getAeroFluxStored(), getMaxEnergy() - energy));
+                        int moved = Math.min(AeroConfig.CONFIG.mobileDockTransferPerPulse.get(),
+                                Math.min(storage.getAeroFluxStored(), getMaxEnergy() - energy));
                         int extracted = storage.extractAeroFlux(moved, false);
                         if (extracted > 0) { energy += extracted; lastDockTransfer = extracted; setChanged(); break; }
                     }
@@ -357,7 +358,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         IAeroFluxStorage storage = serverLevel.getCapability(
                                 AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
                         if (storage == null || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored() * 0.75) continue;
-                        int accepted = storage.receiveAeroFlux(Math.min(100, energy), false);
+                        int accepted = storage.receiveAeroFlux(
+                                Math.min(AeroConfig.CONFIG.mobileDockTransferPerPulse.get(), energy), false);
                         if (accepted > 0) { energy -= accepted; lastDockTransfer = accepted; setChanged(); break; }
                     }
                 }
@@ -366,22 +368,28 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 // AeroFlux Capacitor is an active buffer: it automatically feeds adjacent
                 // machines that have fallen below half charge, but never drains itself
                 // below a reserve. This turns capacitors into the backbone of local grids.
-                int reserve = Math.max(250, getMaxEnergy() / 4);
-                if (energy > reserve + 100) {
+                int reserve = getMaxEnergy() * AeroConfig.CONFIG.capacitorReservePercent.get() / 100;
+                int transferLimit = AeroConfig.CONFIG.capacitorTransferPerPulse.get();
+                if (energy > reserve && transferLimit > 0) {
                     for (Direction direction : Direction.values()) {
                         BlockPos pos = worldPosition.relative(direction);
-                        if (!(serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity target)
-                                || target == this
-                                || target.getEnergy() >= target.getMaxEnergy() / 2) {
+                        IAeroFluxStorage storage = serverLevel.getCapability(
+                                AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
+                        if (storage == null || storage.getMaxAeroFluxStored() <= 0
+                                || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored() / 2) {
                             continue;
                         }
 
-                        int packet = Math.min(250, energy - reserve);
-                        int accepted = target.receiveAeroFlux(packet, true);
-                        if (accepted > 0) {
-                            target.receiveAeroFlux(accepted, false);
-                            energy -= accepted;
-                            lastBufferTransfer = accepted;
+                        int packet = Math.min(transferLimit, energy - reserve);
+                        int simulated = storage.receiveAeroFlux(packet, true);
+                        if (simulated <= 0) {
+                            continue;
+                        }
+
+                        int transferred = storage.receiveAeroFlux(simulated, false);
+                        if (transferred > 0) {
+                            energy -= transferred;
+                            lastBufferTransfer = transferred;
                             setChanged();
                             break;
                         }
@@ -401,13 +409,14 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 // its front face. Directionality prevents two conduits from endlessly
                 // bouncing energy back and forth and makes the block useful for building
                 // predictable AeroFlux highways.
-                if (energy >= 100) {
+                int packet = AeroConfig.CONFIG.conduitTransferPerPulse.get();
+                if (energy >= packet) {
                     Direction outputDirection = getBlockState().getValue(AeroMachineBlock.FACING);
                     BlockPos pos = worldPosition.relative(outputDirection);
                     IAeroFluxStorage storage = serverLevel.getCapability(
                             AeroCapabilities.AEROFLUX, pos, outputDirection.getOpposite());
                     if (storage != null && storage.getAeroFluxStored() < storage.getMaxAeroFluxStored()) {
-                        int accepted = storage.receiveAeroFlux(100, false);
+                        int accepted = storage.receiveAeroFlux(packet, false);
                         if (accepted > 0) {
                             energy -= accepted;
                             lastConduitTransfer = accepted;

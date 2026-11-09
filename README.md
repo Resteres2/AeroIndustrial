@@ -104,5 +104,9 @@ A server configuration is registered automatically under the NeoForge server con
 - Vector Thruster fallback search radius
 - Sky Relay stabilization upkeep
 - Atmospheric Condenser open-sky generation
+- Inertial Accumulator pull packet size
+- AeroFlux Capacitor transfer packet and reserve percentage
+- Mobile Dock transfer packet size
+- Aeronautical Conduit transfer packet size
 
 The defaults are intentionally conservative so the external integrations do not dominate the native AeroIndustrial progression.

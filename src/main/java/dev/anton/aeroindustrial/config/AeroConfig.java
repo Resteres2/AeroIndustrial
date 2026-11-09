@@ -14,6 +14,11 @@ public final class AeroConfig {
     public final ModConfigSpec.DoubleValue thrusterRadius;
     public final ModConfigSpec.IntValue skyRelayUpkeep;
     public final ModConfigSpec.IntValue atmosphericCondenserGain;
+    public final ModConfigSpec.IntValue accumulatorPullPerPulse;
+    public final ModConfigSpec.IntValue capacitorTransferPerPulse;
+    public final ModConfigSpec.IntValue capacitorReservePercent;
+    public final ModConfigSpec.IntValue mobileDockTransferPerPulse;
+    public final ModConfigSpec.IntValue conduitTransferPerPulse;
 
     private AeroConfig(ModConfigSpec.Builder builder) {
         builder.push("integration");
@@ -59,6 +64,31 @@ public final class AeroConfig {
                 .translation("config.aeroindustrial.atmospheric_condenser_gain")
                 .defineInRange("atmospheric_condenser_gain", 40, 0, 10000);
 
+        accumulatorPullPerPulse = builder
+                .comment("Maximum AeroFlux an Inertial Accumulator can pull from one adjacent source every 20 ticks.")
+                .translation("config.aeroindustrial.accumulator_pull_per_pulse")
+                .defineInRange("accumulator_pull_per_pulse", 200, 1, 10000);
+
+        capacitorTransferPerPulse = builder
+                .comment("Maximum AeroFlux an AeroFlux Capacitor can send to one adjacent low-charge storage every 20 ticks.")
+                .translation("config.aeroindustrial.capacitor_transfer_per_pulse")
+                .defineInRange("capacitor_transfer_per_pulse", 250, 1, 10000);
+
+        capacitorReservePercent = builder
+                .comment("Percentage of maximum capacity an AeroFlux Capacitor keeps as a reserve.")
+                .translation("config.aeroindustrial.capacitor_reserve_percent")
+                .defineInRange("capacitor_reserve_percent", 25, 0, 90);
+
+        mobileDockTransferPerPulse = builder
+                .comment("Maximum AeroFlux a Mobile Dock can transfer to or from one adjacent storage every 20 ticks.")
+                .translation("config.aeroindustrial.mobile_dock_transfer_per_pulse")
+                .defineInRange("mobile_dock_transfer_per_pulse", 100, 1, 10000);
+
+        conduitTransferPerPulse = builder
+                .comment("Maximum AeroFlux an Aeronautical Conduit can send through its front face every 20 ticks.")
+                .translation("config.aeroindustrial.conduit_transfer_per_pulse")
+                .defineInRange("conduit_transfer_per_pulse", 100, 1, 10000);
+
         builder.pop();
     }
 
@@ -77,5 +107,10 @@ public final class AeroConfig {
         this.thrusterRadius = null;
         this.skyRelayUpkeep = null;
         this.atmosphericCondenserGain = null;
+        this.accumulatorPullPerPulse = null;
+        this.capacitorTransferPerPulse = null;
+        this.capacitorReservePercent = null;
+        this.mobileDockTransferPerPulse = null;
+        this.conduitTransferPerPulse = null;
     }
 }
