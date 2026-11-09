@@ -51,7 +51,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
     }
 
     public int getMaxEnergy() {
-        return 10000 + getTier() * 5000;
+        return 10000 + getTier() * 5000 + (getTier() == 11 ? 30000 : 0);
     }
 
     public int receiveEnergy(int amount, boolean simulate) {
@@ -176,6 +176,14 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
                 if (energy > 0) {
                     energy = Math.max(0, energy - 1);
                     overload = Math.max(0, overload - 3);
+                    setChanged();
+                }
+            }
+            case 6 -> {
+                // Inertial Accumulator trades stored AeroFlux for controlled overload damping.
+                if (energy >= 50 && overload >= 30) {
+                    energy -= 50;
+                    overload = Math.max(0, overload - 5);
                     setChanged();
                 }
             }
