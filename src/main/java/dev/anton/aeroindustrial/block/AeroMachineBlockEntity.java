@@ -112,12 +112,23 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
     public boolean isProcessingMachine() {
         if (level == null) return false;
-        if (processingMachineCache == null || (!level.isClientSide && tickCounter % 200 == 0)) {
-            processingMachineCache = level.getRecipeManager().getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
-                    .stream()
-                    .anyMatch(holder -> holder.value().machineTier() == getTier());
+        if (processingMachineCache == null || (!level.isClientSide && tickCounter % 20 == 0)) {
+            processingMachineCache = !getTierRecipes().isEmpty();
         }
         return processingMachineCache;
+    }
+
+    private java.util.List<net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe>> getTierRecipes() {
+        if (level == null) return java.util.List.of();
+        if (tierRecipesCache == null || tierRecipesCacheTick < 0 || tickCounter - tierRecipesCacheTick >= 20) {
+            tierRecipesCache = level.getRecipeManager()
+                    .getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
+                    .stream()
+                    .filter(holder -> holder.value().machineTier() == getTier())
+                    .toList();
+            tierRecipesCacheTick = tickCounter;
+        }
+        return tierRecipesCache;
     }
 
     public int getProcessTime() {
@@ -137,17 +148,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         // RecipeManager lookups are comparatively expensive and this block entity
         // can perform them every server tick while processing. Keep a short-lived
         // per-tier cache so large machine arrays do not repeatedly scan every recipe.
-        if (tierRecipesCache == null || tierRecipesCacheTick < 0 || tickCounter - tierRecipesCacheTick >= 20) {
-            tierRecipesCache = level.getRecipeManager()
-                    .getAllRecipesFor(AeroRecipes.AERO_MACHINE_TYPE.get())
-                    .stream()
-                    .filter(holder -> holder.value().machineTier() == getTier())
-                    .toList();
-            tierRecipesCacheTick = tickCounter;
-        }
-
         var input = new net.minecraft.world.item.crafting.SingleRecipeInput(stack);
-        return tierRecipesCache.stream()
+        return getTierRecipes().stream()
                 .filter(holder -> holder.value().matches(input, level))
                 .findFirst()
                 .orElse(null);
