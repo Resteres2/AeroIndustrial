@@ -16,6 +16,7 @@ public final class AeroCreativeTabs {
                     .title(Component.translatable("itemGroup.aeroindustrial.aeroflux"))
                     .icon(() -> new ItemStack(AeroItems.AEROFLUX_CRYSTAL.get()))
                     .displayItems((params, output) -> {
+                        output.accept(AeroItems.AERO_MANUAL.get());
                         output.accept(AeroItems.AEROFLUX_CRYSTAL.get());
                         output.accept(AeroItems.PHASE_FOIL.get());
                         output.accept(AeroItems.VECTOR_COIL.get());
