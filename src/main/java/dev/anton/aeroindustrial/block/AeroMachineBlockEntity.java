@@ -270,7 +270,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 if (serverLevel.canSeeSky(worldPosition.above())
                         && energy < getMaxEnergy()
                         && overload < 80) {
-                    int gained = Math.min(40, getMaxEnergy() - energy);
+                    int gained = Math.min(AeroConfig.CONFIG.atmosphericCondenserGain.get(), getMaxEnergy() - energy);
                     energy += gained;
                     lastAtmosphericGain = gained;
                     setChanged();
@@ -311,7 +311,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 // Sky Relay is an active stabilisation field rather than a free aura:
                 // one pulse costs a small amount of AeroFlux, giving the network a
                 // meaningful upkeep cost while preventing idle relays from being free.
-                if (energy < 25) break;
+                if (energy < AeroConfig.CONFIG.skyRelayUpkeep.get()) break;
                 int stabilized = 0;
                 for (BlockPos pos : BlockPos.betweenClosed(
                         worldPosition.offset(-4, -2, -4),
@@ -326,7 +326,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                     }
                 }
                 if (stabilized > 0) {
-                    energy -= 25;
+                    energy -= AeroConfig.CONFIG.skyRelayUpkeep.get();
                     setChanged();
                 }
             }
