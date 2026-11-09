@@ -10,13 +10,16 @@ public final class CreateKineticBridge {
     private CreateKineticBridge() {}
 
     public static int harvest(Level level, BlockPos center, int radius) {
+        if (!IntegrationStatus.createLoaded()) return 0;
+
         int total = 0;
         for (BlockPos pos : BlockPos.betweenClosed(center.offset(-radius, -radius, -radius),
                 center.offset(radius, radius, radius))) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be == null) continue;
-            String name = be.getClass().getName();
-            if (!name.contains("create.") && !name.toLowerCase().contains("kinetic")) continue;
+
+            String name = be.getClass().getName().toLowerCase();
+            if (!name.contains("create.") && !name.contains("kinetic")) continue;
 
             Number speed = invokeNumber(be, "getSpeed");
             if (speed == null) speed = invokeNumber(be, "getTheoreticalSpeed");
