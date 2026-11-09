@@ -39,6 +39,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     private int lastKineticInput;
     private int lastGtInput;
     private int lastBufferTransfer;
+    private int lastDockTransfer;
     private Boolean processingMachineCache;
     private java.util.List<net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe>> tierRecipesCache;
     private int tierRecipesCacheTick = -1;
@@ -163,6 +164,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         lastKineticInput = 0;
         lastGtInput = 0;
         lastBufferTransfer = 0;
+        lastDockTransfer = 0;
 
         // A redstone signal is a universal maintenance/stop command.
         if (serverLevel.hasNeighborSignal(worldPosition)) {
@@ -269,7 +271,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                         if (storage == null || storage.getAeroFluxStored() <= 50) continue;
                         int moved = Math.min(100, Math.min(storage.getAeroFluxStored(), getMaxEnergy() - energy));
                         int extracted = storage.extractAeroFlux(moved, false);
-                        if (extracted > 0) { energy += extracted; setChanged(); break; }
+                        if (extracted > 0) { energy += extracted; lastDockTransfer = extracted; setChanged(); break; }
                     }
                 } else if (energy > getMaxEnergy() * 0.75) {
                     for (Direction direction : Direction.values()) {
@@ -278,7 +280,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                                 AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
                         if (storage == null || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored() * 0.75) continue;
                         int accepted = storage.receiveAeroFlux(Math.min(100, energy), false);
-                        if (accepted > 0) { energy -= accepted; setChanged(); break; }
+                        if (accepted > 0) { energy -= accepted; lastDockTransfer = accepted; setChanged(); break; }
                     }
                 }
             }
@@ -446,6 +448,9 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                             : "status.aeroindustrial.thruster.offline"
             ));
         }
+        if (getTier() == 12 && lastBufferTransfer > 0) {
+            status = status.copy().append(Component.translatable("status.aeroindustrial.dock", lastDockTransfer));
+        }
         if (isProcessingMachine()) {
             status = status.copy().append(Component.translatable(
                     "status.aeroindustrial.processing",
@@ -517,6 +522,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         lastKineticInput = 0;
         lastGtInput = 0;
         lastBufferTransfer = 0;
+        lastDockTransfer = 0;
         processingMachineCache = null;
         tierRecipesCache = null;
         tierRecipesCacheTick = -1;
