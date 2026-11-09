@@ -2,6 +2,7 @@ package dev.anton.aeroindustrial.block;
 
 import dev.anton.aeroindustrial.compat.CreateKineticBridge;
 import dev.anton.aeroindustrial.compat.IntegrationStatus;
+import dev.anton.aeroindustrial.compat.GtceuEnergyBridge;
 import dev.anton.aeroindustrial.compat.MovingStructureBridge;
 import dev.anton.aeroindustrial.menu.AeroMachineMenu;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
@@ -31,6 +32,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
     private int overload;
     private int tickCounter;
     private int lastKineticInput;
+    private int lastGtInput;
 
     public AeroMachineBlockEntity(BlockPos pos, BlockState state) {
         super(AeroBlockEntities.AERO_MACHINE.get(), pos, state);
@@ -112,11 +114,19 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         // Only the Torque Resonator is the Create -> AeroFlux interface.
         if (getTier() == 2 && tickCounter % 10 == 0) {
             lastKineticInput = 0;
+        lastGtInput = 0;
+            lastGtInput = 0;
             if (IntegrationStatus.createLoaded()) {
                 int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2);
                 lastKineticInput = Math.min(harvested, 120);
                 if (lastKineticInput > 0) {
                     receiveEnergy(lastKineticInput, false);
+                }
+            }
+            if (IntegrationStatus.gtceuLoaded()) {
+                lastGtInput = Math.min(GtceuEnergyBridge.harvest(serverLevel, worldPosition, 1), 120);
+                if (lastGtInput > 0) {
+                    receiveEnergy(lastGtInput, false);
                 }
             }
         }
@@ -299,6 +309,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         );
         if (getTier() == 2) {
             status = status.copy().append(Component.translatable("status.aeroindustrial.create", lastKineticInput));
+            status = status.copy().append(Component.translatable("status.aeroindustrial.gtceu", lastGtInput));
         }
         if (getTier() == 10) {
             status = status.copy().append(Component.translatable(
