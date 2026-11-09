@@ -5,6 +5,7 @@ import dev.anton.aeroindustrial.compat.AeroCapabilities;
 import dev.anton.aeroindustrial.compat.CreateKineticBridge;
 import dev.anton.aeroindustrial.compat.IntegrationStatus;
 import dev.anton.aeroindustrial.compat.GtceuEnergyBridge;
+import dev.anton.aeroindustrial.config.AeroConfig;
 import dev.anton.aeroindustrial.compat.MovingStructureBridge;
 import dev.anton.aeroindustrial.menu.AeroMachineMenu;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
@@ -154,14 +155,14 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             lastKineticInput = 0;
             lastGtInput = 0;
             if (IntegrationStatus.createLoaded()) {
-                int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2);
+                int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2, AeroConfig.CONFIG.createInputPerPulse.get());
                 lastKineticInput = Math.min(harvested, 120);
                 if (lastKineticInput > 0) {
                     receiveEnergy(lastKineticInput, false);
                 }
             }
             if (IntegrationStatus.gtceuLoaded()) {
-                lastGtInput = Math.min(GtceuEnergyBridge.harvest(serverLevel, worldPosition, 1), 120);
+                lastGtInput = Math.min(GtceuEnergyBridge.harvest(serverLevel, worldPosition, 1, AeroConfig.CONFIG.gtceuInputPerPulse.get()), AeroConfig.CONFIG.gtceuInputPerPulse.get());
                 if (lastGtInput > 0) {
                     receiveEnergy(lastGtInput, false);
                 }
@@ -169,18 +170,18 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         }
 
         // Vector Thruster is the AeroFlux -> moving-structure interface.
-        if (getTier() == 10 && tickCounter % 10 == 0 && energy >= 25) {
+        if (getTier() == 10 && tickCounter % 10 == 0 && energy >= AeroConfig.CONFIG.thrusterEnergyCost.get()) {
             int affected = MovingStructureBridge.applyThruster(
                     serverLevel,
                     worldPosition.getX() + 0.5,
                     worldPosition.getY() + 0.5,
                     worldPosition.getZ() + 0.5,
                     8.0,
-                    0.03,
+                    AeroConfig.CONFIG.thrusterStrength.get(),
                     getBlockState().getValue(AeroMachineBlock.FACING)
             );
             if (affected > 0) {
-                energy -= 25;
+                energy -= AeroConfig.CONFIG.thrusterEnergyCost.get();
                 setChanged();
             }
         }
