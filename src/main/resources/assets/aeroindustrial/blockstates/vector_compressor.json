@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "aeroindustrial:block/vector_compressor"
+    },
+    "facing=east": {
+      "model": "aeroindustrial:block/vector_compressor",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeroindustrial:block/vector_compressor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeroindustrial:block/vector_compressor",
+      "y": 270
     }
   }
 }
