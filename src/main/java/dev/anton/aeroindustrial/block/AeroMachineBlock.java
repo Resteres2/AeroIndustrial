@@ -111,6 +111,10 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                                Player player, InteractionHand hand, BlockHitResult hit) {
+        if (stack.is(AeroItems.AERO_WRENCH.get())) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
         if (stack.is(AeroItems.AEROFLUX_CRYSTAL.get())) {
             if (!level.isClientSide) {
                 BlockEntity blockEntity = level.getBlockEntity(pos);
