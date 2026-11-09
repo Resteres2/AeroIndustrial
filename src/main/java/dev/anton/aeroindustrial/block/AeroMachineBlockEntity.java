@@ -1,6 +1,7 @@
 package dev.anton.aeroindustrial.block;
 
 import dev.anton.aeroindustrial.compat.CreateKineticBridge;
+import dev.anton.aeroindustrial.compat.IntegrationStatus;
 import dev.anton.aeroindustrial.compat.MovingStructureBridge;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -54,17 +55,17 @@ public final class AeroMachineBlockEntity extends BlockEntity {
         int tier = machine.tier();
         tickCounter++;
 
-        // Poll Create kinetic sources periodically rather than scanning the
-        // surrounding block entities every tick.
-        if (tickCounter % 10 == 0) {
-            int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2);
+        // Create is an optional integration. If present, nearby kinetic speed
+        // can be converted into a small, intentionally lossy AeroFlux input.
+        if (tickCounter % 10 == 0 && IntegrationStatus.createLoaded()) {
+            int radius = tier >= 5 ? 3 : 2;
+            int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, radius);
             if (harvested > 0) {
                 receiveEnergy(Math.min(harvested, 120), false);
             }
         }
 
-        // The Vector Thruster is the only machine that actively couples
-        // AeroFlux to moving contraptions.
+        // The Vector Thruster actively couples AeroFlux to moving structures.
         if (tier == 10 && tickCounter % 10 == 0 && energy >= 25) {
             int affected = MovingStructureBridge.applyThruster(
                     serverLevel,
@@ -80,8 +81,8 @@ public final class AeroMachineBlockEntity extends BlockEntity {
             }
         }
 
-        // AeroFlux is intentionally its own resource. Machines slowly resonate
-        // when supplied, and overload decays instead of being a simple FE clone.
+        // AeroFlux is intentionally separate from FE/EU. Supplied machines
+        // resonate over time, while high storage creates an overload state.
         if (energy >= tier * 20) {
             energy -= tier * 2;
             progress++;
@@ -100,7 +101,7 @@ public final class AeroMachineBlockEntity extends BlockEntity {
         }
 
         if (overload >= 100) {
-            energy = Math.max(0, energy - getMaxEnergy() / 20);
+            energy = Math.max(0, energy - Math.max(1, getMaxEnergy() / 20));
             overload = 40;
             setChanged();
         }
@@ -109,7 +110,8 @@ public final class AeroMachineBlockEntity extends BlockEntity {
     public String statusLine() {
         return "AeroFlux " + energy + "/" + getMaxEnergy()
                 + " | resonance " + progress + "/20"
-                + " | overload " + overload + "%";
+                + " | overload " + overload + "%"
+                + " | " + IntegrationStatus.summary();
     }
 
     @Override
