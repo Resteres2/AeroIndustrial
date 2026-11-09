@@ -15,6 +15,7 @@ public final class AeroMachineBlockEntity extends BlockEntity {
     private int progress;
     private int overload;
     private int tickCounter;
+    private int lastKineticInput;
 
     public AeroMachineBlockEntity(BlockPos pos, BlockState state) {
         super(AeroBlockEntities.AERO_MACHINE.get(), pos, state);
@@ -55,17 +56,20 @@ public final class AeroMachineBlockEntity extends BlockEntity {
         int tier = machine.tier();
         tickCounter++;
 
-        // Create is an optional integration. If present, nearby kinetic speed
-        // can be converted into a small, intentionally lossy AeroFlux input.
-        if (tickCounter % 10 == 0 && IntegrationStatus.createLoaded()) {
-            int radius = tier >= 5 ? 3 : 2;
-            int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, radius);
-            if (harvested > 0) {
-                receiveEnergy(Math.min(harvested, 120), false);
+        // Only the Torque Resonator is the Create -> AeroFlux interface.
+        // This makes the Create interaction intentional rather than hidden.
+        if (tier == 2 && tickCounter % 10 == 0) {
+            lastKineticInput = 0;
+            if (IntegrationStatus.createLoaded()) {
+                int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2);
+                lastKineticInput = Math.min(harvested, 120);
+                if (lastKineticInput > 0) {
+                    receiveEnergy(lastKineticInput, false);
+                }
             }
         }
 
-        // The Vector Thruster actively couples AeroFlux to moving structures.
+        // Vector Thruster is the AeroFlux -> moving-structure interface.
         if (tier == 10 && tickCounter % 10 == 0 && energy >= 25) {
             int affected = MovingStructureBridge.applyThruster(
                     serverLevel,
@@ -81,8 +85,8 @@ public final class AeroMachineBlockEntity extends BlockEntity {
             }
         }
 
-        // AeroFlux is intentionally separate from FE/EU. Supplied machines
-        // resonate over time, while high storage creates an overload state.
+        // Every machine currently uses the common AeroFlux resonance core.
+        // Distinct processing recipes will be added on top of this foundation.
         if (energy >= tier * 20) {
             energy -= tier * 2;
             progress++;
@@ -108,10 +112,18 @@ public final class AeroMachineBlockEntity extends BlockEntity {
     }
 
     public String statusLine() {
+        AeroMachineBlock machine = (AeroMachineBlock) getBlockState().getBlock();
+        String createStatus = machine.tier() == 2
+                ? " | Create input " + lastKineticInput + " AF/10t"
+                : "";
+        String motionStatus = machine.tier() == 10
+                ? " | Thruster coupling " + (IntegrationStatus.sableLoaded() || IntegrationStatus.aeronauticsLoaded() ? "READY" : "OFF")
+                : "";
         return "AeroFlux " + energy + "/" + getMaxEnergy()
                 + " | resonance " + progress + "/20"
                 + " | overload " + overload + "%"
-                + " | " + IntegrationStatus.summary();
+                + createStatus
+                + motionStatus;
     }
 
     @Override
@@ -130,5 +142,6 @@ public final class AeroMachineBlockEntity extends BlockEntity {
         progress = tag.getInt("Progress");
         overload = tag.getInt("Overload");
         tickCounter = tag.getInt("TickCounter");
+        lastKineticInput = 0;
     }
 }
