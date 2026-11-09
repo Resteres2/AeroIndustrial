@@ -108,11 +108,12 @@
   "manual.aeroindustrial.tiers.7": "T7 Aero Forge — industrial processor for production recipes.",
   "manual.aeroindustrial.tiers.8": "T8 Atmospheric Condenser — processor and atmospheric harvester: under open sky it gains up to 40 AF/20t below 80% overload.",
   "manual.aeroindustrial.tiers.9": "T9 Mobile Refinery — processor for the late production chain and mobile systems.",
-  "manual.aeroindustrial.tiers.10": "T10 Vector Thruster — by default every 10t it spends 25 AF to impulse compatible moving structures; high overload reduces strength.",
+  "manual.aeroindustrial.tiers.10": "T10 Vector Thruster — by default every 10t it spends 25 AF to impulse compatible moving structures; high overload reduces strength. If no Sable sub-level contains it, the fallback targets the nearest compatible entity within its configured radius.",
   "manual.aeroindustrial.tiers.11": "T11 AeroFlux Capacitor — active buffer: transfers up to 250 AF/20t to an adjacent machine below 50% charge while preserving a reserve.",
   "manual.aeroindustrial.tiers.12": "T12 Mobile Dock — below 1/3 charge it draws up to 100 AF/20t; above 75% it can unload up to 100 AF/20t into adjacent storage.",
   "manual.aeroindustrial.tiers.13": "T13 Pressure Lattice — spends 20 AF/20t and reduces its own overload by 8 percentage points.",
   "manual.aeroindustrial.tiers.14": "T14 Aeronautical Conduit — transfers exactly 100 AF/20t only through its front face.",
   "manual.aeroindustrial.tiers.15": "T15 Vector Frame — spends 10 AF/20t, reduces its own overload by 2 percentage points and adjacent machines by 1.",
-  "manual.aeroindustrial.page": "Page %s/%s"
+  "manual.aeroindustrial.page": "Page %s/%s",
+  "config.aeroindustrial.thruster_radius": "Vector Thruster fallback search radius"
 }

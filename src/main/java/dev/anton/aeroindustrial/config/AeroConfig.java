@@ -11,6 +11,7 @@ public final class AeroConfig {
     public final ModConfigSpec.IntValue gtceuInputPerPulse;
     public final ModConfigSpec.IntValue thrusterEnergyCost;
     public final ModConfigSpec.DoubleValue thrusterStrength;
+    public final ModConfigSpec.DoubleValue thrusterRadius;
     public final ModConfigSpec.IntValue skyRelayUpkeep;
     public final ModConfigSpec.IntValue atmosphericCondenserGain;
 
@@ -40,6 +41,11 @@ public final class AeroConfig {
                 .translation("config.aeroindustrial.thruster_strength")
                 .defineInRange("thruster_strength", 0.03D, 0.001D, 10.0D);
 
+        thrusterRadius = builder
+                .comment("Search radius for the Vector Thruster entity fallback; Sable sub-levels are targeted directly.")
+                .translation("config.aeroindustrial.thruster_radius")
+                .defineInRange("thruster_radius", 8.0D, 1.0D, 32.0D);
+
         builder.pop();
         builder.push("network");
 
@@ -68,6 +74,7 @@ public final class AeroConfig {
         this.gtceuInputPerPulse = null;
         this.thrusterEnergyCost = null;
         this.thrusterStrength = null;
+        this.thrusterRadius = null;
         this.skyRelayUpkeep = null;
         this.atmosphericCondenserGain = null;
     }

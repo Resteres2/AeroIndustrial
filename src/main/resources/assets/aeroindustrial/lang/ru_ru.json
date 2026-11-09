@@ -108,11 +108,12 @@
   "manual.aeroindustrial.tiers.7": "T7 Aero Forge — промышленный процессор для производственных рецептов.",
   "manual.aeroindustrial.tiers.8": "T8 Atmospheric Condenser — процессор и атмосферный сборщик: под открытым небом получает до 40 AF/20т при перегрузке ниже 80%.",
   "manual.aeroindustrial.tiers.9": "T9 Mobile Refinery — процессор для поздней производственной цепочки и мобильных систем.",
-  "manual.aeroindustrial.tiers.10": "T10 Vector Thruster — по умолчанию каждые 10т расходует 25 AF для импульса совместимой движущейся конструкции; высокая перегрузка уменьшает силу.",
+  "manual.aeroindustrial.tiers.10": "T10 Vector Thruster — по умолчанию каждые 10т расходует 25 AF для импульса совместимой движущейся конструкции; высокая перегрузка уменьшает силу. Если двигатель не находится внутри Sable sub-level, резервный режим выбирает ближайшую совместимую сущность в заданном радиусе.",
   "manual.aeroindustrial.tiers.11": "T11 AeroFlux Capacitor — активный буфер: передаёт до 250 AF/20т соседней машине ниже 50%, сохраняя резерв.",
   "manual.aeroindustrial.tiers.12": "T12 Mobile Dock — при заряде ниже 1/3 забирает до 100 AF/20т; выше 75% может выгружать до 100 AF/20т в соседнее хранилище.",
   "manual.aeroindustrial.tiers.13": "T13 Pressure Lattice — расходует 20 AF/20т и снижает собственную перегрузку на 8 процентных пунктов.",
   "manual.aeroindustrial.tiers.14": "T14 Aeronautical Conduit — передаёт ровно 100 AF/20т только через переднюю грань.",
   "manual.aeroindustrial.tiers.15": "T15 Vector Frame — расходует 10 AF/20т, снижает собственную перегрузку на 2 процентных пункта и соседних машин на 1.",
-  "manual.aeroindustrial.page": "Страница %s/%s"
+  "manual.aeroindustrial.page": "Страница %s/%s",
+  "config.aeroindustrial.thruster_radius": "Радиус поиска для резервного режима Vector Thruster"
 }

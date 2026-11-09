@@ -24,13 +24,14 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 - NeoForge energy capability exposure.
 - Runtime detection of Create, Sable, Create Aeronautics and GTCEu.
 - Optional GTCEu energy intake through NeoForge's energy capability when GTCEu exposes an FE-compatible storage.
-- Vector Thruster can use Sable's physics pipeline when an AeroIndustrial machine is mounted inside a Sable sub-level, with a conservative entity fallback outside it.
+- Vector Thruster applies impulses to the Sable sub-level containing the machine; outside a sub-level, its conservative fallback targets only the nearest compatible moving-structure entity.
 - Optional Create kinetic harvesting through a reflection bridge.
 - Optional moving-structure coupling for the Vector Thruster through a conservative reflection/class-name bridge.
 - Localized machine status reporting in the action bar.
 - A native optional JEI category for AeroFlux machine processing recipes.
 - GitHub Actions build pipeline.
 - Short-lived per-tier recipe caching to reduce repeated RecipeManager scans in machine arrays.
+- Cached per-class reflection lookups for optional Create and Sable bridges.
 - Defensive recipe-output validation so malformed external data cannot create empty or oversized machine outputs.
 - Redstone pause control, overload-aware thruster behavior, active Sky Relay upkeep, and localized runtime telemetry for integration inputs.
 
@@ -40,7 +41,7 @@ The optional integrations are deliberately not hard compile-time dependencies. T
 
 The Create bridge is a compatibility prototype: it looks for compatible kinetic block entities and reads speed methods reflectively. It does **not** claim to implement Create's internal kinetic API.
 
-The Aeronautics/Sable bridge is also a prototype: it identifies moving-structure entities conservatively and applies the Vector Thruster impulse to matching entities. It has not yet been verified against every Create Aeronautics 1.3.x internal class.
+The Aeronautics/Sable bridge remains a compatibility prototype. When the thruster is mounted inside a Sable sub-level, it resolves Sable's public sub-level/physics methods once and applies the impulse to that structure. Outside a sub-level, the fallback searches within a configurable radius and affects only the nearest class-name-matched moving-structure entity. This still requires runtime verification against the intended Create Aeronautics 1.3.x and Sable 2.0.x releases.
 
 GregTech CEu Modern is detected and has a conservative compatibility bridge: the Torque Resonator can pull energy from nearby GTCEu blocks when they expose a compatible NeoForge energy capability. This is intentionally isolated from GTCEu internals and does not pretend that AeroFlux and EU are the same unit.
 
@@ -100,6 +101,7 @@ A server configuration is registered automatically under the NeoForge server con
 - GTCEu-compatible energy input rate
 - Vector Thruster AeroFlux cost
 - Vector Thruster impulse strength
+- Vector Thruster fallback search radius
 - Sky Relay stabilization upkeep
 - Atmospheric Condenser open-sky generation
 

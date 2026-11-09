@@ -194,19 +194,28 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             return;
         }
 
-        // Only the Torque Resonator is the Create -> AeroFlux interface.
+        // Only the Torque Resonator is the Create -> AeroFlux interface. Each bridge
+        // is given only the free capacity so it never extracts energy that this machine
+        // cannot store.
         if (getTier() == 2 && tickCounter % 10 == 0) {
             if (IntegrationStatus.createLoaded()) {
-                int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2, AeroConfig.CONFIG.createInputPerPulse.get());
-                lastKineticInput = harvested;
-                if (lastKineticInput > 0) {
-                    receiveEnergy(lastKineticInput, false);
+                int inputBudget = Math.min(
+                        AeroConfig.CONFIG.createInputPerPulse.get(),
+                        getMaxEnergy() - energy
+                );
+                if (inputBudget > 0) {
+                    int harvested = CreateKineticBridge.harvest(serverLevel, worldPosition, 2, inputBudget);
+                    lastKineticInput = receiveEnergy(harvested, false);
                 }
             }
             if (IntegrationStatus.gtceuLoaded()) {
-                lastGtInput = GtceuEnergyBridge.harvest(serverLevel, worldPosition, 1, AeroConfig.CONFIG.gtceuInputPerPulse.get());
-                if (lastGtInput > 0) {
-                    receiveEnergy(lastGtInput, false);
+                int inputBudget = Math.min(
+                        AeroConfig.CONFIG.gtceuInputPerPulse.get(),
+                        getMaxEnergy() - energy
+                );
+                if (inputBudget > 0) {
+                    int harvested = GtceuEnergyBridge.harvest(serverLevel, worldPosition, 1, inputBudget);
+                    lastGtInput = receiveEnergy(harvested, false);
                 }
             }
         }
@@ -218,7 +227,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                     worldPosition.getX() + 0.5,
                     worldPosition.getY() + 0.5,
                     worldPosition.getZ() + 0.5,
-                    8.0,
+                    AeroConfig.CONFIG.thrusterRadius.get(),
                     AeroConfig.CONFIG.thrusterStrength.get() * Math.max(0.5, 1.0 - overload * 0.005),
                     getBlockState().getValue(AeroMachineBlock.FACING)
             );

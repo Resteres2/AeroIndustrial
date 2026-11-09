@@ -2,6 +2,7 @@ package dev.anton.aeroindustrial.compat;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -13,10 +14,14 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 public final class MovingStructureBridge {
+    private static final Object SABLE_BINDINGS_LOCK = new Object();
+    private static volatile boolean sableBindingsResolved;
+    private static volatile SableBindings sableBindings;
+
     private MovingStructureBridge() {}
 
     public static int applyThruster(
-            Level level,
+            ServerLevel level,
             double x,
             double y,
             double z,
@@ -25,40 +30,70 @@ public final class MovingStructureBridge {
             Direction direction
     ) {
         if ((!IntegrationStatus.sableLoaded() && !IntegrationStatus.aeronauticsLoaded())
-                || radius <= 0.0D || strength <= 0.0D) return 0;
-
-        if (level instanceof ServerLevel serverLevel
-                && (IntegrationStatus.sableLoaded() || IntegrationStatus.aeronauticsLoaded())) {
-            if (applySableImpulse(serverLevel, BlockPos.containing(x, y, z), direction, strength)) {
-                return 1;
-            }
+                || radius <= 0.0D || strength <= 0.0D) {
+            return 0;
         }
 
-        int affected = 0;
-        AABB bounds = new AABB(x - radius, y - radius, z - radius,
-                x + radius, y + radius, z + radius);
+        BlockPos position = BlockPos.containing(x, y, z);
+        if (IntegrationStatus.sableLoaded()
+                && applySableImpulse(level, position, direction, strength)) {
+            return 1;
+        }
 
-        for (Entity entity : level.getEntities((Entity) null, bounds, e -> {
-            String name = e.getClass().getName().toLowerCase(Locale.ROOT);
-            return name.contains("contraption")
-                    || name.contains("airship")
-                    || name.contains("aeronaut");
-        })) {
+        // Outside a Sable sub-level, use the conservative compatibility fallback.
+        // A single thruster pulse must not broadcast force to every nearby vehicle.
+        return applyNearestEntityImpulse(level, x, y, z, radius, strength, direction);
+    }
+
+    private static int applyNearestEntityImpulse(
+            ServerLevel level,
+            double x,
+            double y,
+            double z,
+            double radius,
+            double strength,
+            Direction direction
+    ) {
+        AABB bounds = new AABB(
+                x - radius, y - radius, z - radius,
+                x + radius, y + radius, z + radius
+        );
+        double radiusSquared = radius * radius;
+        Entity nearest = null;
+        double nearestDistanceSquared = radiusSquared;
+
+        for (Entity entity : level.getEntities((Entity) null, bounds,
+                MovingStructureBridge::isCompatibleMovingEntity)) {
             double dx = entity.getX() - x;
             double dy = entity.getY() - y;
             double dz = entity.getZ() - z;
-            double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-            double scale = strength * Math.max(0.15, 1.0 - distance / radius);
-
-            entity.setDeltaMovement(entity.getDeltaMovement().add(
-                    direction.getStepX() * scale,
-                    direction.getStepY() * scale,
-                    direction.getStepZ() * scale
-            ));
-            entity.hurtMarked = true;
-            affected++;
+            double distanceSquared = dx * dx + dy * dy + dz * dz;
+            if (distanceSquared <= nearestDistanceSquared) {
+                nearest = entity;
+                nearestDistanceSquared = distanceSquared;
+            }
         }
-        return affected;
+
+        if (nearest == null) {
+            return 0;
+        }
+
+        double distance = Math.sqrt(nearestDistanceSquared);
+        double scale = strength * Math.max(0.15D, 1.0D - distance / radius);
+        nearest.setDeltaMovement(nearest.getDeltaMovement().add(
+                direction.getStepX() * scale,
+                direction.getStepY() * scale,
+                direction.getStepZ() * scale
+        ));
+        nearest.hurtMarked = true;
+        return 1;
+    }
+
+    private static boolean isCompatibleMovingEntity(Entity entity) {
+        String className = entity.getClass().getName().toLowerCase(Locale.ROOT);
+        return className.contains("contraption")
+                || className.contains("airship")
+                || className.contains("aeronaut");
     }
 
     private static boolean applySableImpulse(
@@ -67,68 +102,135 @@ public final class MovingStructureBridge {
             Direction direction,
             double strength
     ) {
+        SableBindings bindings = getSableBindings();
+        if (bindings == null) {
+            return false;
+        }
+
         try {
-            Class<?> sableClass = Class.forName("dev.ryanhcode.sable.Sable");
-            Field helperField = sableClass.getField("HELPER");
-            Object helper = helperField.get(null);
+            Object subLevel = bindings.getContaining.invoke(bindings.helper, level, position);
+            if (subLevel == null || !bindings.serverSubLevelType.isInstance(subLevel)) {
+                return false;
+            }
 
-            Method getContaining = findMethod(helper.getClass(), "getContaining", 2);
-            if (getContaining == null) return false;
+            Object container = bindings.getContainer.invoke(null, level);
+            if (container == null || !bindings.serverContainerType.isInstance(container)) {
+                return false;
+            }
 
-            Object subLevel = getContaining.invoke(helper, level, position);
-            if (subLevel == null) return false;
+            Object physicsSystem = bindings.physicsSystem.invoke(container);
+            if (physicsSystem == null) {
+                return false;
+            }
 
-            Class<?> containerClass = Class.forName("dev.ryanhcode.sable.api.sublevel.SubLevelContainer");
-            Method getContainer = findMethod(containerClass, "getContainer", 1);
-            if (getContainer == null) return false;
+            Object body = bindings.getPhysicsHandle.invoke(physicsSystem, subLevel);
+            if (body == null) {
+                return false;
+            }
 
-            Object container = getContainer.invoke(null, level);
-            if (container == null) return false;
-
-            Method physicsSystemMethod = findMethod(container.getClass(), "physicsSystem", 0);
-            if (physicsSystemMethod == null) return false;
-            Object physicsSystem = physicsSystemMethod.invoke(container);
-
-            Method getHandle = findMethod(physicsSystem.getClass(), "getPhysicsHandle", 1);
-            if (getHandle == null) return false;
-            Object body = getHandle.invoke(physicsSystem, subLevel);
-            if (body == null) return false;
-
-            Method getPipeline = findMethod(physicsSystem.getClass(), "getPipeline", 0);
-            if (getPipeline == null) return false;
-            Object pipeline = getPipeline.invoke(physicsSystem);
-
-            Vector3d worldPosition = new Vector3d(
-                    position.getX() + 0.5,
-                    position.getY() + 0.5,
-                    position.getZ() + 0.5
+            // Sable expects a position in the sub-level plot and a local impulse.
+            Vector3d impulsePosition = new Vector3d(
+                    position.getX() + 0.5D,
+                    position.getY() + 0.5D,
+                    position.getZ() + 0.5D
             );
-            Vector3d force = new Vector3d(
+            Vector3d impulse = new Vector3d(
                     direction.getStepX() * strength,
                     direction.getStepY() * strength,
                     direction.getStepZ() * strength
             );
-
-            for (Method method : pipeline.getClass().getMethods()) {
-                if (!method.getName().equals("applyImpulse") || method.getParameterCount() != 3) continue;
-                if (!method.getParameterTypes()[0].isAssignableFrom(body.getClass())) continue;
-                if (!method.getParameterTypes()[1].isAssignableFrom(Vector3d.class)) continue;
-                if (!method.getParameterTypes()[2].isAssignableFrom(Vector3d.class)) continue;
-                method.invoke(pipeline, body, worldPosition, force);
-                return true;
-            }
-        } catch (ReflectiveOperationException | RuntimeException ignored) {
-            // Compatibility layer: fall back to the conservative entity impulse.
+            bindings.applyImpulseAtPoint.invoke(body, impulsePosition, impulse);
+            return true;
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
+            // Optional integration: retain the entity fallback if the installed
+            // Sable version does not expose the expected public API.
+            return false;
         }
-        return false;
     }
 
-    private static Method findMethod(Class<?> type, String name, int parameterCount) {
-        for (Method method : type.getMethods()) {
-            if (method.getName().equals(name) && method.getParameterCount() == parameterCount) {
-                return method;
-            }
+    private static SableBindings getSableBindings() {
+        if (sableBindingsResolved) {
+            return sableBindings;
         }
-        return null;
+
+        synchronized (SABLE_BINDINGS_LOCK) {
+            if (sableBindingsResolved) {
+                return sableBindings;
+            }
+
+            try {
+                Class<?> sableClass = Class.forName("dev.ryanhcode.sable.Sable");
+                Field helperField = sableClass.getField("HELPER");
+                Object helper = helperField.get(null);
+                if (helper == null) {
+                    sableBindingsResolved = true;
+                    return null;
+                }
+
+                // Resolve exact public signatures. Sable overloads getContaining
+                // and getContainer, so selecting by method name + arity is unsafe.
+                Method getContaining = helper.getClass().getMethod(
+                        "getContaining", Level.class, Vec3i.class
+                );
+                Class<?> subLevelContainerType = Class.forName(
+                        "dev.ryanhcode.sable.api.sublevel.SubLevelContainer"
+                );
+                Method getContainer = subLevelContainerType.getMethod(
+                        "getContainer", ServerLevel.class
+                );
+
+                Class<?> serverContainerType = Class.forName(
+                        "dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer"
+                );
+                Method physicsSystem = serverContainerType.getMethod("physicsSystem");
+
+                Class<?> physicsSystemType = Class.forName(
+                        "dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem"
+                );
+                Class<?> serverSubLevelType = Class.forName(
+                        "dev.ryanhcode.sable.sublevel.ServerSubLevel"
+                );
+                Method getPhysicsHandle = physicsSystemType.getMethod(
+                        "getPhysicsHandle", serverSubLevelType
+                );
+
+                Class<?> rigidBodyHandleType = Class.forName(
+                        "dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle"
+                );
+                Class<?> vector3dcType = Class.forName("org.joml.Vector3dc");
+                Method applyImpulseAtPoint = rigidBodyHandleType.getMethod(
+                        "applyImpulseAtPoint", vector3dcType, vector3dcType
+                );
+
+                sableBindings = new SableBindings(
+                        helper,
+                        getContaining,
+                        getContainer,
+                        serverContainerType,
+                        physicsSystem,
+                        serverSubLevelType,
+                        getPhysicsHandle,
+                        applyImpulseAtPoint
+                );
+            } catch (ReflectiveOperationException | LinkageError ignored) {
+                // Cache an unavailable result instead of repeating failed lookups
+                // every 10 ticks on servers with a different Sable API version.
+                sableBindings = null;
+            }
+
+            sableBindingsResolved = true;
+            return sableBindings;
+        }
     }
+
+    private record SableBindings(
+            Object helper,
+            Method getContaining,
+            Method getContainer,
+            Class<?> serverContainerType,
+            Method physicsSystem,
+            Class<?> serverSubLevelType,
+            Method getPhysicsHandle,
+            Method applyImpulseAtPoint
+    ) {}
 }
