@@ -3,7 +3,8 @@ package dev.anton.aeroindustrial;
 import dev.anton.aeroindustrial.compat.AeroCapabilities;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
 import dev.anton.aeroindustrial.registry.AeroBlocks;
-import dev.anton.aeroindustrial.registry.AeroItems;\nimport dev.anton.aeroindustrial.registry.AeroCreativeTabs;
+import dev.anton.aeroindustrial.registry.AeroItems;
+import dev.anton.aeroindustrial.registry.AeroCreativeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 
@@ -13,7 +14,8 @@ public final class AeroIndustrial {
 
     public AeroIndustrial(IEventBus modBus) {
         AeroBlocks.BLOCKS.register(modBus);
-        AeroItems.ITEMS.register(modBus);\n        AeroCreativeTabs.TABS.register(modBus);
+        AeroItems.ITEMS.register(modBus);
+        AeroCreativeTabs.TABS.register(modBus);
         AeroBlockEntities.BLOCK_ENTITIES.register(modBus);
         modBus.addListener(AeroCapabilities::register);
     }
