@@ -16,7 +16,7 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 
 ## Current implementation
 
-- 15 registered blocks: 10 named machines + 5 auxiliary structures.
+- 15 registered AeroIndustrial machine blocks, each with a distinct tier role.
 - 8 custom AeroFlux components.
 - Crafting recipes, data-driven machine processing recipes and block loot tables.
 - Custom industrial textures for all machines and components.
@@ -32,7 +32,7 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 - GitHub Actions build pipeline.
 - Short-lived per-tier recipe caching to reduce repeated RecipeManager scans in machine arrays.
 - Defensive recipe-output validation so malformed external data cannot create empty or oversized machine outputs.
-- Redstone pause control and localized runtime telemetry for integration inputs.
+- Redstone pause control, overload-aware thruster behavior, active Sky Relay upkeep, and localized runtime telemetry for integration inputs.
 
 The optional integrations are deliberately not hard compile-time dependencies. They are declared as optional NeoForge dependencies, so the base mod remains loadable without them.
 
@@ -50,9 +50,9 @@ AeroIndustrial's core loop is:
 
 1. Supply AeroFlux to a machine.
 2. The machine builds resonance progress.
-3. High storage creates overload pressure.
-4. Create kinetic infrastructure can optionally contribute AeroFlux.
-5. The Vector Thruster can optionally couple AeroFlux to compatible moving structures.
+3. High storage creates overload pressure, while stabilizers and local network blocks manage that pressure.
+4. Create kinetic infrastructure and GTCEu-compatible storage can optionally contribute AeroFlux through the Torque Resonator.
+5. The Vector Thruster can optionally couple AeroFlux to compatible moving structures; overload reduces its effective thrust.
 
 This is now a functional vertical slice of the intended product architecture: data-driven machines, a custom GUI, recipe discovery, localized status feedback, original AeroFlux mechanics and optional integrations. The external Create/Aeronautics/GTCEu bridges remain conservative compatibility layers and still require broader runtime validation.
 
