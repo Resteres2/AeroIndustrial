@@ -1,10 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["IPI", "PGP", "IPI"],
+  "pattern": ["XPI","PGP","IPI"],
   "key": {
     "I": {"item": "minecraft:iron_ingot"},
     "P": {"item": "aeroindustrial:pressure_gel"},
-    "G": {"item": "minecraft:glass"}
+    "G": {"item": "minecraft:glass"},
+    "X": {"item": "aeroindustrial:mobile_dock"}
   },
   "result": {"id": "aeroindustrial:pressure_lattice", "count": 1}
 }
