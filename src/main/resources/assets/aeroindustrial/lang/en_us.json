@@ -75,5 +75,6 @@
   "status.aeroindustrial.gtceu": " | GTCEu input %s AF/10t",
   "tooltip.aeroindustrial.machine.tier": "Tier: %s",
   "tooltip.aeroindustrial.machine.capacity": "Capacity: %s AF",
-  "status.aeroindustrial.idle": " | mode: idle"
+  "status.aeroindustrial.idle": " | mode: idle",
+  "gui.aeroindustrial.overload": "Overload: %s%%"
 }
