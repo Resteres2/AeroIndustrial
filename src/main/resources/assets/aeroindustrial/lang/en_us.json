@@ -34,7 +34,7 @@
   "tooltip.aeroindustrial.machine.8": "Atmospheric Condenser — atmospheric technology node.",
   "tooltip.aeroindustrial.machine.9": "Mobile Refinery — processing node for mobile systems.",
   "tooltip.aeroindustrial.machine.10": "Vector Thruster — directionally spends AeroFlux to affect moving structures.",
-  "tooltip.aeroindustrial.machine.11": "AeroFlux Capacitor — high-capacity storage with an expanded buffer.",
+  "tooltip.aeroindustrial.machine.11": "AeroFlux Capacitor — a high-capacity buffer that automatically feeds adjacent machines with low charge.",
   "tooltip.aeroindustrial.machine.12": "Mobile Dock — automatically draws AeroFlux from an adjacent machine.",
   "tooltip.aeroindustrial.machine.13": "Pressure Lattice — converts AeroFlux into reduced self-overload.",
   "tooltip.aeroindustrial.machine.14": "Aeronautical Conduit — transfers AeroFlux to an adjacent machine.",
