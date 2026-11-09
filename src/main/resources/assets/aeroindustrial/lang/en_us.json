@@ -78,5 +78,6 @@
   "status.aeroindustrial.idle": " | mode: idle",
   "gui.aeroindustrial.overload": "Overload: %s%%",
   "item.aeroindustrial.aero_wrench": "AeroIndustrial Engineering Wrench",
-  "tooltip.aeroindustrial.wrench": "Right-click a machine to rotate it. Shift+right-click rotates it back."
+  "tooltip.aeroindustrial.wrench": "Right-click a machine to rotate it. Shift+right-click rotates it back.",
+  "tooltip.aeroindustrial.machine.redstone": "Redstone signal: pause machine operation."
 }
