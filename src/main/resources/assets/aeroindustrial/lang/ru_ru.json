@@ -68,7 +68,7 @@
   "screen.aeroindustrial.manual": "Инженерный справочник AeroIndustrial",
   "manual.aeroindustrial.core": "АэроФлюкс — внутренняя инженерная энергия модулей AeroIndustrial.",
   "manual.aeroindustrial.energy": "Заряжайте машины кристаллом АэроФлюкса или совместимыми энергетическими системами.",
-  "manual.aeroindustrial.overload": "Перегрузка растёт при высоком заполнении. Стабилизаторы и специальные узлы снижают её.",
+  "manual.aeroindustrial.overload": "Перегрузка растёт при высоком заполнении. До 20% перегрузки обработка ускорена; от 80% машина стабилизируется. Стабилизаторы, конденсаторы и рамы помогают строить устойчивые сети.",
   "manual.aeroindustrial.machine": "ПКМ открывает интерфейс машины. Shift+ПКМ показывает состояние. Рецепты обработки доступны в JEI.",
   "manual.aeroindustrial.integration": "Torque Resonator принимает кинетический ввод Create. Vector Thruster взаимодействует с совместимыми движущимися конструкциями.",
   "manual.aeroindustrial.controls": "Выход из справочника: Esc.",
