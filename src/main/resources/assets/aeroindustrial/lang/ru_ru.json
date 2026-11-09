@@ -59,6 +59,7 @@
   "message.aeroindustrial.full": "Резервуар АэроФлюкса заполнен",
   "status.aeroindustrial.machine": "АэроФлюкс %s/%s | перегрузка %s%%",
   "status.aeroindustrial.dock": " | док передал %s AF/20т",
+  "status.aeroindustrial.conduit": " | проводник передал %s AF/20т",
   "status.aeroindustrial.capacitor": " | передано конденсатором %s AF/20т",
   "status.aeroindustrial.create": " | вход Create %s AF/10т",
   "status.aeroindustrial.thruster": " | связь двигателя: %s",
