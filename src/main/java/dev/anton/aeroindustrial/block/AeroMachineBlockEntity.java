@@ -42,6 +42,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     private int lastBufferTransfer;
     private int lastDockTransfer;
     private int lastConduitTransfer;
+    private int lastAtmosphericGain;
     private Boolean processingMachineCache;
     private java.util.List<net.minecraft.world.item.crafting.RecipeHolder<dev.anton.aeroindustrial.recipe.AeroMachineRecipe>> tierRecipesCache;
     private int tierRecipesCacheTick = -1;
@@ -183,6 +184,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         lastBufferTransfer = 0;
         lastDockTransfer = 0;
         lastConduitTransfer = 0;
+        lastAtmosphericGain = 0;
 
         // A redstone signal is a universal maintenance/stop command.
         // Pausing preserves resonance progress so automation can safely gate a line
@@ -257,6 +259,20 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 if (energy > 0) {
                     energy = Math.max(0, energy - 1);
                     overload = Math.max(0, overload - 3);
+                    setChanged();
+                }
+            }
+            case 8 -> {
+                // Atmospheric Condenser harvests a small passive amount of AeroFlux
+                // from open sky. It is intentionally modest: the machine remains a
+                // processor first, while exposed placement gives it a distinct
+                // infrastructure role without becoming a free power source.
+                if (serverLevel.canSeeSky(worldPosition.above())
+                        && energy < getMaxEnergy()
+                        && overload < 80) {
+                    int gained = Math.min(40, getMaxEnergy() - energy);
+                    energy += gained;
+                    lastAtmosphericGain = gained;
                     setChanged();
                 }
             }
@@ -519,6 +535,9 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                             : "status.aeroindustrial.thruster.offline"
             ));
         }
+        if (getTier() == 8 && lastAtmosphericGain > 0) {
+            status = status.copy().append(Component.translatable("status.aeroindustrial.atmospheric", lastAtmosphericGain));
+        }
         if (getTier() == 14 && lastConduitTransfer > 0) {
             status = status.copy().append(Component.translatable("status.aeroindustrial.conduit", lastConduitTransfer));
         }
@@ -615,6 +634,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         lastBufferTransfer = 0;
         lastDockTransfer = 0;
         lastConduitTransfer = 0;
+        lastAtmosphericGain = 0;
         processingMachineCache = null;
         tierRecipesCache = null;
         tierRecipesCacheTick = -1;
