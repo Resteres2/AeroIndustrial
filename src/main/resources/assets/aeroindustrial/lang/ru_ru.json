@@ -21,5 +21,6 @@
   "item.aeroindustrial.sky_lattice": "Небесная решётка",
   "item.aeroindustrial.resonance_cell": "Резонансная ячейка",
   "item.aeroindustrial.pressure_gel": "Барометрический гель",
-  "item.aeroindustrial.flux_conductor": "Проводник АэроФлюкса"
+  "item.aeroindustrial.flux_conductor": "Проводник АэроФлюкса",
+  "itemGroup.aeroindustrial.aeroflux": "Инженерия AeroFlux"
 }
