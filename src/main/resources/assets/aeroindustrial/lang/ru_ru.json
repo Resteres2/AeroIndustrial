@@ -75,5 +75,6 @@
   "status.aeroindustrial.gtceu": " | вход GTCEu %s AF/10т",
   "tooltip.aeroindustrial.machine.tier": "Уровень: %s",
   "tooltip.aeroindustrial.machine.capacity": "Вместимость: %s AF",
-  "status.aeroindustrial.idle": " | режим: ожидание"
+  "status.aeroindustrial.idle": " | режим: ожидание",
+  "gui.aeroindustrial.overload": "Перегрузка: %s%%"
 }
