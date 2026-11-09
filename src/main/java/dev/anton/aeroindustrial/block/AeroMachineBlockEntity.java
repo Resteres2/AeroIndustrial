@@ -51,7 +51,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     }
 
     public int getTier() {
-        return ((AeroMachineBlock) getBlockState().getBlock()).tier();
+        if (getBlockState().getBlock() instanceof AeroMachineBlock machineBlock) {
+            return machineBlock.tier();
+        }
+        return 1;
     }
 
     public int getEnergy() {
@@ -92,10 +95,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
     public int receiveEnergy(int amount, boolean simulate) {
         if (amount <= 0) return 0;
-        energy = Math.max(0, Math.min(energy, getMaxEnergy()));
-        int accepted = Math.min(amount, getMaxEnergy() - energy);
+        int stored = Mth.clamp(energy, 0, getMaxEnergy());
+        int accepted = Math.min(amount, getMaxEnergy() - stored);
         if (!simulate && accepted > 0) {
-            energy += accepted;
+            energy = stored + accepted;
             setChanged();
         }
         return accepted;
@@ -103,10 +106,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
     public int extractEnergy(int amount, boolean simulate) {
         if (amount <= 0) return 0;
-        energy = Math.max(0, Math.min(energy, getMaxEnergy()));
-        int extracted = Math.min(amount, energy);
+        int stored = Mth.clamp(energy, 0, getMaxEnergy());
+        int extracted = Math.min(amount, stored);
         if (!simulate && extracted > 0) {
-            energy -= extracted;
+            energy = stored - extracted;
             setChanged();
         }
         return extracted;
