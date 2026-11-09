@@ -1,1 +1,19 @@
-{"variants":{"":{"model":"aeroindustrial:block/mobile_dock"}}}
+{
+  "variants": {
+    "facing=north": {
+      "model": "aeroindustrial:block/mobile_dock"
+    },
+    "facing=east": {
+      "model": "aeroindustrial:block/mobile_dock",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeroindustrial:block/mobile_dock",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeroindustrial:block/mobile_dock",
+      "y": 270
+    }
+  }
+}
