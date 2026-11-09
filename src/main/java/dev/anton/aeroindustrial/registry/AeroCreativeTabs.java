@@ -17,6 +17,7 @@ public final class AeroCreativeTabs {
                     .icon(() -> new ItemStack(AeroItems.AEROFLUX_CRYSTAL.get()))
                     .displayItems((params, output) -> {
                         output.accept(AeroItems.AERO_MANUAL.get());
+                        output.accept(AeroItems.AERO_WRENCH.get());
                         output.accept(AeroItems.AEROFLUX_CRYSTAL.get());
                         output.accept(AeroItems.PHASE_FOIL.get());
                         output.accept(AeroItems.VECTOR_COIL.get());
