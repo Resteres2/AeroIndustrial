@@ -18,13 +18,15 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 
 - 15 registered blocks: 10 named machines + 5 auxiliary structures.
 - 8 custom AeroFlux components.
-- Crafting recipes and block loot tables.
+- Crafting recipes, data-driven machine processing recipes and block loot tables.
+- Custom industrial textures for all machines and components.
 - Custom AeroFlux storage and overload/resonance state.
 - NeoForge energy capability exposure.
 - Runtime detection of Create, Sable, Create Aeronautics and GTCEu.
 - Optional Create kinetic harvesting through a reflection bridge.
 - Optional moving-structure coupling for the Vector Thruster through a conservative reflection/class-name bridge.
-- Status reporting in the machine action bar.
+- Localized machine status reporting in the action bar.
+- A native optional JEI category for AeroFlux machine processing recipes.
 - GitHub Actions build pipeline.
 
 The optional integrations are deliberately not hard compile-time dependencies. They are declared as optional NeoForge dependencies, so the base mod remains loadable without them.
@@ -47,7 +49,7 @@ AeroIndustrial's core loop is:
 4. Create kinetic infrastructure can optionally contribute AeroFlux.
 5. The Vector Thruster can optionally couple AeroFlux to compatible moving structures.
 
-This is the current foundation for the larger original machine-processing system; it should not be described as a finished production release yet.
+This is now a functional vertical slice of the intended product architecture: data-driven machines, a custom GUI, recipe discovery, localized status feedback, original AeroFlux mechanics and optional integrations. The external Create/Aeronautics/GTCEu bridges remain conservative compatibility layers and still require broader runtime validation.
 
 ## Dependencies
 
@@ -70,4 +72,4 @@ Run `./gradlew build` with Java 21. GitHub Actions builds the project automatica
 
 ## Honest status
 
-The repository contains a buildable reconstructed core. The latest CI build must still be treated as a **prototype release**, not a fully runtime-verified final release: the optional integrations have not been tested in a real Minecraft instance with the complete Create + Sable + Aeronautics + GTCEu stack.
+Version 1.1.0 is a **functional development release**, not a claim of full compatibility with every external mod build. The repository is continuously checked by GitHub Actions. Core AeroIndustrial systems are implemented directly; Create, Sable, Create Aeronautics and GTCEu integrations are intentionally isolated so that the base mod remains usable without them.
