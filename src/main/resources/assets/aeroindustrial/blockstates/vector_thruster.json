@@ -1,1 +1,19 @@
-{"variants":{"":{"model":"aeroindustrial:block/vector_thruster"}}}
+{
+  "variants": {
+    "facing=north": {
+      "model": "aeroindustrial:block/vector_thruster"
+    },
+    "facing=east": {
+      "model": "aeroindustrial:block/vector_thruster",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeroindustrial:block/vector_thruster",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeroindustrial:block/vector_thruster",
+      "y": 270
+    }
+  }
+}
