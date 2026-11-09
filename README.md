@@ -23,6 +23,7 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 - Custom AeroFlux storage and overload/resonance state.
 - NeoForge energy capability exposure.
 - Runtime detection of Create, Sable, Create Aeronautics and GTCEu.
+- Optional GTCEu energy intake through NeoForge's energy capability when GTCEu exposes an FE-compatible storage.
 - Optional Create kinetic harvesting through a reflection bridge.
 - Optional moving-structure coupling for the Vector Thruster through a conservative reflection/class-name bridge.
 - Localized machine status reporting in the action bar.
@@ -37,7 +38,7 @@ The Create bridge is a compatibility prototype: it looks for compatible kinetic 
 
 The Aeronautics/Sable bridge is also a prototype: it identifies moving-structure entities conservatively and applies the Vector Thruster impulse to matching entities. It has not yet been verified against every Create Aeronautics 1.3.x internal class.
 
-GregTech CEu Modern is currently detected but does **not** have a real EU-to-AeroFlux conversion API bridge yet.
+GregTech CEu Modern is detected and has a conservative compatibility bridge: the Torque Resonator can pull energy from nearby GTCEu blocks when they expose a compatible NeoForge energy capability. This is intentionally isolated from GTCEu internals and does not pretend that AeroFlux and EU are the same unit.
 
 ## Gameplay prototype
 
