@@ -10,7 +10,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 public final class GtceuEnergyBridge {
     private GtceuEnergyBridge() {}
 
-    public static int harvest(ServerLevel level, BlockPos center, int radius) {
+    public static int harvest(ServerLevel level, BlockPos center, int radius, int maxInput) {
         if (!IntegrationStatus.gtceuLoaded()) return 0;
 
         int total = 0;
@@ -34,10 +34,10 @@ public final class GtceuEnergyBridge {
                 );
                 if (storage == null || !storage.canExtract()) continue;
 
-                int extracted = storage.extractEnergy(Math.min(40, 120 - total), false);
+                int extracted = storage.extractEnergy(Math.min(40, maxInput - total), false);
                 if (extracted > 0) {
                     total += extracted;
-                    if (total >= 120) return total;
+                    if (total >= maxInput) return total;
                 }
             }
         }
