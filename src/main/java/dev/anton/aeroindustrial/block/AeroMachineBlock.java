@@ -54,7 +54,7 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
                         .withStyle(ChatFormatting.AQUA), true);
             }
         }
-        return level.isClientSide ? ItemInteractionResult.CONSUME : ItemInteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
@@ -77,7 +77,7 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
                     }
                 }
             }
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return level.isClientSide ? ItemInteractionResult.CONSUME : ItemInteractionResult.SUCCESS;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hit);
     }
