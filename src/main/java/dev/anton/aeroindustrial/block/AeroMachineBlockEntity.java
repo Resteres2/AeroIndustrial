@@ -121,6 +121,12 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
 
         tickCounter++;
 
+        // A redstone signal is a universal maintenance/stop command.
+        if (serverLevel.hasNeighborSignal(worldPosition)) {
+            progress = 0;
+            return;
+        }
+
         // Only the Torque Resonator is the Create -> AeroFlux interface.
         if (getTier() == 2 && tickCounter % 10 == 0) {
             lastKineticInput = 0;
