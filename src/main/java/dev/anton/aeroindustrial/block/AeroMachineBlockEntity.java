@@ -132,6 +132,8 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
             runResonanceCore();
         }
 
+        runSpecialRole(serverLevel);
+
         if (energy > getMaxEnergy() * 0.9) {
             overload = Math.min(100, overload + 1);
         } else {
@@ -142,6 +144,81 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
             energy = Math.max(0, energy - Math.max(1, getMaxEnergy() / 20));
             overload = 40;
             setChanged();
+        }
+    }
+
+    private void runSpecialRole(ServerLevel serverLevel) {
+        if (tickCounter % 20 != 0) return;
+
+        switch (getTier()) {
+            case 1 -> {
+                // Flux Lattice is a stabilizer: it slowly dissipates overload while charged.
+                if (energy > 0) {
+                    energy = Math.max(0, energy - 1);
+                    overload = Math.max(0, overload - 3);
+                    setChanged();
+                }
+            }
+            case 5 -> {
+                // Sky Relay coordinates nearby AeroFlux machines.
+                for (BlockPos pos : BlockPos.betweenClosed(
+                        worldPosition.offset(-4, -2, -4),
+                        worldPosition.offset(4, 2, 4))) {
+                    if (pos.equals(worldPosition)) continue;
+                    if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
+                            && other.getTier() != 5) {
+                        other.overload = Math.max(0, other.overload - 1);
+                        other.setChanged();
+                    }
+                }
+            }
+            case 12 -> {
+                // Mobile Dock is a local buffer: it pulls a small amount from an adjacent charged machine.
+                for (BlockPos pos : BlockPos.neighboringPositions(worldPosition)) {
+                    if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
+                            && other.energy > 50 && energy < getMaxEnergy() - 50) {
+                        int moved = Math.min(50, Math.min(other.energy, getMaxEnergy() - energy));
+                        other.energy -= moved;
+                        energy += moved;
+                        other.setChanged();
+                        setChanged();
+                        break;
+                    }
+                }
+            }
+            case 13 -> {
+                // Pressure Lattice converts stored AeroFlux into local overload damping.
+                if (energy >= 20) {
+                    energy -= 20;
+                    overload = Math.max(0, overload - 8);
+                    setChanged();
+                }
+            }
+            case 14 -> {
+                // Aeronautical Conduit transfers a controlled packet to one adjacent machine.
+                if (energy >= 100) {
+                    for (BlockPos pos : BlockPos.neighboringPositions(worldPosition)) {
+                        if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
+                                && other.energy < other.getMaxEnergy()) {
+                            int moved = Math.min(100, other.getMaxEnergy() - other.energy);
+                            energy -= moved;
+                            other.energy += moved;
+                            other.setChanged();
+                            setChanged();
+                            break;
+                        }
+                    }
+                }
+            }
+            case 15 -> {
+                // Vector Frame is a structural stabilizer rather than a processor.
+                if (energy > 0) {
+                    overload = Math.max(0, overload - 2);
+                    setChanged();
+                }
+            }
+            default -> {
+            }
         }
     }
 
