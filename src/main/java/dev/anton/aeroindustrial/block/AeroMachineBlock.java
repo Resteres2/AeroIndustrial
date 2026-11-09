@@ -28,15 +28,27 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public final class AeroMachineBlock extends Block implements EntityBlock {
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final int tier;
 
     public AeroMachineBlock(Properties properties, int tier) {
         super(properties);
         this.tier = tier;
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     public int tier() {
         return tier;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
