@@ -54,5 +54,12 @@
   "jei.aeroindustrial.machine": "Машины AeroFlux",
   "jei.aeroindustrial.machine.tier": "Уровень машины: %s",
   "jei.aeroindustrial.time": "Время: %s т",
-  "jei.aeroindustrial.energy": "Стоимость: %s AF"
+  "jei.aeroindustrial.energy": "Стоимость: %s AF",
+  "message.aeroindustrial.charge": "АэроФлюкс +%s | %s/%s",
+  "message.aeroindustrial.full": "Резервуар АэроФлюкса заполнен",
+  "status.aeroindustrial.machine": "АэроФлюкс %s/%s | перегрузка %s%%",
+  "status.aeroindustrial.create": " | вход Create %s AF/10т",
+  "status.aeroindustrial.thruster": " | связь двигателя: %s",
+  "status.aeroindustrial.processing": " | обработка %s/%s",
+  "status.aeroindustrial.resonance": " | резонанс %s/20"
 }
