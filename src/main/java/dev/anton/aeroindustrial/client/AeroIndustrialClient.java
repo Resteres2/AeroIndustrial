@@ -3,7 +3,6 @@ package dev.anton.aeroindustrial.client;
 import dev.anton.aeroindustrial.AeroIndustrial;
 import dev.anton.aeroindustrial.client.screen.AeroMachineScreen;
 import dev.anton.aeroindustrial.client.screen.AeroManualScreen;
-import dev.anton.aeroindustrial.client.screen.AeroManualScreen;
 import dev.anton.aeroindustrial.registry.AeroMenus;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,7 +16,6 @@ public final class AeroIndustrialClient {
         event.register(AeroMenus.AERO_MACHINE.get(), AeroMachineScreen::new);
         event.register(AeroMenus.AERO_MANUAL.get(), AeroManualScreen::new);
     }
-
 
     private AeroIndustrialClient() {}
 }
