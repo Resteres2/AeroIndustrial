@@ -5,6 +5,7 @@ import dev.anton.aeroindustrial.registry.AeroItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -53,6 +54,23 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        if (level.getBlockEntity(pos) instanceof AeroMachineBlockEntity machine) {
+            return Mth.clamp(
+                    Mth.floor(15.0f * machine.getEnergy() / Math.max(1, machine.getMaxEnergy())),
+                    0,
+                    15
+            );
+        }
+        return 0;
     }
 
     @Override
