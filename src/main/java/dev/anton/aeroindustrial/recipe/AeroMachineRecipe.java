@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
-public record AeroMachineRecipe(Ingredient input, ItemStack result, int processingTime, int energyCost)
+public record AeroMachineRecipe(int machineTier, Ingredient input, ItemStack result, int processingTime, int energyCost)
         implements Recipe<SingleRecipeInput> {
 
     @Override
