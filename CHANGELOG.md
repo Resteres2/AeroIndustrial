@@ -7,6 +7,8 @@
 - Limited the non-Sable Vector Thruster fallback to the nearest compatible moving-structure entity within a configurable radius.
 - Cached Create speed-method lookups per block-entity class and ignored non-finite speed values.
 - Limited Torque Resonator extraction to the actual free AeroFlux capacity to prevent energy loss at a full reservoir.
+- Clamped AeroFlux and GTCEu transfer results to each requested packet so invalid external providers cannot over-credit internal storage.
+- Bounded restored machine progress and used overflow-safe progress arithmetic for long-running recipes.
 
 ### AeroFlux network
 - Made the AeroFlux Capacitor use the public AeroFlux block capability, allowing it to feed compatible third-party storage implementations instead of only native AeroIndustrial machines.
@@ -16,6 +18,7 @@
 ### Verification
 - Source diffs and localization JSON were checked after each change.
 - GitHub Actions run 42684953561 completed successfully for commit c07c005; the Java 21 Gradle build and JAR upload both passed.
+- The latest code-hardening commit 646b16f also passed the Java 21 Gradle build and JAR upload in GitHub Actions run 42686389186.
 - In-game behavior and compatibility with the optional Create, Sable, Aeronautics, and GTCEu versions still require the manual matrix in docs/INTEGRATION_TEST_MATRIX.md.
 
 ## 1.1.0 — Engineering hardening
