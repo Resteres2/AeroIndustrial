@@ -1,5 +1,6 @@
 package dev.anton.aeroindustrial.compat;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -7,7 +8,15 @@ import net.minecraft.world.phys.AABB;
 public final class MovingStructureBridge {
     private MovingStructureBridge() {}
 
-    public static int applyThruster(Level level, double x, double y, double z, double radius, double strength) {
+    public static int applyThruster(
+            Level level,
+            double x,
+            double y,
+            double z,
+            double radius,
+            double strength,
+            Direction direction
+    ) {
         if (!IntegrationStatus.sableLoaded() && !IntegrationStatus.aeronauticsLoaded()) return 0;
 
         int affected = 0;
@@ -23,9 +32,14 @@ public final class MovingStructureBridge {
             double dx = entity.getX() - x;
             double dy = entity.getY() - y;
             double dz = entity.getZ() - z;
-            double distance = Math.max(0.001, Math.sqrt(dx * dx + dy * dy + dz * dz));
-            double scale = strength / distance;
-            entity.setDeltaMovement(entity.getDeltaMovement().add(dx * scale, dy * scale, dz * scale));
+            double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            double scale = strength * Math.max(0.15, 1.0 - distance / radius);
+
+            entity.setDeltaMovement(entity.getDeltaMovement().add(
+                    direction.getStepX() * scale,
+                    direction.getStepY() * scale,
+                    direction.getStepZ() * scale
+            ));
             entity.hurtMarked = true;
             affected++;
         }
