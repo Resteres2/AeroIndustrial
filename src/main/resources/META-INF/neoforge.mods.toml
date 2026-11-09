@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]]
 modId="aeroindustrial"
-version="1.0.0"
+version="${mod_version}"
 displayName="AeroIndustrial"
 authors="Anton Chebotarev"
 description='''AeroIndustrial adds an original AeroFlux engineering layer linking industrial infrastructure, mechanical systems and aeronautical structures.'''
