@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "aeroindustrial:block/flux_lattice"
+    }
+  }
+}
