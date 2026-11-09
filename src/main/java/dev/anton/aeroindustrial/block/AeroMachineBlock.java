@@ -67,6 +67,12 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.translatable("tooltip.aeroindustrial.machine." + tier)
                 .withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.aeroindustrial.machine.tier", tier)
+                .withStyle(ChatFormatting.DARK_AQUA));
+        tooltip.add(Component.translatable(
+                "tooltip.aeroindustrial.machine.capacity",
+                10000 + tier * 5000 + (tier == 11 ? 30000 : 0)
+        ).withStyle(ChatFormatting.DARK_GRAY));
         tooltip.add(Component.translatable("tooltip.aeroindustrial.machine.common")
                 .withStyle(ChatFormatting.DARK_GRAY));
     }
