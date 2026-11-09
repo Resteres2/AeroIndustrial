@@ -12,11 +12,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public final class AeroMachineRecipeSerializer implements RecipeSerializer<AeroMachineRecipe> {
     public static final MapCodec<AeroMachineRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            com.mojang.serialization.Codec.INT.fieldOf("machine_tier").forGetter(AeroMachineRecipe::machineTier),
+            com.mojang.serialization.Codec.intRange(1, 15).fieldOf("machine_tier").forGetter(AeroMachineRecipe::machineTier),
             Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(AeroMachineRecipe::input),
             ItemStack.STRICT_CODEC.fieldOf("result").forGetter(AeroMachineRecipe::result),
-            com.mojang.serialization.Codec.INT.fieldOf("processing_time").forGetter(AeroMachineRecipe::processingTime),
-            com.mojang.serialization.Codec.INT.fieldOf("energy_cost").forGetter(AeroMachineRecipe::energyCost)
+            com.mojang.serialization.Codec.intRange(1, 1_000_000).fieldOf("processing_time").forGetter(AeroMachineRecipe::processingTime),
+            com.mojang.serialization.Codec.intRange(1, 2_000_000_000).fieldOf("energy_cost").forGetter(AeroMachineRecipe::energyCost)
     ).apply(instance, AeroMachineRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AeroMachineRecipe> STREAM_CODEC =
