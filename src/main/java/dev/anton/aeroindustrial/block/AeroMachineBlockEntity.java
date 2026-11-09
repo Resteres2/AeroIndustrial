@@ -410,7 +410,16 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
         // AeroFlux has a resonance window: lightly loaded systems process faster,
         // while severe overload forces the machine to slow down and stabilize.
-        int progressGain = overload <= 20 ? 2 : overload >= 80 ? 0 : 1;
+        int progressGain;
+        if (overload >= 80) {
+            progressGain = 0;
+        } else if (getTier() == 3 && overload <= 20) {
+            // Phase Refiner has a dedicated low-load resonance window: when its
+            // lattice is calm, phase alignment accelerates the refinement cycle.
+            progressGain = 3;
+        } else {
+            progressGain = overload <= 20 ? 2 : 1;
+        }
         if (progressGain == 0) {
             if (tickCounter % 10 == 0) setChanged();
             return;
