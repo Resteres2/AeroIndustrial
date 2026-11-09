@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PC",
+    "PP"
+  ],
+  "key": {
+    "P": { "item": "minecraft:paper" },
+    "C": { "item": "aeroindustrial:aeroflux_crystal" }
+  },
+  "result": {
+    "id": "aeroindustrial:aero_manual",
+    "count": 1
+  }
+}
