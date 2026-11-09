@@ -290,22 +290,35 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity {
         setChanged();
     }
 
-    public String statusLine() {
-        String createStatus = getTier() == 2
-                ? " | Create input " + lastKineticInput + " AF/10t"
-                : "";
-        String motionStatus = getTier() == 10
-                ? " | Thruster coupling " + (IntegrationStatus.sableLoaded() || IntegrationStatus.aeronauticsLoaded() ? "READY" : "OFF")
-                : "";
-        String processStatus = isProcessingMachine()
-                ? " | processing " + progress + "/" + getProcessTime()
-                : "";
-        return "AeroFlux " + energy + "/" + getMaxEnergy()
-                + (isProcessingMachine() ? "" : " | resonance " + progress + "/20")
-                + " | overload " + overload + "%"
-                + createStatus
-                + motionStatus
-                + processStatus;
+    public Component statusLine() {
+        Component status = Component.translatable(
+                "status.aeroindustrial.machine",
+                energy,
+                getMaxEnergy(),
+                overload
+        );
+        if (getTier() == 2) {
+            status = status.copy().append(Component.translatable("status.aeroindustrial.create", lastKineticInput));
+        }
+        if (getTier() == 10) {
+            status = status.copy().append(Component.translatable(
+                    "status.aeroindustrial.thruster",
+                    IntegrationStatus.sableLoaded() || IntegrationStatus.aeronauticsLoaded()
+            ));
+        }
+        if (isProcessingMachine()) {
+            status = status.copy().append(Component.translatable(
+                    "status.aeroindustrial.processing",
+                    progress,
+                    getProcessTime()
+            ));
+        } else {
+            status = status.copy().append(Component.translatable(
+                    "status.aeroindustrial.resonance",
+                    progress
+            ));
+        }
+        return status;
     }
 
     @Override
