@@ -30,7 +30,12 @@ public final class AeroBlocks {
 
     private static DeferredBlock<Block> machine(String id, int tier) {
         return BLOCKS.registerBlock(id,
-                p -> new AeroMachineBlock(p.strength(3.0f).requiresCorrectToolForDrops(), tier),
+                p -> new AeroMachineBlock(
+                        p.strength(3.0f)
+                                .requiresCorrectToolForDrops()
+                                .lightLevel(state -> tier >= 11 ? 4 : tier >= 8 ? 2 : 0),
+                        tier
+                ),
                 BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
     }
 
