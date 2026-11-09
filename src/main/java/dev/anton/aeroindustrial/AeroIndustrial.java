@@ -1,5 +1,7 @@
 package dev.anton.aeroindustrial;
 
+import dev.anton.aeroindustrial.compat.AeroCapabilities;
+import dev.anton.aeroindustrial.registry.AeroBlockEntities;
 import dev.anton.aeroindustrial.registry.AeroBlocks;
 import dev.anton.aeroindustrial.registry.AeroItems;
 import net.neoforged.bus.api.IEventBus;
@@ -12,5 +14,7 @@ public final class AeroIndustrial {
     public AeroIndustrial(IEventBus modBus) {
         AeroBlocks.BLOCKS.register(modBus);
         AeroItems.ITEMS.register(modBus);
+        AeroBlockEntities.BLOCK_ENTITIES.register(modBus);
+        modBus.addListener(AeroCapabilities::register);
     }
 }
