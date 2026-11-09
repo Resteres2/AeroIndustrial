@@ -63,5 +63,14 @@
   "status.aeroindustrial.processing": " | processing %s/%s",
   "status.aeroindustrial.resonance": " | resonance %s/20",
   "status.aeroindustrial.thruster.ready": " | thruster coupling: READY",
-  "status.aeroindustrial.thruster.offline": " | thruster coupling: OFF"
+  "status.aeroindustrial.thruster.offline": " | thruster coupling: OFF",
+  "item.aeroindustrial.aero_manual": "AeroIndustrial Engineering Manual",
+  "screen.aeroindustrial.manual": "AeroIndustrial Engineering Manual",
+  "manual.aeroindustrial.core": "AeroFlux is the internal engineering energy of AeroIndustrial modules.",
+  "manual.aeroindustrial.energy": "Charge machines with AeroFlux Crystals or compatible energy systems.",
+  "manual.aeroindustrial.overload": "Overload rises near high storage. Stabilizers and special nodes reduce it.",
+  "manual.aeroindustrial.machine": "Right-click opens a machine interface. Shift+right-click shows status. Processing recipes are available in JEI.",
+  "manual.aeroindustrial.integration": "Torque Resonator accepts Create kinetic input. Vector Thruster couples to compatible moving structures.",
+  "manual.aeroindustrial.controls": "Exit the manual with Esc.",
+  "manual.aeroindustrial.close": "Esc — close"
 }
