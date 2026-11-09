@@ -1,7 +1,13 @@
 {
   "type": "aeroindustrial:aero_machine",
-  "ingredient": { "item": "minecraft:snowball" },
-  "result": { "id": "aeroindustrial:pressure_gel", "count": 1 },
+  "ingredient": {
+    "item": "minecraft:snowball"
+  },
+  "result": {
+    "id": "aeroindustrial:pressure_gel",
+    "count": 1
+  },
   "processing_time": 90,
-  "energy_cost": 4500
+  "energy_cost": 4500,
+  "machine_tier": 8
 }
