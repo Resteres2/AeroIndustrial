@@ -16,7 +16,7 @@
 ### Verification
 - Source diffs and localization JSON were checked after each change.
 - GitHub Actions run 42684953561 completed successfully for commit c07c005; the Java 21 Gradle build and JAR upload both passed.
-- In-game behavior and compatibility with the optional Create, Sable, Aeronautics, and GTCEu versions still require the manual matrix below.
+- In-game behavior and compatibility with the optional Create, Sable, Aeronautics, and GTCEu versions still require the manual matrix in docs/INTEGRATION_TEST_MATRIX.md.
 
 ## 1.1.0 — Engineering hardening
 
