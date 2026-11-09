@@ -1,23 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ICI",
-    "CXC",
-    "ICI"
-  ],
+  "pattern": ["ICI","CXC","ICI"],
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "C": {
-      "item": "aeroindustrial:inertial_core"
-    },
-    "X": {
-      "item": "minecraft:iron_block"
-    }
+    "I": {"item": "minecraft:iron_ingot"},
+    "C": {"item": "aeroindustrial:inertial_core"},
+    "X": {"item": "aeroindustrial:phase_refiner"}
   },
-  "result": {
-    "id": "aeroindustrial:vector_compressor",
-    "count": 1
-  }
+  "result": {"id": "aeroindustrial:vector_compressor", "count": 1}
 }
