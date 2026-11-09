@@ -12,15 +12,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 
 public final class AeroMachineMenu extends AbstractContainerMenu {
     private final Container container;
     private final ContainerLevelAccess access;
     private final BlockPos blockPos;
+    private final ContainerData data;
 
     public AeroMachineMenu(int containerId, Inventory playerInventory, RegistryFriendlyByteBuf data) {
-        this(containerId, playerInventory, new SimpleContainer(2), ContainerLevelAccess.NULL, data.readBlockPos());
+        this(containerId, playerInventory, new SimpleContainer(2), ContainerLevelAccess.NULL, data.readBlockPos(), new SimpleContainerData(4));
     }
 
     public AeroMachineMenu(int containerId, Inventory playerInventory, AeroMachineBlockEntity machine) {
@@ -28,15 +31,16 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
                 machine.getLevel() == null
                         ? ContainerLevelAccess.NULL
                         : ContainerLevelAccess.create(machine.getLevel(), machine.getBlockPos()),
-                machine.getBlockPos());
+                machine.getBlockPos(), new MachineData(machine));
     }
 
     private AeroMachineMenu(int containerId, Inventory playerInventory, Container container,
-                            ContainerLevelAccess access, BlockPos blockPos) {
+                            ContainerLevelAccess access, BlockPos blockPos, ContainerData data) {
         super(AeroMenus.AERO_MACHINE.get(), containerId);
         this.container = container;
         this.access = access;
         this.blockPos = blockPos;
+        this.data = data;
 
         checkContainerSize(container, 2);
 
@@ -64,6 +68,24 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, column,
                     8 + column * 18, 142));
         }
+
+        this.addDataSlots(data);
+    }
+
+    public int getEnergy() {
+        return data.get(0);
+    }
+
+    public int getProgress() {
+        return data.get(1);
+    }
+
+    public int getMaxEnergy() {
+        return data.get(2);
+    }
+
+    public int getProcessTime() {
+        return data.get(3);
     }
 
     public Container getMachineContainer() {
@@ -112,6 +134,34 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
 
         slot.onTake(player, stack);
         return result;
+    }
+
+    private static final class MachineData implements ContainerData {
+        private final AeroMachineBlockEntity machine;
+
+        private MachineData(AeroMachineBlockEntity machine) {
+            this.machine = machine;
+        }
+
+        @Override
+        public int get(int index) {
+            return switch (index) {
+                case 0 -> machine.getEnergy();
+                case 1 -> machine.getProgress();
+                case 2 -> machine.getMaxEnergy();
+                case 3 -> machine.getProcessTime();
+                default -> 0;
+            };
+        }
+
+        @Override
+        public void set(int index, int value) {
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
     }
 
     @Override
