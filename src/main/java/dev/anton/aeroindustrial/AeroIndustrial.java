@@ -6,6 +6,7 @@ import dev.anton.aeroindustrial.registry.AeroBlocks;
 import dev.anton.aeroindustrial.registry.AeroCreativeTabs;
 import dev.anton.aeroindustrial.registry.AeroItems;
 import dev.anton.aeroindustrial.registry.AeroMenus;
+import dev.anton.aeroindustrial.registry.AeroRecipes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 
@@ -19,6 +20,8 @@ public final class AeroIndustrial {
         AeroCreativeTabs.TABS.register(modBus);
         AeroBlockEntities.BLOCK_ENTITIES.register(modBus);
         AeroMenus.MENUS.register(modBus);
+        AeroRecipes.RECIPE_TYPES.register(modBus);
+        AeroRecipes.RECIPE_SERIALIZERS.register(modBus);
         modBus.addListener(AeroCapabilities::register);
     }
 }
