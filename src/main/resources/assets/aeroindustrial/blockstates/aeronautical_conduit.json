@@ -1,1 +1,19 @@
-{"variants":{"":{"model":"aeroindustrial:block/aeronautical_conduit"}}}
+{
+  "variants": {
+    "facing=north": {
+      "model": "aeroindustrial:block/aeronautical_conduit"
+    },
+    "facing=east": {
+      "model": "aeroindustrial:block/aeronautical_conduit",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "aeroindustrial:block/aeronautical_conduit",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeroindustrial:block/aeronautical_conduit",
+      "y": 270
+    }
+  }
+}
