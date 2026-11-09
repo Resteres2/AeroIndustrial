@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["GGG", "AAA", "GGG"],
+  "key": {
+    "G": {"item": "minecraft:gold_ingot"},
+    "A": {"item": "minecraft:amethyst_shard"}
+  },
+  "result": {"id": "aeroindustrial:phase_foil", "count": 4}
+}
