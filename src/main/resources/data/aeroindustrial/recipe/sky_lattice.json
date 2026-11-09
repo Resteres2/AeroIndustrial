@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["PPP", "PIP", "PPP"],
+  "key": {
+    "P": {"item": "minecraft:prismarine_shard"},
+    "I": {"item": "minecraft:iron_ingot"}
+  },
+  "result": {"id": "aeroindustrial:sky_lattice", "count": 2}
+}
