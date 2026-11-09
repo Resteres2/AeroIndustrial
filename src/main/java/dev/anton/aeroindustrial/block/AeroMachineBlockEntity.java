@@ -260,23 +260,25 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 12 -> {
-                // Mobile Dock is a local buffer: it pulls a small amount from an adjacent AeroFlux storage.
-                for (Direction direction : Direction.values()) {
-                    BlockPos pos = worldPosition.relative(direction);
-                    IAeroFluxStorage storage = serverLevel.getCapability(
-                            AeroCapabilities.AEROFLUX,
-                            pos,
-                            direction.getOpposite()
-                    );
-                    if (storage == null || storage.getAeroFluxStored() <= 50
-                            || energy >= getMaxEnergy() - 50) continue;
-
-                    int moved = Math.min(50, Math.min(storage.getAeroFluxStored(), getMaxEnergy() - energy));
-                    int extracted = storage.extractAeroFlux(moved, false);
-                    if (extracted > 0) {
-                        energy += extracted;
-                        setChanged();
-                        break;
+                // Mobile Dock acts as a bidirectional berth: draw when low, unload when full.
+                if (energy < getMaxEnergy() / 3) {
+                    for (Direction direction : Direction.values()) {
+                        BlockPos pos = worldPosition.relative(direction);
+                        IAeroFluxStorage storage = serverLevel.getCapability(
+                                AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
+                        if (storage == null || storage.getAeroFluxStored() <= 50) continue;
+                        int moved = Math.min(100, Math.min(storage.getAeroFluxStored(), getMaxEnergy() - energy));
+                        int extracted = storage.extractAeroFlux(moved, false);
+                        if (extracted > 0) { energy += extracted; setChanged(); break; }
+                    }
+                } else if (energy > getMaxEnergy() * 0.75) {
+                    for (Direction direction : Direction.values()) {
+                        BlockPos pos = worldPosition.relative(direction);
+                        IAeroFluxStorage storage = serverLevel.getCapability(
+                                AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
+                        if (storage == null || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored() * 0.75) continue;
+                        int accepted = storage.receiveAeroFlux(Math.min(100, energy), false);
+                        if (accepted > 0) { energy -= accepted; setChanged(); break; }
                     }
                 }
             }
@@ -315,22 +317,25 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 14 -> {
-                // Aeronautical Conduit transfers a controlled packet to one adjacent AeroFlux storage.
+                // Aeronautical Conduit routes packets toward the least-charged adjacent buffer.
                 if (energy >= 100) {
+                    IAeroFluxStorage best = null;
+                    int bestStored = Integer.MAX_VALUE;
+                    int bestCapacity = 1;
                     for (Direction direction : Direction.values()) {
                         BlockPos pos = worldPosition.relative(direction);
                         IAeroFluxStorage storage = serverLevel.getCapability(
-                                AeroCapabilities.AEROFLUX,
-                                pos,
-                                direction.getOpposite()
-                        );
-                        if (storage == null) continue;
-                        int accepted = storage.receiveAeroFlux(100, false);
-                        if (accepted > 0) {
-                            energy -= accepted;
-                            setChanged();
-                            break;
+                                AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
+                        if (storage == null || storage.getAeroFluxStored() >= storage.getMaxAeroFluxStored()) continue;
+                        if ((long) storage.getAeroFluxStored() * bestCapacity
+                                < (long) bestStored * storage.getMaxAeroFluxStored()) {
+                            best = storage; bestStored = storage.getAeroFluxStored();
+                            bestCapacity = storage.getMaxAeroFluxStored();
                         }
+                    }
+                    if (best != null) {
+                        int accepted = best.receiveAeroFlux(100, false);
+                        if (accepted > 0) { energy -= accepted; setChanged(); }
                     }
                 }
             }
