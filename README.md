@@ -30,6 +30,9 @@ Create Aeronautics itself requires Create and Sable, so the full aeronautical st
 - Localized machine status reporting in the action bar.
 - A native optional JEI category for AeroFlux machine processing recipes.
 - GitHub Actions build pipeline.
+- Short-lived per-tier recipe caching to reduce repeated RecipeManager scans in machine arrays.
+- Defensive recipe-output validation so malformed external data cannot create empty or oversized machine outputs.
+- Redstone pause control and localized runtime telemetry for integration inputs.
 
 The optional integrations are deliberately not hard compile-time dependencies. They are declared as optional NeoForge dependencies, so the base mod remains loadable without them.
 
@@ -74,7 +77,7 @@ Run `./gradlew build` with Java 21. GitHub Actions builds the project automatica
 
 ## Honest status
 
-Version 1.1.0 is a **functional development release**, not a claim of full compatibility with every external mod build. The repository is continuously checked by GitHub Actions. Core AeroIndustrial systems are implemented directly; Create, Sable, Create Aeronautics and GTCEu integrations are intentionally isolated so that the base mod remains usable without them.
+Version 1.1.0 is a **functional development release**, not a claim of full compatibility with every external mod build. The repository includes a GitHub Actions build workflow; each new revision still requires a successful workflow run before it should be treated as a verified build. Core AeroIndustrial systems are implemented directly; Create, Sable, Create Aeronautics and GTCEu integrations are intentionally isolated so that the base mod remains usable without them.
 
 
 ## AeroFlux API
