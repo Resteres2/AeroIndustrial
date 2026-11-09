@@ -528,6 +528,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
         Component roleStatus = switch (getTier()) {
             case 1 -> Component.translatable("status.aeroindustrial.role.lattice");
+            case 4 -> Component.translatable("status.aeroindustrial.role.compressor");
             case 5 -> Component.translatable("status.aeroindustrial.role.relay");
             case 6 -> Component.translatable("status.aeroindustrial.role.accumulator");
             case 11 -> Component.translatable("status.aeroindustrial.role.capacitor");
