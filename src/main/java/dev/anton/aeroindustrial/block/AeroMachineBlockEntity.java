@@ -11,6 +11,7 @@ import dev.anton.aeroindustrial.menu.AeroMachineMenu;
 import dev.anton.aeroindustrial.registry.AeroBlockEntities;
 import dev.anton.aeroindustrial.registry.AeroRecipes;
 import net.minecraft.core.NonNullList;
+import net.minecraft.util.Mth;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -91,6 +92,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
     public int receiveEnergy(int amount, boolean simulate) {
         if (amount <= 0) return 0;
+        energy = Math.max(0, Math.min(energy, getMaxEnergy()));
         int accepted = Math.min(amount, getMaxEnergy() - energy);
         if (!simulate && accepted > 0) {
             energy += accepted;
@@ -101,6 +103,7 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
 
     public int extractEnergy(int amount, boolean simulate) {
         if (amount <= 0) return 0;
+        energy = Math.max(0, Math.min(energy, getMaxEnergy()));
         int extracted = Math.min(amount, energy);
         if (!simulate && extracted > 0) {
             energy -= extracted;
@@ -520,10 +523,10 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
     @Override
     protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        energy = tag.getInt("AeroFlux");
-        progress = tag.getInt("Progress");
-        overload = tag.getInt("Overload");
-        tickCounter = tag.getInt("TickCounter");
+        energy = Mth.clamp(tag.getInt("AeroFlux"), 0, getMaxEnergy());
+        progress = Math.max(0, tag.getInt("Progress"));
+        overload = Mth.clamp(tag.getInt("Overload"), 0, 100);
+        tickCounter = Math.max(0, tag.getInt("TickCounter"));
         lastKineticInput = 0;
         lastGtInput = 0;
         lastBufferTransfer = 0;
