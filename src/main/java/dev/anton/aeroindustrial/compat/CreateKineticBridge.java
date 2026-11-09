@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 public final class CreateKineticBridge {
     private CreateKineticBridge() {}
 
-    public static int harvest(Level level, BlockPos center, int radius) {
+    public static int harvest(Level level, BlockPos center, int radius, int maxInput) {
         if (!IntegrationStatus.createLoaded()) return 0;
 
         int total = 0;
@@ -24,7 +24,8 @@ public final class CreateKineticBridge {
             Number speed = invokeNumber(be, "getSpeed");
             if (speed == null) speed = invokeNumber(be, "getTheoreticalSpeed");
             if (speed != null) {
-                total += Math.min(40, Math.max(0, (int) Math.abs(speed.doubleValue())));
+                total += Math.min(Math.min(40, maxInput - total), Math.max(0, (int) Math.abs(speed.doubleValue())));
+                if (total >= maxInput) return total;
             }
         }
         return total;
