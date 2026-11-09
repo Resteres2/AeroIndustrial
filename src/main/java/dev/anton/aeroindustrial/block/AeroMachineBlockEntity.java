@@ -251,7 +251,30 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 }
             }
             case 6 -> {
-                // Inertial Accumulator trades stored AeroFlux for controlled overload damping.
+                // Inertial Accumulator has two distinct jobs: absorb excess local
+                // AeroFlux when the network is starved, then convert stored charge
+                // into controlled overload damping. Its high source threshold keeps
+                // it from creating transfer loops with other buffers.
+                if (energy < getMaxEnergy() * 0.4) {
+                    for (Direction direction : Direction.values()) {
+                        BlockPos pos = worldPosition.relative(direction);
+                        IAeroFluxStorage storage = serverLevel.getCapability(
+                                AeroCapabilities.AEROFLUX, pos, direction.getOpposite());
+                        if (storage == null
+                                || storage.getAeroFluxStored() <= storage.getMaxAeroFluxStored() * 0.8) {
+                            continue;
+                        }
+                        int room = getMaxEnergy() - energy;
+                        int packet = Math.min(200, room);
+                        int extracted = storage.extractAeroFlux(packet, false);
+                        if (extracted > 0) {
+                            energy += extracted;
+                            setChanged();
+                            break;
+                        }
+                    }
+                }
+
                 if (energy >= 50 && overload >= 30) {
                     energy -= 50;
                     overload = Math.max(0, overload - 5);
