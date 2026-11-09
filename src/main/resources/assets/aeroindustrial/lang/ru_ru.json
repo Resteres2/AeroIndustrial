@@ -34,7 +34,7 @@
   "tooltip.aeroindustrial.machine.8": "Atmospheric Condenser — атмосферный технологический узел.",
   "tooltip.aeroindustrial.machine.9": "Mobile Refinery — узел переработки для мобильных систем.",
   "tooltip.aeroindustrial.machine.10": "Vector Thruster — направленно расходует AeroFlux для воздействия на движущиеся конструкции.",
-  "tooltip.aeroindustrial.machine.11": "AeroFlux Capacitor — высокоёмкий накопитель с увеличенным буфером.",
+  "tooltip.aeroindustrial.machine.11": "Конденсатор АэроФлюкса — высокоёмкий буфер, автоматически подпитывающий соседние машины с низким зарядом.",
   "tooltip.aeroindustrial.machine.12": "Mobile Dock — автоматически забирает AeroFlux из соседней машины.",
   "tooltip.aeroindustrial.machine.13": "Pressure Lattice — преобразует AeroFlux в снижение собственной перегрузки.",
   "tooltip.aeroindustrial.machine.14": "Aeronautical Conduit — передаёт AeroFlux соседней машине.",
