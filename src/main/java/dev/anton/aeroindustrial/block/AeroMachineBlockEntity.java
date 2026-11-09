@@ -278,6 +278,31 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                     }
                 }
             }
+            case 11 -> {
+                // AeroFlux Capacitor is an active buffer: it automatically feeds adjacent
+                // machines that have fallen below half charge, but never drains itself
+                // below a reserve. This turns capacitors into the backbone of local grids.
+                int reserve = Math.max(250, getMaxEnergy() / 4);
+                if (energy > reserve + 100) {
+                    for (Direction direction : Direction.values()) {
+                        BlockPos pos = worldPosition.relative(direction);
+                        if (!(serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity target)
+                                || target == this
+                                || target.getEnergy() >= target.getMaxEnergy() / 2) {
+                            continue;
+                        }
+
+                        int packet = Math.min(250, energy - reserve);
+                        int accepted = target.receiveAeroFlux(packet, true);
+                        if (accepted > 0) {
+                            target.receiveAeroFlux(accepted, false);
+                            energy -= accepted;
+                            setChanged();
+                            break;
+                        }
+                    }
+                }
+            }
             case 13 -> {
                 // Pressure Lattice converts stored AeroFlux into local overload damping.
                 if (energy >= 20) {
