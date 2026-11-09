@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["QRA", "RNR", "ARQ"],
+  "key": {
+    "Q": {"item": "minecraft:quartz"},
+    "R": {"item": "minecraft:redstone"},
+    "A": {"item": "minecraft:amethyst_shard"},
+    "N": {"item": "minecraft:nether_star"}
+  },
+  "result": {"id": "aeroindustrial:aeroflux_crystal", "count": 1}
+}
