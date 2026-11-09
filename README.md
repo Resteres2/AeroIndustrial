@@ -100,5 +100,7 @@ A server configuration is registered automatically under the NeoForge server con
 - GTCEu-compatible energy input rate
 - Vector Thruster AeroFlux cost
 - Vector Thruster impulse strength
+- Sky Relay stabilization upkeep
+- Atmospheric Condenser open-sky generation
 
 The defaults are intentionally conservative so the external integrations do not dominate the native AeroIndustrial progression.
