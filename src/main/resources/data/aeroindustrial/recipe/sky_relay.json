@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["IRI", "RCL", "IRI"],
+  "key": {
+    "I": {"item": "minecraft:iron_ingot"},
+    "R": {"item": "minecraft:redstone"},
+    "C": {"item": "aeroindustrial:sky_lattice"},
+    "L": {"item": "minecraft:lightning_rod"}
+  },
+  "result": {"id": "aeroindustrial:sky_relay", "count": 1}
+}
