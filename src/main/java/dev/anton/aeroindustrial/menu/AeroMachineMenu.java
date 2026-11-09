@@ -54,7 +54,16 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
             }
         });
 
-        this.addStandardInventorySlots(playerInventory, 8, 84);
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0; column < 9; column++) {
+                this.addSlot(new Slot(playerInventory, column + row * 9 + 9,
+                        8 + column * 18, 84 + row * 18));
+            }
+        }
+        for (int column = 0; column < 9; column++) {
+            this.addSlot(new Slot(playerInventory, column,
+                    8 + column * 18, 142));
+        }
     }
 
     public Container getMachineContainer() {
@@ -96,7 +105,7 @@ public final class AeroMachineMenu extends AbstractContainerMenu {
         }
 
         if (stack.isEmpty()) {
-            slot.setByPlayer(ItemStack.EMPTY);
+            slot.set(ItemStack.EMPTY);
         } else {
             slot.setChanged();
         }
