@@ -6,6 +6,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -99,6 +101,7 @@ public final class AeroMachineBlock extends Block implements EntityBlock {
                 if (blockEntity instanceof AeroMachineBlockEntity machine) {
                     int accepted = machine.receiveEnergy(2500, false);
                     if (accepted > 0) {
+                        level.playSound(null, pos, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 0.6f, 1.2f);
                         if (!player.isCreative()) stack.shrink(1);
                         player.displayClientMessage(Component.translatable(
                                 "message.aeroindustrial.charge", accepted, machine.getEnergy(), machine.getMaxEnergy())
