@@ -415,15 +415,26 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
         // Assemble from the actual pre-consumption input. This keeps recipe semantics
         // correct if a future recipe implementation derives its result from the input.
         ItemStack recipeInput = input.copy();
+        ItemStack assembled = recipe.assemble(
+                new net.minecraft.world.item.crafting.SingleRecipeInput(recipeInput),
+                serverLevel.registryAccess());
+        if (assembled.isEmpty()
+                || assembled.getCount() <= 0
+                || assembled.getCount() > assembled.getMaxStackSize()
+                || !ItemStack.isSameItemSameComponents(assembled, recipeResult)
+                || assembled.getCount() != recipeResult.getCount()) {
+            // Keep malformed datapack recipes from consuming inputs or energy.
+            progress = 0;
+            return;
+        }
+
         energy -= recipe.energyCost();
         input.shrink(1);
 
         if (output.isEmpty()) {
-            setItem(OUTPUT_SLOT, recipe.assemble(
-                    new net.minecraft.world.item.crafting.SingleRecipeInput(recipeInput),
-                    serverLevel.registryAccess()));
+            setItem(OUTPUT_SLOT, assembled.copy());
         } else {
-            output.grow(recipeResult.getCount());
+            output.grow(assembled.getCount());
             setChanged();
         }
 
