@@ -38,7 +38,7 @@
   "tooltip.aeroindustrial.machine.12": "Mobile Dock — automatically draws AeroFlux from an adjacent machine.",
   "tooltip.aeroindustrial.machine.13": "Pressure Lattice — converts AeroFlux into reduced self-overload.",
   "tooltip.aeroindustrial.machine.14": "Aeronautical Conduit — transfers AeroFlux to an adjacent machine.",
-  "tooltip.aeroindustrial.machine.15": "Vector Frame — structural stabilizer that reduces its own overload.",
+  "tooltip.aeroindustrial.machine.15": "Vector Frame — a local resonance anchor: for 10 AF/20t it reduces overload on itself and adjacent machines.",
   "tooltip.aeroindustrial.item.aeroflux_crystal": "Primary AeroFlux carrier. Right-click a machine to charge it by 2500 AeroFlux.",
   "tooltip.aeroindustrial.item.phase_foil": "Phase material for future technology chains.",
   "tooltip.aeroindustrial.item.vector_coil": "Vector-control coil.",
