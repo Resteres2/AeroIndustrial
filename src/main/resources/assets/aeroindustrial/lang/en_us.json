@@ -50,5 +50,9 @@
   "container.aeroindustrial.machine": "AeroFlux Machine",
   "gui.aeroindustrial.input": "Input",
   "gui.aeroindustrial.output": "Output",
-  "gui.aeroindustrial.processing": "Processing system"
+  "gui.aeroindustrial.processing": "Processing system",
+  "jei.aeroindustrial.machine": "AeroFlux Machines",
+  "jei.aeroindustrial.machine.tier": "Machine tier: %s",
+  "jei.aeroindustrial.time": "Time: %s t",
+  "jei.aeroindustrial.energy": "Cost: %s AF"
 }
