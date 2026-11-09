@@ -1,3 +1,6 @@
 {
-  "parent": "minecraft:item/copper_ingot"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "aeroindustrial:item/vector_coil"
+  }
 }
