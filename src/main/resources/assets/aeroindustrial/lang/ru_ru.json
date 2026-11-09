@@ -61,7 +61,6 @@
   "status.aeroindustrial.create": " | вход Create %s AF/10т",
   "status.aeroindustrial.thruster": " | связь двигателя: %s",
   "status.aeroindustrial.processing": " | обработка %s/%s",
-  "status.aeroindustrial.resonance": " | резонанс %s/20",
   "status.aeroindustrial.thruster.ready": " | связь двигателя: ГОТОВА",
   "status.aeroindustrial.thruster.offline": " | связь двигателя: НЕТ",
   "item.aeroindustrial.aero_manual": "Инженерный справочник AeroIndustrial",
@@ -75,5 +74,6 @@
   "manual.aeroindustrial.close": "Esc — закрыть",
   "status.aeroindustrial.gtceu": " | вход GTCEu %s AF/10т",
   "tooltip.aeroindustrial.machine.tier": "Уровень: %s",
-  "tooltip.aeroindustrial.machine.capacity": "Вместимость: %s AF"
+  "tooltip.aeroindustrial.machine.capacity": "Вместимость: %s AF",
+  "status.aeroindustrial.idle": " | режим: ожидание"
 }
