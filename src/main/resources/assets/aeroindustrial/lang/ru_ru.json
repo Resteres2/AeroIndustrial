@@ -72,5 +72,6 @@
   "manual.aeroindustrial.machine": "ПКМ открывает интерфейс машины. Shift+ПКМ показывает состояние. Рецепты обработки доступны в JEI.",
   "manual.aeroindustrial.integration": "Torque Resonator принимает кинетический ввод Create. Vector Thruster взаимодействует с совместимыми движущимися конструкциями.",
   "manual.aeroindustrial.controls": "Выход из справочника: Esc.",
-  "manual.aeroindustrial.close": "Esc — закрыть"
+  "manual.aeroindustrial.close": "Esc — закрыть",
+  "status.aeroindustrial.gtceu": " | вход GTCEu %s AF/10т"
 }
