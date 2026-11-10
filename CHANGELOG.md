@@ -10,6 +10,10 @@
 - Clamped AeroFlux and GTCEu transfer results to each requested packet so invalid external providers cannot over-credit internal storage.
 - Bounded restored machine progress and used overflow-safe progress arithmetic for long-running recipes.
 
+### Configurable network stabilization tuning
+- Exposed the energy cost and overload-damping strength of the Inertial Accumulator, Pressure Lattice, and Vector Frame through the common server configuration.
+- Vector Frame now only marks adjacent machines changed when their overload actually decreases.
+
 ### Production content
 - Added five industrial batch conversions for the Phase Refiner, Vector Compressor, Aero Forge, Atmospheric Condenser, and Mobile Refinery.
 - Kept the original one-item recipes; the new full-block routes trade higher AeroFlux costs and longer cycles for batch output.

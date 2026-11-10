@@ -318,9 +318,11 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                     }
                 }
 
-                if (energy >= 50 && overload >= 30) {
-                    energy -= 50;
-                    overload = Math.max(0, overload - 5);
+                int dampingCost = AeroConfig.CONFIG.accumulatorDampingCost.get();
+                int dampingAmount = AeroConfig.CONFIG.accumulatorDampingAmount.get();
+                if (energy >= dampingCost && overload >= dampingAmount) {
+                    energy -= dampingCost;
+                    overload = Math.max(0, overload - dampingAmount);
                     setChanged();
                 }
             }
@@ -419,9 +421,11 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
             }
             case 13 -> {
                 // Pressure Lattice converts stored AeroFlux into local overload damping.
-                if (energy >= 20) {
-                    energy -= 20;
-                    overload = Math.max(0, overload - 8);
+                int dampingCost = AeroConfig.CONFIG.pressureLatticeCost.get();
+                int dampingAmount = AeroConfig.CONFIG.pressureLatticeDampingAmount.get();
+                if (energy >= dampingCost) {
+                    energy -= dampingCost;
+                    overload = Math.max(0, overload - dampingAmount);
                     setChanged();
                 }
             }
@@ -455,15 +459,20 @@ public final class AeroMachineBlockEntity extends BaseContainerBlockEntity imple
                 // Vector Frame is a local resonance anchor. It protects itself and
                 // directly connected machines, making compact aeronautical assemblies
                 // more stable than isolated machines.
-                if (energy >= 10) {
-                    energy -= 10;
-                    overload = Math.max(0, overload - 2);
+                int stabilizationCost = AeroConfig.CONFIG.vectorFrameCost.get();
+                int selfDamping = AeroConfig.CONFIG.vectorFrameSelfDamping.get();
+                int adjacentDamping = AeroConfig.CONFIG.vectorFrameAdjacentDamping.get();
+                if (energy >= stabilizationCost) {
+                    energy -= stabilizationCost;
+                    overload = Math.max(0, overload - selfDamping);
                     for (Direction direction : Direction.values()) {
                         BlockPos pos = worldPosition.relative(direction);
                         if (serverLevel.getBlockEntity(pos) instanceof AeroMachineBlockEntity other
                                 && other.getTier() != 15) {
-                            other.overload = Math.max(0, other.overload - 1);
-                            other.setChanged();
+                            other.overload = Math.max(0, other.overload - adjacentDamping);
+                            if (other.overload < before) {
+                                other.setChanged();
+                            }
                         }
                     }
                     setChanged();

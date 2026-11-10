@@ -19,6 +19,13 @@ public final class AeroConfig {
     public final ModConfigSpec.IntValue capacitorReservePercent;
     public final ModConfigSpec.IntValue mobileDockTransferPerPulse;
     public final ModConfigSpec.IntValue conduitTransferPerPulse;
+    public final ModConfigSpec.IntValue accumulatorDampingCost;
+    public final ModConfigSpec.IntValue accumulatorDampingAmount;
+    public final ModConfigSpec.IntValue pressureLatticeCost;
+    public final ModConfigSpec.IntValue pressureLatticeDampingAmount;
+    public final ModConfigSpec.IntValue vectorFrameCost;
+    public final ModConfigSpec.IntValue vectorFrameSelfDamping;
+    public final ModConfigSpec.IntValue vectorFrameAdjacentDamping;
 
     private AeroConfig(ModConfigSpec.Builder builder) {
         builder.push("integration");
@@ -89,6 +96,41 @@ public final class AeroConfig {
                 .translation("config.aeroindustrial.conduit_transfer_per_pulse")
                 .defineInRange("conduit_transfer_per_pulse", 100, 1, 10000);
 
+        accumulatorDampingCost = builder
+                .comment("AeroFlux consumed by an Inertial Accumulator when converting stored charge into overload damping.")
+                .translation("config.aeroindustrial.accumulator_damping_cost")
+                .defineInRange("accumulator_damping_cost", 50, 1, 10000);
+
+        accumulatorDampingAmount = builder
+                .comment("Overload percentage points removed by an Inertial Accumulator damping pulse.")
+                .translation("config.aeroindustrial.accumulator_damping_amount")
+                .defineInRange("accumulator_damping_amount", 5, 1, 100);
+
+        pressureLatticeCost = builder
+                .comment("AeroFlux consumed by a Pressure Lattice every 20 ticks for overload damping.")
+                .translation("config.aeroindustrial.pressure_lattice_cost")
+                .defineInRange("pressure_lattice_cost", 20, 1, 10000);
+
+        pressureLatticeDampingAmount = builder
+                .comment("Overload percentage points removed by a Pressure Lattice pulse.")
+                .translation("config.aeroindustrial.pressure_lattice_damping_amount")
+                .defineInRange("pressure_lattice_damping_amount", 8, 1, 100);
+
+        vectorFrameCost = builder
+                .comment("AeroFlux consumed by a Vector Frame every 20 ticks for stabilization.")
+                .translation("config.aeroindustrial.vector_frame_cost")
+                .defineInRange("vector_frame_cost", 10, 1, 10000);
+
+        vectorFrameSelfDamping = builder
+                .comment("Overload percentage points removed from the Vector Frame itself per pulse.")
+                .translation("config.aeroindustrial.vector_frame_self_damping")
+                .defineInRange("vector_frame_self_damping", 2, 1, 100);
+
+        vectorFrameAdjacentDamping = builder
+                .comment("Overload percentage points removed from each adjacent machine by a Vector Frame pulse.")
+                .translation("config.aeroindustrial.vector_frame_adjacent_damping")
+                .defineInRange("vector_frame_adjacent_damping", 1, 1, 100);
+
         builder.pop();
     }
 
@@ -112,5 +154,12 @@ public final class AeroConfig {
         this.capacitorReservePercent = null;
         this.mobileDockTransferPerPulse = null;
         this.conduitTransferPerPulse = null;
+        this.accumulatorDampingCost = null;
+        this.accumulatorDampingAmount = null;
+        this.pressureLatticeCost = null;
+        this.pressureLatticeDampingAmount = null;
+        this.vectorFrameCost = null;
+        this.vectorFrameSelfDamping = null;
+        this.vectorFrameAdjacentDamping = null;
     }
 }

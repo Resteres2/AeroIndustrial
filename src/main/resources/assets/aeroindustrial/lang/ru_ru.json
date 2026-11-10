@@ -120,5 +120,12 @@
   "config.aeroindustrial.capacitor_transfer_per_pulse": "Передача конденсатора AeroFlux за 20 тиков",
   "config.aeroindustrial.capacitor_reserve_percent": "Резерв ёмкости конденсатора AeroFlux",
   "config.aeroindustrial.mobile_dock_transfer_per_pulse": "Передача Мобильного дока за 20 тиков",
-  "config.aeroindustrial.conduit_transfer_per_pulse": "Передача Аэронавтического проводника за 20 тиков"
+  "config.aeroindustrial.conduit_transfer_per_pulse": "Передача Аэронавтического проводника за 20 тиков",
+  "config.aeroindustrial.accumulator_damping_cost": "Стоимость импульса стабилизации Инерционного аккумулятора",
+  "config.aeroindustrial.accumulator_damping_amount": "Снижение перегрузки Инерционного аккумулятора",
+  "config.aeroindustrial.pressure_lattice_cost": "Стоимость импульса Pressure Lattice",
+  "config.aeroindustrial.pressure_lattice_damping_amount": "Снижение перегрузки Pressure Lattice",
+  "config.aeroindustrial.vector_frame_cost": "Стоимость стабилизации Vector Frame",
+  "config.aeroindustrial.vector_frame_self_damping": "Снижение собственной перегрузки Vector Frame",
+  "config.aeroindustrial.vector_frame_adjacent_damping": "Снижение перегрузки соседних машин Vector Frame"
 }

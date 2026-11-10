@@ -116,6 +116,7 @@ A server configuration is registered automatically under the NeoForge server con
 - Vector Thruster AeroFlux cost
 - Vector Thruster impulse strength
 - Vector Thruster fallback search radius
+- Configurable overload-damping costs and strengths for the Inertial Accumulator, Pressure Lattice, and Vector Frame network roles.
 - Sky Relay stabilization upkeep
 - Atmospheric Condenser open-sky generation
 - Inertial Accumulator pull packet size
