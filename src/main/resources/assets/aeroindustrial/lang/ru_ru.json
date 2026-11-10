@@ -72,7 +72,7 @@
   "manual.aeroindustrial.core": "АэроФлюкс — внутренняя инженерная энергия модулей AeroIndustrial.",
   "manual.aeroindustrial.energy": "Заряжайте машины кристаллом АэроФлюкса или совместимыми энергетическими системами.",
   "manual.aeroindustrial.overload": "Перегрузка растёт при высоком заполнении. До 20% перегрузки обработка ускорена; от 80% машина стабилизируется. Стабилизаторы, конденсаторы и рамы помогают строить устойчивые сети.",
-  "manual.aeroindustrial.machine": "ПКМ открывает интерфейс машины. Shift+ПКМ показывает состояние. Рецепты обработки доступны в JEI. Прогрессия: Flux Lattice → Torque Resonator / Phase Refiner → Vector Compressor → Sky Relay / Inertial Accumulator / Aero Forge → Atmospheric Condenser → Mobile Refinery → Vector Thruster → AeroFlux Capacitor → Mobile Dock → Pressure Lattice → Aeronautical Conduit → Vector Frame.",
+  "manual.aeroindustrial.machine": "ПКМ открывает интерфейс машины. Shift+ПКМ показывает состояние. Рецепты обработки и пакетной переработки доступны в JEI. Прогрессия: Flux Lattice → Torque Resonator / Phase Refiner → Vector Compressor → Sky Relay / Inertial Accumulator / Aero Forge → Atmospheric Condenser → Mobile Refinery → Vector Thruster → AeroFlux Capacitor → Mobile Dock → Pressure Lattice → Aeronautical Conduit → Vector Frame.",
   "manual.aeroindustrial.integration": "Torque Resonator принимает кинетический ввод Create. Vector Thruster взаимодействует с совместимыми движущимися конструкциями.",
   "manual.aeroindustrial.controls": "Колесо мыши: листать справочник. Esc — закрыть.",
   "manual.aeroindustrial.close": "Esc — закрыть",

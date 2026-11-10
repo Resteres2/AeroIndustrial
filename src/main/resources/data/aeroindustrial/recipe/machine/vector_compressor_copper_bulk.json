@@ -1,0 +1,13 @@
+{
+  "type": "aeroindustrial:aero_machine",
+  "ingredient": {
+    "item": "minecraft:copper_block"
+  },
+  "result": {
+    "id": "aeroindustrial:vector_coil",
+    "count": 3
+  },
+  "processing_time": 150,
+  "energy_cost": 9000,
+  "machine_tier": 4
+}

@@ -10,6 +10,11 @@
 - Clamped AeroFlux and GTCEu transfer results to each requested packet so invalid external providers cannot over-credit internal storage.
 - Bounded restored machine progress and used overflow-safe progress arithmetic for long-running recipes.
 
+### Production content
+- Added five industrial batch conversions for the Phase Refiner, Vector Compressor, Aero Forge, Atmospheric Condenser, and Mobile Refinery.
+- Kept the original one-item recipes; the new full-block routes trade higher AeroFlux costs and longer cycles for batch output.
+- Documented the new routes in the README and added a dedicated manual regression case for batch inputs.
+
 ### AeroFlux network
 - Made the AeroFlux Capacitor use the public AeroFlux block capability, allowing it to feed compatible third-party storage implementations instead of only native AeroIndustrial machines.
 - Added server settings for accumulator intake, capacitor packet size and reserve, Mobile Dock transfer, and Aeronautical Conduit throughput.

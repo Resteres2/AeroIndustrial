@@ -1,0 +1,13 @@
+{
+  "type": "aeroindustrial:aero_machine",
+  "ingredient": {
+    "item": "minecraft:amethyst_block"
+  },
+  "result": {
+    "id": "aeroindustrial:resonance_cell",
+    "count": 2
+  },
+  "processing_time": 140,
+  "energy_cost": 7500,
+  "machine_tier": 3
+}

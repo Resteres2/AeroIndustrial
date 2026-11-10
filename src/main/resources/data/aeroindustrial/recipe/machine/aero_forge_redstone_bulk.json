@@ -1,0 +1,13 @@
+{
+  "type": "aeroindustrial:aero_machine",
+  "ingredient": {
+    "item": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "aeroindustrial:flux_conductor",
+    "count": 4
+  },
+  "processing_time": 180,
+  "energy_cost": 14000,
+  "machine_tier": 7
+}

@@ -58,6 +58,19 @@ AeroIndustrial's core loop is:
 
 This is now a functional vertical slice of the intended product architecture: data-driven machines, a custom GUI, recipe discovery, localized status feedback, original AeroFlux mechanics and optional integrations. The external Create/Aeronautics/GTCEu bridges remain conservative compatibility layers and still require broader runtime validation.
 
+
+### Industrial batch processing
+
+The five production machines also have single-block bulk conversions, discoverable in JEI:
+
+- **T3 Phase Refiner:** Amethyst Block → 2 Resonance Cells.
+- **T4 Vector Compressor:** Copper Block → 3 Vector Coils.
+- **T7 Aero Forge:** Redstone Block → 4 Flux Conductors.
+- **T8 Atmospheric Condenser:** Packed Ice → 4 Pressure Gel.
+- **T9 Mobile Refinery:** Gold Block → 3 Phase Foil.
+
+These routes trade larger AeroFlux costs and longer processing cycles for batch output. The original single-item recipes remain available.
+
 ## Dependencies
 
 For the **base AeroIndustrial mod**, only Minecraft 1.21.1 and NeoForge 21.1.x are required.

@@ -1,0 +1,13 @@
+{
+  "type": "aeroindustrial:aero_machine",
+  "ingredient": {
+    "item": "minecraft:packed_ice"
+  },
+  "result": {
+    "id": "aeroindustrial:pressure_gel",
+    "count": 4
+  },
+  "processing_time": 160,
+  "energy_cost": 10000,
+  "machine_tier": 8
+}

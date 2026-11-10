@@ -24,6 +24,7 @@ This document is a **manual QA plan**, not a report of tests already passed. Run
 | R-04 | Load a datapack recipe with an empty, oversized, or mismatched assembled output. | The machine refuses the malformed result and preserves input and energy. |
 | R-05 | Reload datapacks while machines are loaded. | Recipe caches refresh and updated recipes become available without restarting the world. |
 | R-06 | Inspect custom machine recipes in JEI with the optional client installed. | Every recipe shows its tier, input, output, processing time, and AeroFlux cost. |
+| R-07 | Process one full-block input in each bulk recipe. | The declared machine tier produces the documented batch count, consumes one input block, and charges the configured recipe energy exactly once. |
 
 ## 3. AeroFlux network roles
 

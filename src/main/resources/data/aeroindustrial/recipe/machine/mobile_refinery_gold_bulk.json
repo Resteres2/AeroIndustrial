@@ -1,0 +1,13 @@
+{
+  "type": "aeroindustrial:aero_machine",
+  "ingredient": {
+    "item": "minecraft:gold_block"
+  },
+  "result": {
+    "id": "aeroindustrial:phase_foil",
+    "count": 3
+  },
+  "processing_time": 200,
+  "energy_cost": 16000,
+  "machine_tier": 9
+}
